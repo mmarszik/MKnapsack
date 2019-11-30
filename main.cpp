@@ -36,10 +36,10 @@
 #ifdef MAIN_PROGRAM
 
 #include <iostream>
-#include <ctime>
-#include "rnd.h"
+#include "params.h"
 
 int main(int argc, char *argv[]) {
+
     return 0;
 }
 

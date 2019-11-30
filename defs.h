@@ -51,9 +51,9 @@ typedef const double cftyp;
 
 constexpr ftyp EPSILON0 = std::numeric_limits<ftyp>::epsilon();
 
-//#define MAIN_PROGRAM
+#define MAIN_PROGRAM
 //#define TEST00_PROGRAM
-#define TEST01_PROGRAM
+//#define TEST01_PROGRAM
 //#define TEST02_PROGRAM
 //#define TEST03_PROGRAM
 

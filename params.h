@@ -49,7 +49,7 @@ enum ECrossMethod {
 
 class Params {
 private:
-    ultyp  rndSeed         =  0;               // The seed of pseudo random number generator.
+    ultyp  rndSeed         =  0;               // The seed of pseudo random number generator. The value zero indicates will be used std::random_device.
     utyp   numberSpecs     =  256;             // Default number of specimens.
     ftyp   pMutatnion      =  0.999900;        // Probability of mutation.
     ftyp   pReplace        =  0.000001;        // Probability of replace.
@@ -59,23 +59,28 @@ private:
     ftyp   rewBEmpty       = +0.000001;        // The reward [B] for the empty place in the knapsack by formula A*empty^B.
     ultyp  minStagn        =  100000;          // The minimal stagnation.
     ultyp  iniStagn        =  100000;          // The initial stagnation.
-    utyp   numberItems     =  0;               // Number of items (and length of specimen).
-    utyp   numberBp        =  0;               // Number of backpacks.
     time_t maxTime         =  0;               // The max time for computatnion.
     ultyp  maxLoops        =  0;               // The max loop for computatnion.
     utyp   haltFreq        =  0xFFF;           // The frequency of the probiting of the stop condition.
     utyp   saveFreq        =  0xFFFF;          // The frequency of save file.
+    ECrossMethod crossMeth =  EC_POSITION;     // The method of the crossing specimens.
+    bool   sortItems       =  true;            // Sort the items?
     ftyp   accEvaluate     =  0;               // The acceptable evaluate.
     std::string dataDir    =  "./data/";       // The directory with files data.
     std::string taskName   =  "";              // The task name will be used to name the files.
     bool   fromStdIn       =  true;            // The path to file containing backpacks and items. If empty it read from stdin.
     ityp   verbosity       =  1;               // The verbosity.
-    ECrossMethod crossMeth =  EC_POSITION;     // The method of the crossing specimens.
+    bool   help            =  false;           // Show help?
 
     Backpacks backpacks;
-    BpItems     items;
+    BpItems   items;
+
+
 public:
-    Params();
+    Params(int argc, char *argv[]) noexcept(false);
+
+    bool isHelp() const noexcept { return help; }
+    void showHelp() const noexcept;
 
 };
 

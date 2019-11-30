@@ -31,10 +31,170 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <cstring>
+
 #include "params.h"
 
-Params::Params()
-{
 
+static ultyp defRndSeed() noexcept {
+    return 0;
+}
+static utyp defNumberSpecs() noexcept {
+    return 256;
+}
+static ftyp defPMutatnion() noexcept {
+    return 0.999900;
+}
+static ftyp defPReplace() noexcept {
+    return 0.000001;
+}
+static ftyp defPNew() noexcept {
+    return 0.000001;
+}
+static ftyp defUnNPenal() noexcept {
+    return -0.000001;
+}
+static ftyp defRewAEmpty() noexcept {
+    return +0.000001;
+}
+static ftyp defRewBEmpty() noexcept {
+    return +0.000001;
+}
+static ultyp defMinStagn() noexcept {
+    return 100000;
+}
+static ultyp defIniStagn() noexcept {
+    return 100000;
+}
+static time_t defMaxTime() noexcept {
+    return 0;
+}
+static ultyp defMaxLoops() noexcept {
+    return 0;
+}
+static utyp defHaltFreq() noexcept {
+    return 0xFFF;
+}
+static utyp defSaveFreq() noexcept {
+    return 0xFFFF;
+}
+static std::string defCrossMeth() noexcept {
+    return "position";
+}
+static std::string defSortItems() noexcept {
+    return "true";
+}
+static ftyp defAccEvaluate() noexcept {
+    return 0;
+}
+static std::string defDataDir() noexcept {
+    return "./data/";
+}
+static std::string defTaskName() noexcept {
+    return "";
+}
+static std::string defFromStdIn() noexcept {
+    return "true";
+}
+static ityp defVerbosity() noexcept {
+    return 1;
+}
+
+
+static char* extractArg( int argc , char *argv[] , const char *arg ) noexcept {
+    for( int i=1 ; i<argc ; i++ ) {
+        int off = 0;
+        if( argv[i][0] == '-' )
+            off++;
+        if( off && argv[i][1] == '-' )
+            off++;
+        if( strncasecmp( argv[i]+off , arg , strlen(arg) ) == 0 ) {
+            off += strlen(arg);
+            return argv[i]+off;
+        }
+    }
+    return NULL;
+}
+
+
+Params::Params(int argc, char *argv[]) noexcept(false) {
+    char *arg;
+
+    if( arg = extractArg( argc, argv, "help") ) {
+        if( ! arg[0] ) {
+            help = true;
+            return;
+        }
+    }
+
+}
+
+
+void Params::showHelp() const noexcept {
+    std::cout << "--rndSeed=[uint] <1, 2^64-1> default: " << defRndSeed() << std::endl;
+    std::cout << "    The seed of pseudo random number generator. The seed of pseudo random number generator. The value zero indicates will be used std::random_device." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--numberSpecs=[uint] <1, MAX_MEMORY> default: " << defNumberSpecs() << std::endl;
+    std::cout << "    Default number of specimens." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--pMutatnion=[float] <0, 1> default: " << defPMutatnion() << std::endl;
+    std::cout << "    Probability of mutation." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--pReplace=[float] <0, 1> default: " << defPReplace() << std::endl;
+    std::cout << "    Probability of replace." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--pNew=[float] <0, 1> default: " << defPNew() << std::endl;
+    std::cout << "    Probability of create new, random specimen." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--unNPenal=[float] <0,INF> default: " << defUnNPenal() << std::endl;
+    std::cout << "    The penalty for redundant items." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--rewAEmpty=[float] <0,INF> default: " << defRewAEmpty() << std::endl;
+    std::cout << "    The reward [A] for the empty place in the knapsack by formula A*empty^B." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--rewBEmpty=[float] <0,16> default: " << defRewBEmpty() << std::endl;
+    std::cout << "    The reward [B] for the empty place in the knapsack by formula A*empty^B." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--minStagn=[uint] <0,2^64-1> default: " << defMinStagn() << std::endl;
+    std::cout << "    The minimal stagnation." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--iniStagn=[uint] <0,2^64-1> default: " << defIniStagn() << std::endl;
+    std::cout << "    The initial stagnation." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--maxTime=[uint] <0,2^32-1> default: " << defMaxTime() << std::endl;
+    std::cout << "    The max time for computatnion." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--maxLoops=[uint] <0,2^64-1> default: " << defMaxLoops() << std::endl;
+    std::cout << "    The max loop for computatnion." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--haltFreq=[uint=2^N-1] <0,2^20-1> default: " << defHaltFreq() << std::endl;
+    std::cout << "    The frequency of the probiting of the stop condition." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--saveFreq=[uint=2^N-1] <0,2^20-1> default: " << defSaveFreq() << std::endl;
+    std::cout << "    The frequency of save file." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--crossMeth=[string] {position|gens} default: " << defCrossMeth() << std::endl;
+    std::cout << "    The method of the crossing specimens." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--sortItems=[string] true|false default: " << defSortItems() << std::endl;
+    std::cout << "    Sort the items?" << std::endl;
+    std::cout << std::endl;
+    std::cout << "--accEvaluate=[float] <0,INF> default: " << defAccEvaluate() << std::endl;
+    std::cout << "    The acceptable evaluate. The zero value indicates run to stop condition." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--dataDir=[string] default: " << defDataDir() << std::endl;
+    std::cout << "    The directory with files data." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--taskName=[string] default: " << defTaskName() << std::endl;
+    std::cout << "    The task name will be used to name the files." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--fromStdIn=[string] {true|false} default: " << defFromStdIn() << std::endl;
+    std::cout << "    The path to file containing backpacks and items. If empty it read from stdin." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--verbosity=[uint] <0,32> default: " << defVerbosity() << std::endl;
+    std::cout << "    The verbosity." << std::endl;
+    std::cout << std::endl;
+    std::cout << "--help " << std::endl;
+    std::cout << "    Show this help" << std::endl;
 }
 
