@@ -43,44 +43,45 @@
 
 //MM: The available crosses methods.
 enum ECrossMethod {
-    EC_POSITION,
-    EC_GENS,
+    ECM_POSITION,
+    ECM_GENS,
 };
 
 class Params {
 private:
-    ultyp  rndSeed         =  0;               // The seed of pseudo random number generator. The value zero indicates will be used std::random_device.
-    utyp   numberSpecs     =  256;             // Default number of specimens.
-    ftyp   pMutatnion      =  0.999900;        // Probability of mutation.
-    ftyp   pReplace        =  0.000001;        // Probability of replace.
-    ftyp   pNew            =  0.000001;        // Probability of create new, random specimen.
-    ftyp   unNPenal        = -0.000001;        // The penalty for redundant items.
-    ftyp   rewAEmpty       = +0.000001;        // The reward [A] for the empty place in the knapsack by formula A*empty^B.
-    ftyp   rewBEmpty       = +0.000001;        // The reward [B] for the empty place in the knapsack by formula A*empty^B.
-    ultyp  minStagn        =  100000;          // The minimal stagnation.
-    ultyp  iniStagn        =  100000;          // The initial stagnation.
-    time_t maxTime         =  0;               // The max time for computatnion.
-    ultyp  maxLoops        =  0;               // The max loop for computatnion.
-    utyp   haltFreq        =  0xFFF;           // The frequency of the probiting of the stop condition.
-    utyp   saveFreq        =  0xFFFF;          // The frequency of save file.
-    ECrossMethod crossMeth =  EC_POSITION;     // The method of the crossing specimens.
-    bool   sortItems       =  true;            // Sort the items?
-    ftyp   accEvaluate     =  0;               // The acceptable evaluate.
-    std::string dataDir    =  "./data/";       // The directory with files data.
-    std::string taskName   =  "";              // The task name will be used to name the files.
-    bool   fromStdIn       =  true;            // The path to file containing backpacks and items. If empty it read from stdin.
-    ityp   verbosity       =  1;               // The verbosity.
-    bool   help            =  false;           // Show help?
+    ultyp  rndSeed;         // The seed of pseudo random number generator. The value zero indicates will be used std::random_device.
+    utyp   numberSpecs;     // Default number of specimens.
+    ftyp   pMutatnion;      // Probability of mutation.
+    ftyp   pReplace;        // Probability of replace.
+    ftyp   pNew;            // Probability of create new, random specimen.
+    ftyp   unNPenal;        // The penalty for redundant items.
+    ftyp   rewAEmpty;       // The reward [A] for the empty place in the knapsack by formula A*empty^B.
+    ftyp   rewBEmpty;       // The reward [B] for the empty place in the knapsack by formula A*empty^B.
+    ultyp  minStagn;        // The minimal stagnation.
+    ultyp  iniStagn;        // The initial stagnation.
+    time_t maxTime;         // The max time for computatnion.
+    ultyp  maxLoops;        // The max loop for computatnion.
+    utyp   haltFreq;        // The frequency of the probiting of the stop condition.
+    utyp   saveFreq;        // The frequency of save file.
+    ECrossMethod crossMeth; // The method of the crossing specimens.
+    bool   sortItems;       // Sort the items?
+    ftyp   accEvaluate;     // The acceptable evaluate.
+    std::string dataDir;    // The directory with files data.
+    std::string taskName;   // The task name will be used to name the files.
+    bool   fromStdIn;       // The path to file containing backpacks and items. If empty it read from stdin.
+    ityp   verbosity;       // The verbosity.
+    bool   help;            // Show help?
 
     Backpacks backpacks;
     BpItems   items;
 
+private:
+    void setDefaults() noexcept(false);
 
 public:
     Params(int argc, char *argv[]) noexcept(false);
-
     bool isHelp() const noexcept { return help; }
-    void showHelp() const noexcept;
+    static void showHelp() noexcept;
 
 };
 

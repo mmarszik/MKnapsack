@@ -32,6 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <cstring>
+#include <cmath>
 
 #include "params.h"
 
@@ -116,6 +117,52 @@ static char* extractArg( int argc , char *argv[] , const char *arg ) noexcept {
     return NULL;
 }
 
+void Params::setDefaults() noexcept(false) {
+    rndSeed     = defRndSeed();
+    numberSpecs = defNumberSpecs();
+    pMutatnion  = defPMutatnion();
+    pReplace    = defPReplace();
+    pNew        = defPNew();
+    if( fabs( 1.0 - pMutatnion + pReplace + pNew ) > EPSILON0 ) {
+        throw std::invalid_argument("Invalid sum of the probabiliteis pMutatnion + pReplace + pNew ");
+    }
+    unNPenal  = defUnNPenal();
+    rewAEmpty = defRewAEmpty();
+    rewBEmpty = defRewBEmpty();
+    minStagn  = defMinStagn();
+    iniStagn  = defIniStagn();
+    maxTime   = defMaxTime();
+    maxLoops  = defMaxLoops();
+    haltFreq  = defHaltFreq();
+    saveFreq  = defSaveFreq();
+    if( defCrossMeth() == "position" ) {
+        crossMeth = ECM_POSITION;
+    } else if(defCrossMeth() == "gens") {
+        crossMeth = ECM_GENS;
+    } else {
+        throw std::invalid_argument("Invalid defCrossMeth");
+    }
+    if( defSortItems() == "true" ) {
+        sortItems = true;
+    } else if( defSortItems() == "false" ) {
+        sortItems = false;
+    } else {
+        throw std::invalid_argument("Invalid defSortItems");
+    }
+    accEvaluate = defAccEvaluate();
+    dataDir     = defDataDir();
+    taskName    = defTaskName();
+    if( defFromStdIn() == "true" ) {
+        fromStdIn = true;
+    } else if( defFromStdIn() == "false" ) {
+        fromStdIn = false;
+    } else {
+        throw std::invalid_argument("Invalid defFromStdIn");
+    }
+    verbosity = defVerbosity();
+    help      = false;
+}
+
 
 Params::Params(int argc, char *argv[]) noexcept(false) {
     char *arg;
@@ -130,7 +177,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
 }
 
 
-void Params::showHelp() const noexcept {
+void Params::showHelp() noexcept {
     std::cout << "--rndSeed=[uint] <1, 2^64-1> default: " << defRndSeed() << std::endl;
     std::cout << "    The seed of pseudo random number generator. The seed of pseudo random number generator. The value zero indicates will be used std::random_device." << std::endl;
     std::cout << std::endl;

@@ -39,6 +39,18 @@
 #include "params.h"
 
 int main(int argc, char *argv[]) {
+    try {
+        Params prm( argc , argv );
+        if( prm.isHelp() ) {
+            Params::showHelp();
+            return 1;
+        }
+    } catch(std::exception &e) {
+        std::cout << e.what() << std::endl;
+        Params::showHelp();
+        return 1;
+    }
+    Params::showHelp();
 
     return 0;
 }
