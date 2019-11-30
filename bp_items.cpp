@@ -31,10 +31,12 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <algorithm>
+
 #include "bp_items.h"
 #include "verbout.h"
 
-void BpItems::read(std::istream &is, cityp verbosity) {
+void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
     VerbOut out(verbosity,5);
     out << "Please input number of items:";
     size_t number;
@@ -44,7 +46,7 @@ void BpItems::read(std::istream &is, cityp verbosity) {
     }
     items.resize( number );
     for( size_t i=0 ; i<number ; i++ ) {
-        ftyp weight,reward;
+        ftyp weight, reward;
 
         out << "Please input weight of [" << (i+1) << "] item:";
         is >> weight;
@@ -59,7 +61,10 @@ void BpItems::read(std::istream &is, cityp verbosity) {
         }
 
         items[i] = BpItem( reward, weight );
+    }
 
+    if( sortItems ) {
+        std::sort( items.begin() , items.end() , BpItem::cmpItem );
     }
 
 }

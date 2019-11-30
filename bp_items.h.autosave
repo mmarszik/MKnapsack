@@ -69,7 +69,8 @@ public:
     //Read info about all items from input stream.
     void read(
         std::istream &is,
-        cityp verbosity
+        cityp verbosity,
+        const bool sortItems
     ) noexcept(false);
 
 
