@@ -26,7 +26,12 @@ SOURCES += main.cpp \
     params.cpp \
     verbout.cpp \
     backpacks.cpp \
-    bp_items.cpp
+    bp_items.cpp \
+    rnd_float.cpp \
+    rnd_base.cpp \
+    test04.cpp \
+    dir_exists.cpp \
+    create_dir.cpp
 
 HEADERS += \
     rnd.h \
@@ -84,5 +89,9 @@ HEADERS += \
     params.h \
     verbout.h \
     backpacks.h \
-    bp_items.h
+    bp_items.h \
+    rnd_float.h \
+    rnd_base.h \
+    dir_exists.h \
+    create_dir.h
 

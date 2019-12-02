@@ -52,9 +52,12 @@ private:
     ultyp  rndSeed;         // The seed of pseudo random number generator. The value zero indicates will be used std::random_device.
     utyp   numberSpecs;     // Default number of specimens.
     ftyp   pMutatnion;      // Probability of mutation.
+    ftyp   pCross;          // Probability of crossing specimen.
     ftyp   pReplace;        // Probability of replace.
     ftyp   pNew;            // Probability of create new, random specimen.
-    ftyp   unNPenal;        // The penalty for redundant items.
+    ftyp   pBack;           // Probability back to the diploidy.
+    ultyp  stopCross;       // When loops reached value x the crossing operation  will be stop. Value zero indicate the crossing operation  continues whole time execute program.
+    ftyp   redunPenal;      // The penalty for redundant items.
     ftyp   rewAEmpty;       // The reward [A] for the empty place in the knapsack by formula A*empty^B.
     ftyp   rewBEmpty;       // The reward [B] for the empty place in the knapsack by formula A*empty^B.
     ultyp  minStagn;        // The minimal stagnation.

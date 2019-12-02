@@ -35,9 +35,10 @@
 
 #include "defs.h"
 #include "m_array.h"
+#include "rnd_base.h"
 
 template<typename TRnd, utyp SIZE1, utyp SIZE2>
-class RndXor2 {
+class RndXor2 : public RndBase {
 private:
     using TBuff = MArray<ultyp,SIZE1+SIZE2>;
     TBuff x;
@@ -57,7 +58,7 @@ public:
         i1 = SIZE1 - 1;
         i2 = SIZE1 + SIZE2 - 1;
     }
-    utyp operator()() {
+    result_type operator()() {
         if( ++i1 >= SIZE1        ) i1 = 0;
         if( ++i2 >= SIZE1 + SIZE2) i2 = SIZE1;
         return x[i1] ^ x[i2];

@@ -34,12 +34,12 @@
 #pragma once
 
 #include "defs.h"
-
 #include "m_array.h"
+#include "rnd_base.h"
 
 //MM: The composition of two pseudo random number generators with lagged.
 template<class TRnd1, class TRnd2, utyp SIZE>
-class RndComp {
+class RndComp : public RndBase {
 private:
     using TBuff = MArray< utyp , 1u<<SIZE >;
     TBuff buff;
@@ -56,7 +56,7 @@ public:
             buff[i] = rnd1();
         }
     }
-    utyp operator()() {
+    result_type operator()() {
         cutyp r = rnd2() & ((1u<<SIZE)-1);
         cultyp v = buff[r];
         buff[r] = rnd1();

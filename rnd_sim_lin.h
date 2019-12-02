@@ -34,10 +34,11 @@
 #pragma once
 
 #include "defs.h"
+#include "rnd_base.h"
 
 //MM: Simplest linear psuedo random numbers generator.
 template<typename T, T A, T B, T M=0, utyp SHIFT=0>
-class RndSimLin {
+class RndSimLin : public RndBase {
 private:
     T v;
 public:
@@ -52,7 +53,7 @@ public:
             (*this)();
         }
     }
-    utyp operator()() {
+    result_type operator()() {
         if( M == 0 ) {
             if( SHIFT == 0 ) {
                 return v = v * A + B;

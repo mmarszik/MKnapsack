@@ -44,7 +44,7 @@ private:
 public:
     RndBuff0( TRnd &rnd, cutyp max ) : rnd(rnd), max(max) {
     }
-    utyp operator()() {
+    TRnd::result_type operator()() {
         return static_cast<utyp>( rnd() % (max - MIN + 1) + MIN );
     }
 };

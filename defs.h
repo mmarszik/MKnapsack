@@ -50,12 +50,15 @@ typedef const unsigned int cutyp;
 typedef const double cftyp;
 
 constexpr ftyp EPSILON0 = std::numeric_limits<ftyp>::epsilon();
+constexpr ftyp EPSILON1 = 0.0000001;
+
 
 #define MAIN_PROGRAM
 //#define TEST00_PROGRAM
 //#define TEST01_PROGRAM
 //#define TEST02_PROGRAM
 //#define TEST03_PROGRAM
+//#define TEST04_PROGRAM
 
 //#define USE_RND_SIM_LIN_00
 //#define USE_RND_SIM_LIN_01

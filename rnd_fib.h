@@ -35,9 +35,10 @@
 
 #include "rnd_lin.h"
 #include "m_array.h"
+#include "rnd_base.h"
 
 template<typename T, utyp SIZE, utyp R, T M1, T M2, T A, T MOD=0, utyp INIT=4, utyp SHIFT=0>
-class RndFib {
+class RndFib : public RndBase {
 private:
     using TBuff = MArray<T,SIZE>;
     TBuff buff;
@@ -61,7 +62,7 @@ public:
             (*this)();
         }
     }
-    utyp operator()() {
+    result_type operator()() {
         if( ++i1 >= SIZE ) i1 = 0;
         if( ++i2 >= SIZE ) i2 = 0;
         if( MOD == 0 ) {

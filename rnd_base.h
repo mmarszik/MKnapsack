@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:16:08 CET
+/// Created on nie, 1 gru 2019, 21:23:09 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -33,47 +33,20 @@
 
 #pragma once
 
-#include "rnd_lin.h"
-#include "m_array.h"
-#include "rnd_base.h"
+#include <limits>
 
-template<typename T, utyp SIZE, utyp R, utyp ROT=1, utyp SHIFT=0, utyp INIT=4>
-class RndSFib : public RndBase {
-private:
-    using TBuff = MArray<T,SIZE>;
-    TBuff buff;
-    utyp  i1, i2;
+#include "defs.h"
 
-private:
-    static T rot( const T v ) {
-        return ( v << ROT ) | ( v >> ( std::numeric_limits<T>::digits - ROT ) );
-    }
 
+class RndBase {
 public:
-    RndSFib(){}
-    RndSFib(const T __sd) {
-        seed(__sd);
-    }
-    void seed(const T __sd) {
-        RndLin2b rnd( __sd );
-        for( utyp i=0 ; i<4 ; i++ ) {
-            for( utyp j=0 ; j<SIZE ; j++ ) {
-                buff[j] <<= 16;
-                buff[j] ^= rnd();
-            }
-        }
-        i1 = SIZE - 1;
-        i2 = SIZE - 1 - R;
-        for( utyp i=0 ; i<SIZE*INIT ; i++ ) {
-            (*this)();
-        }
-    }
-    result_type operator()() {
-        if( ++i1 >= SIZE ) i1 = 0;
-        if( ++i2 >= SIZE ) i2 = 0;
-        return ( buff[i1] += rot(buff[i2]) ) >> SHIFT;
-    }
-};
+    typedef utyp result_type;
 
-using RndSFib0 =  RndSFib< ultyp, 9689u, 4187u, 1u, 0u>;
+    static utyp max() {
+        return std::numeric_limits<utyp>::max();
+    }
+
+    virtual result_type operator()() = 0;
+
+};
 

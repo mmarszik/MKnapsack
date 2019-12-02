@@ -35,9 +35,10 @@
 
 #include "defs.h"
 #include "m_array.h"
+#include "rnd_base.h"
 
 //MM: Multilinear psuedo random numbers generator.
-class RndMLin {
+class RndMLin : public RndBase {
 private:
     const static MArray<ultyp, 16> A;
     const static MArray<ultyp, 16> B;
@@ -61,10 +62,7 @@ public:
             V[i] |= __sd ^ X[j++];
         }
     }
-    utyp operator()() {
-        //const MArray< utyp,101> RndMLin::X = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-        //if( x >= 101 ) x = 0;
-        //v = ( ( v * 227603 + 10230937 ) ^ X[x++] ) & ((1ull<<46)-1);
+    result_type operator()() {
         v = v * 543657589ull + 4253133281ull;
         cutyp i = v >> 60;
         return ( V[i] = V[i] * A[i] + B[i] ) >> 93;

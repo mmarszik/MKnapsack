@@ -38,11 +38,11 @@
 
 #include "rnd_sim_lin.h"
 #include "m_array.h"
-
+#include "rnd_base.h"
 #define SKIP_SZIE (64)
 
 template<typename T, T A, T B, T M=0, utyp BITS=32, utyp SHIFT=0>
-class RndSkipLin {
+class RndSkipLin : public RndBase {
 private:
     static cutyp skip[SKIP_SZIE];
     RndSimLin<T,A,B,M,SHIFT> rnd;
@@ -55,9 +55,9 @@ public:
         rnd.seed(__sd);
         is = 0;
     }
-    utyp operator()() {
+    result_type operator()() {
         utyp r=0;
-        for( utyp i=0 ; i<std::numeric_limits<utyp>::digits ; i+=BITS ) {
+        for( utyp i=0 ; i<std::numeric_limits<decltype(r)>::digits ; i+=BITS ) {
             for( utyp j=0 ; j<skip[is] ; j++ ) {
                 rnd();
             }

@@ -44,7 +44,7 @@
 template<utyp SIZE, utyp REPEAT, utyp MIN, utyp max>
 class RndBuff2 {
 private:
-    using TBuff = MArray< utyp , 1<<SIZE >;
+    using TBuff = MArray< TRnd::result_type , 1<<SIZE >;
     cutyp max;    // Max range.
     TRnd  &rnd;   // Pseudo random number generator.
     TBuff buf;    // N-Cyclic buffer to number generator.
@@ -59,7 +59,7 @@ public:
         }
     }
 
-    utyp operator()() {
+    TRnd::result_type operator()() {
         if( next >= SIZE ) {
             next = 0;
         }

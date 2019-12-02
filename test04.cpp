@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:16:08 CET
+/// Created on pon, 2 gru 2019, 16:21:33 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,49 +31,57 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "defs.h"
 
-#include "rnd_lin.h"
-#include "m_array.h"
-#include "rnd_base.h"
+#ifdef TEST04_PROGRAM
 
-template<typename T, utyp SIZE, utyp R, utyp ROT=1, utyp SHIFT=0, utyp INIT=4>
-class RndSFib : public RndBase {
-private:
-    using TBuff = MArray<T,SIZE>;
-    TBuff buff;
-    utyp  i1, i2;
+#include <iostream>
+#include <random>
+#include <ctime>
+#include <chrono>
 
-private:
-    static T rot( const T v ) {
-        return ( v << ROT ) | ( v >> ( std::numeric_limits<T>::digits - ROT ) );
+#include "rnd.h"
+
+int main(int argc, char *argv[]) {
+    std::random_device rd;
+    ultyp seed = 0;
+    for( utyp i=0 ; i<4 ; i++ ) {
+        seed = ( seed << 8 ) | ( rd() & 0xFF );
     }
-
-public:
-    RndSFib(){}
-    RndSFib(const T __sd) {
-        seed(__sd);
-    }
-    void seed(const T __sd) {
-        RndLin2b rnd( __sd );
-        for( utyp i=0 ; i<4 ; i++ ) {
-            for( utyp j=0 ; j<SIZE ; j++ ) {
-                buff[j] <<= 16;
-                buff[j] ^= rnd();
-            }
+    cultyp LOOPS = 20000000000ull;
+    {
+        TRnd rnd1(seed);
+        TRnd rnd2(seed);
+        ultyp sum = 0;
+        auto start = std::chrono::system_clock::now();
+        for( ultyp i=0 ; i<LOOPS ; i++ ) {
+            sum += rnd1();
+            sum += rnd2();
         }
-        i1 = SIZE - 1;
-        i2 = SIZE - 1 - R;
-        for( utyp i=0 ; i<SIZE*INIT ; i++ ) {
-            (*this)();
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        std::cout << "Elapsed: " << elapsed.count() << std::endl;
+        std::cout << "Sum: " << sum << std::endl;
+    }
+    {
+        RndBase *rnd1 = new TRnd(seed);
+        RndBase *rnd2 = new TRnd(seed);
+        ultyp sum = 0;
+        auto start = std::chrono::system_clock::now();
+        for( ultyp i=0 ; i<LOOPS ; i++ ) {
+            sum += rnd1->operator()();
+            sum += rnd2->operator()();
         }
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        std::cout << "Elapsed: " << elapsed.count() << std::endl;
+        std::cout << "Sum: " << sum << std::endl;
+        delete rnd1;
+        delete rnd2;
     }
-    result_type operator()() {
-        if( ++i1 >= SIZE ) i1 = 0;
-        if( ++i2 >= SIZE ) i2 = 0;
-        return ( buff[i1] += rot(buff[i2]) ) >> SHIFT;
-    }
-};
+    return 0;
+}
 
-using RndSFib0 =  RndSFib< ultyp, 9689u, 4187u, 1u, 0u>;
+#endif
+
 

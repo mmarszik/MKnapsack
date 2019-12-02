@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:16:08 CET
+/// Created on pon, 2 gru 2019, 20:14:25 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,49 +31,24 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include <sys/types.h>
+#include <sys/stat.h>
 
-#include "rnd_lin.h"
-#include "m_array.h"
-#include "rnd_base.h"
+#include "dir_exists.h"
 
-template<typename T, utyp SIZE, utyp R, utyp ROT=1, utyp SHIFT=0, utyp INIT=4>
-class RndSFib : public RndBase {
-private:
-    using TBuff = MArray<T,SIZE>;
-    TBuff buff;
-    utyp  i1, i2;
 
-private:
-    static T rot( const T v ) {
-        return ( v << ROT ) | ( v >> ( std::numeric_limits<T>::digits - ROT ) );
-    }
-
-public:
-    RndSFib(){}
-    RndSFib(const T __sd) {
-        seed(__sd);
-    }
-    void seed(const T __sd) {
-        RndLin2b rnd( __sd );
-        for( utyp i=0 ; i<4 ; i++ ) {
-            for( utyp j=0 ; j<SIZE ; j++ ) {
-                buff[j] <<= 16;
-                buff[j] ^= rnd();
-            }
+// Return 1 if dir exists.
+bool dirExists(const std::string &path) {
+    struct stat info;
+    cityp statRC = stat( path.c_str(), &info );
+    if( statRC != 0 ) {
+        if( errno == ENOENT  ) {
+            return false;             // path not exist
         }
-        i1 = SIZE - 1;
-        i2 = SIZE - 1 - R;
-        for( utyp i=0 ; i<SIZE*INIT ; i++ ) {
-            (*this)();
+        if( errno == ENOTDIR ) {
+            return false;             // not a dir
         }
+        return false;                 // other errors
     }
-    result_type operator()() {
-        if( ++i1 >= SIZE ) i1 = 0;
-        if( ++i2 >= SIZE ) i2 = 0;
-        return ( buff[i1] += rot(buff[i2]) ) >> SHIFT;
-    }
-};
-
-using RndSFib0 =  RndSFib< ultyp, 9689u, 4187u, 1u, 0u>;
-
+    return ( info.st_mode & S_IFDIR ) ? true : false;
+}
