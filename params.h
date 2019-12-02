@@ -72,7 +72,7 @@ private:
     std::string dataDir;    // The directory with files data.
     std::string taskName;   // The task name will be used to name the files.
     bool   fromStdIn;       // The path to file containing backpacks and items. If empty it read from stdin.
-    ityp   verbosity;       // The verbosity.
+    utyp   verbosity;       // The verbosity.
     bool   help;            // Show help?
 
     Backpacks backpacks;

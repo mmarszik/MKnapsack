@@ -31,7 +31,8 @@ SOURCES += main.cpp \
     rnd_base.cpp \
     test04.cpp \
     dir_exists.cpp \
-    create_dir.cpp
+    create_dir.cpp \
+    specimen.cpp
 
 HEADERS += \
     rnd.h \
@@ -93,5 +94,6 @@ HEADERS += \
     rnd_float.h \
     rnd_base.h \
     dir_exists.h \
-    create_dir.h
+    create_dir.h \
+    specimen.h
 

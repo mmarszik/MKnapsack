@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:13:09 CET
+/// Created on pon, 2 gru 2019, 23:59:04 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,73 +31,5 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "specimen.h"
 
-#include <limits>
-
-typedef long long ltyp;
-typedef unsigned long long ultyp;
-typedef int ityp;
-typedef unsigned int utyp;
-typedef double ftyp;
-
-typedef unsigned  __int128 ulltyp;
-
-typedef const long long cltyp;
-typedef const unsigned long long cultyp;
-typedef const int cityp;
-typedef const unsigned int cutyp;
-typedef const double cftyp;
-
-typedef unsigned char TGEN;
-
-constexpr ftyp EPSILON0 = std::numeric_limits<ftyp>::epsilon();
-constexpr ftyp EPSILON1 = 0.0000001;
-
-
-#define MAIN_PROGRAM
-//#define TEST00_PROGRAM
-//#define TEST01_PROGRAM
-//#define TEST02_PROGRAM
-//#define TEST03_PROGRAM
-//#define TEST04_PROGRAM
-
-//#define USE_RND_SIM_LIN_00
-//#define USE_RND_SIM_LIN_01
-//#define USE_RND_SIM_LIN_02
-//#define USE_RND_SIM_LIN_04
-//#define USE_RND_SIM_LIN_05
-//#define USE_RND_FIB_0
-//#define USE_RND_FIB_0a
-//#define USE_RND_FIB_1
-//#define USE_RND_FIB_1a
-//#define USE_RND_FIB_2
-//#define USE_RND_FIB_3
-//#define USE_RND_FIB_2a
-//#define USE_RND_FIB_3a
-//#define USE_RND_SFIB_0
-//#define USE_RND_COMP_0
-//#define USE_RND_COMP_1
-//#define USE_RND_COMP_2
-//#define USE_RND_COMP_3
-//#define USE_RND_COMP_4
-//#define USE_RND_COMP_5
-//#define USE_RND_COMP_6
-//#define USE_RND_COMP_7
-//#define USE_RND_LIN_1
-//#define USE_RND_LIN_1a
-//#define USE_RND_LIN_2
-//#define USE_RND_LIN_2a
-//#define USE_RND_LIN_2b
-//#define USE_RND_LIN_2c
-#define USE_RND_MLIN_0
-//#define USE_RND_RANLUX_48
-//#define USE_RND_MT19937_64
-//#define USE_RND_KNUTH_B
-//#define USE_RND_SKIP_LIN_1
-//#define USE_RND_SKIP_LIN_2b
-//#define USE_RND_XOR2_0
-//#define USE_RND_XOR3_0
-
-
-//#define USING_STD_ARRAY

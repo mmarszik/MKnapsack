@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:13:09 CET
+/// Created on pon, 2 gru 2019, 23:58:49 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -33,71 +33,44 @@
 
 #pragma once
 
-#include <limits>
+#include <vector>
 
-typedef long long ltyp;
-typedef unsigned long long ultyp;
-typedef int ityp;
-typedef unsigned int utyp;
-typedef double ftyp;
+#include "defs.h"
+#include "rnd.h"
 
-typedef unsigned  __int128 ulltyp;
+class Specimen {
+public:
+    using TGENOTYPE = std::vector<TGEN>;
 
-typedef const long long cltyp;
-typedef const unsigned long long cultyp;
-typedef const int cityp;
-typedef const unsigned int cutyp;
-typedef const double cftyp;
+private:
+    TGENOTYPE genotype;   // genotype
+    ftyp      eval;       // eval
+    ftyp      weight;     // weight of all knapsacks
+    ultyp     stagnation; // stagnation
 
-typedef unsigned char TGEN;
+private:
+    TGENOTYPE cgenotype;  // copy genotype
+    ftyp      ceval;      // copy eval
+    ftyp      cweight;    // copy weight
+    ultyp     cstagnation;// copy stagnation
 
-constexpr ftyp EPSILON0 = std::numeric_limits<ftyp>::epsilon();
-constexpr ftyp EPSILON1 = 0.0000001;
+public:
+    void store() {
+        cgenotype   = genotype;
+        ceval       = eval;
+        cweight     = weight;
+        cstagnation = stagnation;
+    }
+    void restore() {
+        genotype   = cgenotype;
+        eval       = ceval;
+        weight     = cweight;
+        stagnation = cstagnation;
+    }
+    std::string toString() const {
+        std::string out;
 
+        return out;
+    }
 
-#define MAIN_PROGRAM
-//#define TEST00_PROGRAM
-//#define TEST01_PROGRAM
-//#define TEST02_PROGRAM
-//#define TEST03_PROGRAM
-//#define TEST04_PROGRAM
-
-//#define USE_RND_SIM_LIN_00
-//#define USE_RND_SIM_LIN_01
-//#define USE_RND_SIM_LIN_02
-//#define USE_RND_SIM_LIN_04
-//#define USE_RND_SIM_LIN_05
-//#define USE_RND_FIB_0
-//#define USE_RND_FIB_0a
-//#define USE_RND_FIB_1
-//#define USE_RND_FIB_1a
-//#define USE_RND_FIB_2
-//#define USE_RND_FIB_3
-//#define USE_RND_FIB_2a
-//#define USE_RND_FIB_3a
-//#define USE_RND_SFIB_0
-//#define USE_RND_COMP_0
-//#define USE_RND_COMP_1
-//#define USE_RND_COMP_2
-//#define USE_RND_COMP_3
-//#define USE_RND_COMP_4
-//#define USE_RND_COMP_5
-//#define USE_RND_COMP_6
-//#define USE_RND_COMP_7
-//#define USE_RND_LIN_1
-//#define USE_RND_LIN_1a
-//#define USE_RND_LIN_2
-//#define USE_RND_LIN_2a
-//#define USE_RND_LIN_2b
-//#define USE_RND_LIN_2c
-#define USE_RND_MLIN_0
-//#define USE_RND_RANLUX_48
-//#define USE_RND_MT19937_64
-//#define USE_RND_KNUTH_B
-//#define USE_RND_SKIP_LIN_1
-//#define USE_RND_SKIP_LIN_2b
-//#define USE_RND_XOR2_0
-//#define USE_RND_XOR3_0
-
-
-//#define USING_STD_ARRAY
+};

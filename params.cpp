@@ -431,7 +431,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::string buff;
         std::istringstream ss(arg);
         ss >> buff;
-        std::transform( buff.begin() , buff.end() , NULL , std::tolower );
+        std::transform( buff.begin() , buff.end() , buff.begin() , [](unsigned char c) -> unsigned char { return std::tolower(c); } );
         if( ! ss.good() ) {
             throw std::invalid_argument("Invalid command line arg: crossMeth");
         }
@@ -452,7 +452,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::string buff;
         std::istringstream ss(arg);
         ss >> buff;
-        std::transform( buff.begin() , buff.end() , NULL , std::tolower );
+        std::transform( buff.begin() , buff.end() , buff.begin() , [](unsigned char c) -> unsigned char { return std::tolower(c); } );
         if( ! ss.good() ) {
             throw std::invalid_argument("Invalid command line arg: sortItems");
         }
@@ -473,7 +473,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::string buff;
         std::istringstream ss(arg);
         ss >> buff;
-        std::transform( buff.begin() , buff.end() , NULL , std::tolower );
+        std::transform( buff.begin() , buff.end() , buff.begin() , [](unsigned char c) -> unsigned char { return std::tolower(c); } );
         if( ! ss.good() ) {
             throw std::invalid_argument("Invalid command line arg: sortItems");
         }
@@ -515,10 +515,37 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         }
     }
 
-   fromStdIn
+    arg = extractArg( argc, argv, "fromStdIn" , recognizedArg);
+    if( arg ) {
+        std::string buff;
+        std::istringstream ss(arg);
+        ss >> buff;
+        std::transform( buff.begin() , buff.end() , buff.begin() , [](unsigned char c) -> unsigned char { return std::tolower(c); } );
+        if( ! ss.good() ) {
+            throw std::invalid_argument("Invalid command line arg: fromStdIn");
+        }
+        if( buff == "yes" || buff == "1" ) {
+            fromStdIn = true;
+        } else if( buff == "no" || buff == "not" || buff == "0" ) {
+            fromStdIn = false;
+        } else {
+            std::string msg = "Invalid command line arg: fromStdIn [";
+            msg += buff;
+            msg += "]";
+            throw std::invalid_argument(msg);
+        }
+    }
 
-
-
+    arg = extractArg( argc, argv, "verbosity" , recognizedArg);
+    if( arg ) {
+        std::istringstream ss(arg);
+        ss >> verbosity;
+#pragma GCC diagnostic ignored "-Wtype-limits"
+        if( ! ss.good() || verbosity < 0 ) {
+#pragma GCC diagnostic warning "-Wtype-limits"
+            throw std::invalid_argument("Invalid command line arg: verbosity");
+        }
+    }
 
 }
 
