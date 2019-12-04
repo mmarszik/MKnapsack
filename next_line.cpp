@@ -34,6 +34,8 @@
 #include "next_line.h"
 #include "trim.h"
 
+// The below function return next line from stream is with
+// skip the empty lines and the comment lines (beginning from char #).
 std::string nextLine(std::istream &is) noexcept {
     std::string line;
     do {

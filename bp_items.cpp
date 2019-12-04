@@ -35,7 +35,7 @@
 
 #include "bp_items.h"
 #include "verbout.h"
-#include "verbosity.h"
+#include "def_verb.h"
 
 void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
     VerbOut out(verbosity,VERB_HINT_INPUT);
