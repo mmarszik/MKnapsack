@@ -36,10 +36,11 @@
 
 #include "backpacks.h"
 #include "verbout.h"
+#include "verbosity.h"
 
 void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
     size_t number;
-    VerbOut out(verbosity,5);
+    VerbOut out(verbosity,VERB_HINT_INPUT);
     out << "Pleas input number of backpacks:";
     is >> number;
     if( ! is.good() || number < 1 ) {

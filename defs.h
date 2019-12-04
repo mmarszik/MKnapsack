@@ -54,9 +54,17 @@ typedef unsigned char TGEN;
 constexpr ftyp EPSILON0 = std::numeric_limits<ftyp>::epsilon();
 constexpr ftyp EPSILON1 = 0.0000001;
 
+#if defined( __linux__ )
+    constexpr char PATHSEP = '/';
+#elif defined(_WIN32)
+    constexpr char PATHSEP = '\\';
+#elif defined(_WIN64)
+    constexpr char PATHSEP = '\\';
+#endif
 
-#define MAIN_PROGRAM
-//#define TEST00_PROGRAM
+
+//#define MAIN_PROGRAM
+#define TEST00_PROGRAM
 //#define TEST01_PROGRAM
 //#define TEST02_PROGRAM
 //#define TEST03_PROGRAM

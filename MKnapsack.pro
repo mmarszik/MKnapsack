@@ -1,4 +1,4 @@
-CONFIG += c++11
+CONFIG += c++14
 QT += core
 QT -= gui
 
@@ -32,7 +32,9 @@ SOURCES += main.cpp \
     test04.cpp \
     dir_exists.cpp \
     create_dir.cpp \
-    specimen.cpp
+    specimen.cpp \
+    next_line.cpp \
+    trim.cpp
 
 HEADERS += \
     rnd.h \
@@ -95,5 +97,8 @@ HEADERS += \
     rnd_base.h \
     dir_exists.h \
     create_dir.h \
-    specimen.h
+    specimen.h \
+    next_line.h \
+    trim.h \
+    def_verb.h
 

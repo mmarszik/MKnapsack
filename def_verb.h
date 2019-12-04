@@ -1,14 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// Genetic Algorithm to Multi-Knapsack Problem
-///
-/// Created on sob, 30 lis 2019, 09:43:10 CET
-/// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
-/// Brief:
-/// Description:
-///
-////////////////////////////////////////////////////////////////////////////////////////////////
-///
 /// It is file containing source code of genetic algorithm to solve
 /// multi-knapsack problem. It turned out that the genetic algorithm
 /// very well solves the multi-backpack problem.
@@ -31,41 +22,12 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <algorithm>
+#pragma once
 
-#include "bp_items.h"
-#include "verbout.h"
-#include "verbosity.h"
+#include "defs.h"
 
-void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
-    VerbOut out(verbosity,VERB_HINT_INPUT);
-    out << "Please input number of items:";
-    size_t number;
-    is >> number;
-    if( ! is.good() || number < 1 ) {
-        throw std::invalid_argument("Invalid number of items");
-    }
-    items.resize( number );
-    for( size_t i=0 ; i<number ; i++ ) {
-        ftyp weight, reward;
+constexpr utyp VERB_NONE       = 0;
+constexpr utyp VERB_SEED       = 1;
+constexpr utyp VERB_HINT_INPUT = 5;
 
-        out << "Please input weight of [" << (i+1) << "] item:";
-        is >> weight;
-        if( ! is.good() || weight < EPSILON0 ) {
-            throw std::invalid_argument("Invalid weight of item");
-        }
 
-        out << "Please input reward of [" << (i+1) << "] item:";
-        is >> reward;
-        if( ! is.good() || reward < EPSILON0 ) {
-            throw std::invalid_argument("Invalid reward of item");
-        }
-
-        items[i] = BpItem( reward, weight );
-    }
-
-    if( sortItems ) {
-        std::sort( items.begin() , items.end() , BpItem::cmpItem );
-    }
-
-}

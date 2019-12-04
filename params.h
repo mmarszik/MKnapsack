@@ -78,8 +78,91 @@ private:
     Backpacks backpacks;
     BpItems   items;
 
+
 private:
     void setDefaults() noexcept(false);
+
+    // The below method build path to the data file containing
+    // description of knapsacks and items.
+    std::string getDataPath() const noexcept;
+
+
+public:
+    ultyp getRndSeed() const noexcept {
+        return rndSeed;
+    }
+    utyp getNumberSpecs() const noexcept {
+        return numberSpecs;
+    }
+    ftyp getPMutatnion() const noexcept {
+        return pMutatnion;
+    }
+    ftyp getPCross() const noexcept {
+        return pCross;
+    }
+    ftyp getPReplace() const noexcept {
+        return pReplace;
+    }
+    ftyp getPNew() const noexcept {
+        return pNew;
+    }
+    ftyp getPBack() const noexcept {
+        return pBack;
+    }
+    ultyp getStopCross() const noexcept {
+        return stopCross;
+    }
+    ftyp getRedunPenal() const noexcept {
+        return redunPenal;
+    }
+    ftyp getRewAEmpty() const noexcept {
+        return rewAEmpty;
+    }
+    ftyp getRewBEmpty() const noexcept {
+        return rewBEmpty;
+    }
+    ultyp getMinStagn() const noexcept {
+        return minStagn;
+    }
+    ultyp getIniStagn() const noexcept {
+        return iniStagn;
+    }
+    time_t getMaxTime() const noexcept {
+        return maxTime;
+    }
+    ultyp getMaxLoops() const noexcept {
+        return maxLoops;
+    }
+    utyp getHaltFreq() const noexcept {
+        return haltFreq;
+    }
+    utyp getSaveFreq() const noexcept {
+        return saveFreq;
+    }
+    ECrossMethod getCrossMeth() const noexcept {
+        return crossMeth;
+    }
+    bool getSortItems() const noexcept {
+        return sortItems;
+    }
+    ftyp getAccEvaluate() const noexcept {
+        return accEvaluate;
+    }
+    std::string getDataDir() const noexcept {
+        return dataDir;
+    }
+    std::string getTaskName() const noexcept {
+        return taskName;
+    }
+    bool getFromStdIn() const noexcept {
+        return fromStdIn;
+    }
+    utyp getVerbosity() const noexcept {
+        return verbosity;
+    }
+    bool getHelp() const noexcept {
+        return help;
+    }
 
 public:
     Params(int argc, char *argv[]) noexcept(false);

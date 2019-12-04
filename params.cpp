@@ -37,6 +37,7 @@
 #include <typeinfo>
 #include <random>
 #include <algorithm>
+#include <fstream>
 
 #include "params.h"
 #include "dir_exists.h"
@@ -179,6 +180,15 @@ void Params::setDefaults() noexcept(false) {
     }
     verbosity = defVerbosity();
     help      = false;
+}
+
+std::string Params::getDataPath() const noexcept {
+    std::string dir = getDataDir();
+    if( dir[dir.size()-1] != PATHSEP ) {
+        dir += PATHSEP;
+    }
+    dir += "data_";
+    dir += getTaskName();
 }
 
 
@@ -499,7 +509,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     }
     if( ! dirExists( dataDir ) ) {
         if( ! createDir( dataDir) ) {
-            std::string msg = "Dir [";
+            std::string msg = "The data dir [";
             msg += dataDir;
             msg += "] do not exists and cannot create it";
             throw std::invalid_argument( msg );
@@ -545,6 +555,19 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
 #pragma GCC diagnostic warning "-Wtype-limits"
             throw std::invalid_argument("Invalid command line arg: verbosity");
         }
+    }
+
+    if( getFromStdIn() ) {
+        items.read( std::cin , getVerbosity() , getSortItems() );
+    } else {
+        std::ifstream ifs( getDataPath() , std::ifstream::in );
+        if( ! ifs.good() ) {
+            std::string msg = "Cannot open data file [";
+            msg += getDataPath();
+            msg += "]";
+            throw std::invalid_argument( msg );
+        }
+        items.read( std::cin , getVerbosity() , getSortItems() );
     }
 
 }
@@ -664,6 +687,8 @@ void Params::showHelp() noexcept {
 
     std::cout << " --verbosity=[uint] <0,+INF> default: " << defVerbosity() << std::endl;
     std::cout << "    The verbosity." << std::endl;
+    std::cout << "    verbosity >= 1 - show random seed." << std::endl;
+    std::cout << "    verbosity >= 5 - show input information." << std::endl;
     std::cout << std::endl;
 
     std::cout << " --help " << std::endl;

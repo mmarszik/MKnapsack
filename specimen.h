@@ -68,9 +68,16 @@ public:
         stagnation = cstagnation;
     }
     std::string toString() const {
-        std::string out;
-
-        return out;
+//        std::ostringstream out;
+//        out << std::setprecision(14) << spec.ceval << ", " << std::setprecision(14) << spec.cweight << " [";
+//        for( size_t i=0 ; i<spec.genotype.size() ; i++ ) {
+//            std::cout << (int)spec.cgenotype[i];
+//            if( i < spec.genotype.size() - 1 ) {
+//                std::cout << ",";
+//            }
+//        }
+//        out << "]";
+//        return out.;
     }
 
 };

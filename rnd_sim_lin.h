@@ -75,6 +75,3 @@ using RndSimLin04 = RndSimLin<  ultyp,1645253ull, 1327634909599ull,  71298481576
 
 using RndSimLin05 = RndSimLin< ulltyp, 48744881ull, 147915133152863ull, 0ull, 95u >;
 
-
-
-

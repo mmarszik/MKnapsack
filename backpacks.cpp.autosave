@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:43:10 CET
+/// Created on sob, 30 lis 2019, 09:06:42 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,41 +31,29 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <algorithm>
 
-#include "bp_items.h"
+#include <stdexcept>
+
+#include "backpacks.h"
 #include "verbout.h"
-#include "verbosity.h"
+#include "def_verb.h"
 
-void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
-    VerbOut out(verbosity,VERB_HINT_INPUT);
-    out << "Please input number of items:";
+void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
     size_t number;
+    VerbOut out(verbosity,VERB_HINT_INPUT);
+    out << "Pleas input number of backpacks:";
     is >> number;
     if( ! is.good() || number < 1 ) {
-        throw std::invalid_argument("Invalid number of items");
+        throw std::invalid_argument("Invalid number of backpacks");
     }
-    items.resize( number );
+    backpack.resize( number );
     for( size_t i=0 ; i<number ; i++ ) {
-        ftyp weight, reward;
-
-        out << "Please input weight of [" << (i+1) << "] item:";
-        is >> weight;
-        if( ! is.good() || weight < EPSILON0 ) {
-            throw std::invalid_argument("Invalid weight of item");
+        out << "Please input size of [" << (i+1) << "] backpack:";
+        is >> backpack[i];
+        if( ! is.good() || backpack[i] <= 0 ) {
+            throw std::invalid_argument("Invalid size of backpack");
         }
-
-        out << "Please input reward of [" << (i+1) << "] item:";
-        is >> reward;
-        if( ! is.good() || reward < EPSILON0 ) {
-            throw std::invalid_argument("Invalid reward of item");
-        }
-
-        items[i] = BpItem( reward, weight );
     }
-
-    if( sortItems ) {
-        std::sort( items.begin() , items.end() , BpItem::cmpItem );
-    }
-
+    _begin = backpack.data();
+    _end = _begin + number;
 }

@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:43:10 CET
+/// Created on śro, 4 gru 2019, 17:42:39 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,41 +31,17 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <algorithm>
+#include "trim.h"
 
-#include "bp_items.h"
-#include "verbout.h"
-#include "verbosity.h"
-
-void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
-    VerbOut out(verbosity,VERB_HINT_INPUT);
-    out << "Please input number of items:";
-    size_t number;
-    is >> number;
-    if( ! is.good() || number < 1 ) {
-        throw std::invalid_argument("Invalid number of items");
-    }
-    items.resize( number );
-    for( size_t i=0 ; i<number ; i++ ) {
-        ftyp weight, reward;
-
-        out << "Please input weight of [" << (i+1) << "] item:";
-        is >> weight;
-        if( ! is.good() || weight < EPSILON0 ) {
-            throw std::invalid_argument("Invalid weight of item");
-        }
-
-        out << "Please input reward of [" << (i+1) << "] item:";
-        is >> reward;
-        if( ! is.good() || reward < EPSILON0 ) {
-            throw std::invalid_argument("Invalid reward of item");
-        }
-
-        items[i] = BpItem( reward, weight );
-    }
-
-    if( sortItems ) {
-        std::sort( items.begin() , items.end() , BpItem::cmpItem );
-    }
-
+std::string& rightTrim(std::string& str, const char* const ws) {
+    str.erase(str.find_last_not_of(ws) + 1);
+    return str;
 }
+std::string& leftTrim(std::string& str, const char* const ws) {
+    str.erase(0, str.find_first_not_of(ws));
+    return str;
+}
+std::string& trim(std::string& str, const char* const ws) {
+    return leftTrim(rightTrim(str, ws), ws);
+}
+
