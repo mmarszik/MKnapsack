@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:43:10 CET
+/// Created on sob, 30 lis 2019, 09:06:42 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,41 +31,43 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <algorithm>
 
-#include "bp_items.h"
+#include <stdexcept>
+#include <sstream>
+
+#include "backpacks.h"
 #include "verbout.h"
 #include "def_verb.h"
+#include "next_line.h"
 
-void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
+void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
+    std::istringstream ss;
+    std::string line;
     VerbOut out(verbosity,VERB_HINT_INPUT);
-    out << "Please input number of items:";
-    size_t number;
-    is >> number;
-    if( ! is.good() || number < 1 ) {
-        throw std::invalid_argument("Invalid number of items");
-    }
-    items.resize( number );
-    for( size_t i=0 ; i<number ; i++ ) {
-        ftyp weight, reward;
 
-        out << "Please input weight of [" << (i+1) << "] item:";
-        is >> weight;
-        if( ! is.good() || weight < EPSILON0 ) {
-            throw std::invalid_argument("Invalid weight of item");
+    out << "Pleas input number of backpacks:";
+
+    line = nextLine( is );
+    ss.str( line );
+    size_t size;
+    ss >> size;
+    if( !is.good() || !ss.good() || line.size() < 1 || size < 1 ) {
+        throw std::invalid_argument("Invalid number of backpacks");
+    }
+
+    backpack.resize( size );
+
+    for( size_t i=0 ; i<size ; i++ ) {
+
+        out << "Please input size of [" << (i+1) << "] backpack:";
+
+        line = nextLine( is );
+        ss.str( line );
+        ss >> backpack[i];
+        if( !is.good() || !ss.good() || line.size() < 1 || backpack[i] <= 0 ) {
+            throw std::invalid_argument("Invalid size of backpack");
         }
-
-        out << "Please input reward of [" << (i+1) << "] item:";
-        is >> reward;
-        if( ! is.good() || reward < EPSILON0 ) {
-            throw std::invalid_argument("Invalid reward of item");
-        }
-
-        items[i] = BpItem( reward, weight );
     }
-
-    if( sortItems ) {
-        std::sort( items.begin() , items.end() , BpItem::cmpItem );
-    }
-
+    _begin = backpack.data();
+    _end = _begin + size;
 }

@@ -189,6 +189,7 @@ std::string Params::getDataPath() const noexcept {
     }
     dir += "data_";
     dir += getTaskName();
+    return dir;
 }
 
 
@@ -559,6 +560,8 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
 
     if( getFromStdIn() ) {
         items.read( std::cin , getVerbosity() , getSortItems() );
+        backpacks.read( std::cin , getVerbosity() );
+        std::ofstream ofs( getDataPath() , std::ofstream::out );
     } else {
         std::ifstream ifs( getDataPath() , std::ifstream::in );
         if( ! ifs.good() ) {
@@ -567,7 +570,8 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
             msg += "]";
             throw std::invalid_argument( msg );
         }
-        items.read( std::cin , getVerbosity() , getSortItems() );
+        items.read( ifs , getVerbosity() , getSortItems() );
+        backpacks.read( ifs , getVerbosity() );
     }
 
 }

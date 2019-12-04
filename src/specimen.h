@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:06:42 CET
+/// Created on pon, 2 gru 2019, 23:58:49 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,36 +31,40 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
 
-#include <stdexcept>
-#include <sstream>
+#include <vector>
 
-#include "backpacks.h"
-#include "verbout.h"
-#include "def_verb.h"
-#include "next_line.h"
+#include "defs.h"
+#include "rnd.h"
 
-void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
-    std::istringstream ss;
-    std::string line;
+class Specimen {
+public:
+    using TGENOTYPE = std::vector<TGEN>;
 
-    VerbOut out(verbosity,VERB_HINT_INPUT);
-    out << "Pleas input number of backpacks:";
+private:
+    TGENOTYPE genotype;   // genotype
+    ftyp      eval;       // eval
+    ftyp      weight;     // weight of all knapsacks
+    ultyp     stagnation; // stagnation
 
-    line = nextLine( is );
-    ss.str( line );
-    ss >> number;
-    if( !is.good() || !ss.good() || line.size() < 1 || number < 1 ) {
-        throw std::invalid_argument("Invalid number of backpacks");
+private:
+    TGENOTYPE cgenotype;  // copy genotype
+    ftyp      ceval;      // copy eval
+    ftyp      cweight;    // copy weight
+
+public:
+    void store() {
+        cgenotype   = genotype;
+        ceval       = eval;
+        cweight     = weight;
     }
-    backpack.resize( number );
-    for( size_t i=0 ; i<number ; i++ ) {
-        out << "Please input size of [" << (i+1) << "] backpack:";
-        is >> backpack[i];
-        if( ! is.good() || backpack[i] <= 0 ) {
-            throw std::invalid_argument("Invalid size of backpack");
-        }
+    void restore() {
+        genotype   = cgenotype;
+        eval       = ceval;
+        weight     = cweight;
     }
-    _begin = backpack.data();
-    _end = _begin + number;
-}
+    void save( std::ostream &out ) const;
+    void read(std::istream &is  , cutyp cntItems, cutyp cntBackpacks);
+
+};

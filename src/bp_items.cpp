@@ -32,33 +32,40 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <algorithm>
+#include <sstream>
 
 #include "bp_items.h"
 #include "verbout.h"
 #include "def_verb.h"
+#include "next_line.h"
 
 void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
+    std::istringstream ss;
+    std::string line;
     VerbOut out(verbosity,VERB_HINT_INPUT);
+
     out << "Please input number of items:";
-    size_t number;
-    is >> number;
-    if( ! is.good() || number < 1 ) {
+
+    line = nextLine( is );
+    ss.str( line );
+    size_t size;
+    ss >> size;
+    if( !is.good() || !ss.good() || line.size() < 1 || size < 1 ) {
         throw std::invalid_argument("Invalid number of items");
     }
-    items.resize( number );
-    for( size_t i=0 ; i<number ; i++ ) {
+    items.resize( size );
+    for( size_t i=0 ; i<size ; i++ ) {
         ftyp weight, reward;
 
-        out << "Please input weight of [" << (i+1) << "] item:";
-        is >> weight;
-        if( ! is.good() || weight < EPSILON0 ) {
-            throw std::invalid_argument("Invalid weight of item");
-        }
-
-        out << "Please input reward of [" << (i+1) << "] item:";
-        is >> reward;
-        if( ! is.good() || reward < EPSILON0 ) {
-            throw std::invalid_argument("Invalid reward of item");
+        out << "Please input (weight reward) of [" << (i+1) << "] item:";
+        line = nextLine( is );
+        ss.str( line );
+        ss >> weight >> reward;
+        if( !is.good() || !ss.good() || line.size() < 1 || weight < EPSILON1 || reward < EPSILON1 ) {
+            std::string msg = "Invalid weight of item [";
+            msg += std::to_string( i+1 );
+            msg += "]";
+            throw std::invalid_argument(msg);
         }
 
         items[i] = BpItem( reward, weight );

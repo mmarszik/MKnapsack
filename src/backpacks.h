@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:06:42 CET
+/// Created on sob, 30 lis 2019, 09:12:52 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,29 +31,40 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
 
-#include <stdexcept>
+#include "defs.h"
 
-#include "backpacks.h"
-#include "verbout.h"
-#include "def_verb.h"
+#include <vector>
+#include <iostream>
 
-void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
-    size_t number;
-    VerbOut out(verbosity,VERB_HINT_INPUT);
-    out << "Pleas input number of backpacks:";
-    is >> number;
-    if( ! is.good() || number < 1 ) {
-        throw std::invalid_argument("Invalid number of backpacks");
+class Backpacks {
+private:
+    std::vector<ftyp> backpack;
+    cftyp *_begin;
+    cftyp *_end;
+
+public:
+
+    //Read info about all backpacks from input stream.
+    void read(
+        std::istream &is,
+        cityp verbosity
+    ) noexcept(false);
+
+    ftyp operator[](const size_t i) const noexcept {
+        return backpack[ i ];
     }
-    backpack.resize( number );
-    for( size_t i=0 ; i<number ; i++ ) {
-        out << "Please input size of [" << (i+1) << "] backpack:";
-        is >> backpack[i];
-        if( ! is.good() || backpack[i] <= 0 ) {
-            throw std::invalid_argument("Invalid size of backpack");
-        }
+
+    size_t size() const noexcept {
+        return backpack.size();
     }
-    _begin = backpack.data();
-    _end = _begin + number;
-}
+
+    cftyp* begin() const noexcept {
+        return _begin;
+    }
+
+    cftyp* end() const noexcept {
+        return _end;
+    }
+};

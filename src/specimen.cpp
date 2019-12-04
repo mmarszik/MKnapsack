@@ -2,7 +2,7 @@
 ///
 /// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:12:52 CET
+/// Created on pon, 2 gru 2019, 23:59:04 CET
 /// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
 /// Brief:
 /// Description:
@@ -31,42 +31,44 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-#include "defs.h"
-
-#include <vector>
 #include <iostream>
+#include <iomanip>
+#include <stdexcept>
 
-class Backpacks {
-private:
-    std::vector<ftyp> backpack;
-    cftyp *_begin;
-    cftyp *_end;
+#include "specimen.h"
+#include "next_line.h"
 
-public:
+void Specimen::save( std::ostream &out ) const {
+    out << std::setprecision(14) << ceval      << " ";
+    out << std::setprecision(14) << cweight    << " ";
+    out << std::setprecision( 0) << stagnation << " ";
+    for( size_t i=0 ; i<cgenotype.size() ; i++ ) {
+        out << (int)spec.cgenotype[i] << " ";
+    }
+    out << "\n";
+}
 
-    //Read info about all backpacks from input stream.
-    void read(
-        std::istream &is,
-        cityp verbosity
-    ) noexcept(false);
-
-    ftyp operator[](const size_t i) const  noexcept {
-        return backpack[ i ];
+void Specimen::read(
+    std::istream &is,
+    cutyp  cntItems,
+    cutyp  cntBackpacks
+) {
+    std::istringstream ss;
+    std::string line;
+    line = nextLine( is );
+    if( !is.good() || line.size() < 1 ) {
+        throw std::invalid_argument("Cannot read");
     }
 
-    size_t size() const  noexcept {
-        return backpack.size();
+    ss.str( line );
+    ss >> ceval;
+    if( !is.good() || !ss.good() || line.size() < 1 ) {
+
     }
-
-    cftyp* begin() const noexcept {
-        return _begin;
+    is >> cweight;
+    is >> stagnation;
+    for( size_t i=0 ; i<cgenotype.size() ; i++ ) {
+        out << (int)spec.cgenotype[i] << " ";
     }
+}
 
-    cftyp* end() const noexcept {
-        return _end;
-    }
-
-
-};
