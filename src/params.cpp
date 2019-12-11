@@ -1,36 +1,41 @@
-////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+///                                                                   //
+/// The genetic Algorithm to solve Problem Multi-Knapsack.            //
+///                                                                   //
+/// It is file containing source code of genetic algorithm to solve   //
+/// multi-knapsack problem. It turned out that the genetic algorithm  //
+/// very well solves the multi-backpack problem.                      //
+///                                                                   //
+/// The file is share on the open source licence, but unlike GPL,     //
+/// MIT, BSD, APACHE, L-GPL, etc, it is NOT standard and NOT          //
+/// liberary licence of the open source. By downloading and reading   //
+/// this file, you conclude a contract with me. Namely, if you        //
+/// understand that my source code can be improved (for example:      //
+/// speed up, better algorithms, better implementatnions, better      //
+/// parametrs, fixed bugs, etc), you need to present me everything    //
+/// in very detail. You can only download, read and compile this      //
+/// project only on the your personal computer. You can run the       //
+/// executable file and solve any problem, but only on the your own   //
+/// personal computer. You can see what the genetic alghorithm work   //
+/// in any practical multi-knapsack problem. However you can not use  //
+/// results of this program in the business applications. You also    //
+/// can NOT modifi, reshare, redistribuate binary or text version     //
+/// this or other file from whole project. You can not use whole      //
+/// file or fews lines from the file in your or others projects. If   //
+/// you need the other or commercial licence please send to me email. //
+///                                                                   //
+////////////////////////////////////////////////////////////////////////
+///                                                                   //
+/// @created on 2019-11-30 09:43:41 CET                               //
+/// @author MMarszik (Mariusz Marszalkowski sqnett.com)               //
+/// @email mmarszik@gmail.com                                         //
+/// @package MKnapsack                                                //
+/// @token d144734d-ba0f-47fa-a693-3b0ce021ffe4                       //
+/// @brief:                                                           //
+///                                                                   //
+////////////////////////////////////////////////////////////////////////
 ///
-/// Genetic Algorithm to Multi-Knapsack Problem
 ///
-/// Created on sob, 30 lis 2019, 09:43:41 CET
-/// @author MMarszik (Mariusz Marszalkowski mmarszik@gmail.com)
-/// Brief:
-/// Description:
-///
-////////////////////////////////////////////////////////////////////////////////////////////////
-///
-/// It is file containing source code of genetic algorithm to solve
-/// multi-knapsack problem. It turned out that the genetic algorithm
-/// very well solves the multi-backpack problem.
-///
-/// The file is share on the open source licence, but unlike GPL, MIT, BSD
-/// APACHE, L-GPL, etc,  it is NOT standard and NOT liberary licence of the
-/// open source. By downloading and reading this file, you conclude a contract
-/// with me. Namely, if you understand that my source code can be improved
-/// (for example: speed up, better algorithms, better parametrs,  fixed
-/// bugs, etc), you need to present me everything in very detail. You
-/// can only download, read and compile this project only on the your
-/// personal computer. You can run the executable file and solve
-/// education or example problem, but only on the your own personal
-/// computer. You can see what the genetic alghoritm work in any
-/// practical multi-knapsack problem. However you can not use result
-/// this project in the  business applications. You also can NOT modifi,
-/// reshare, redistribuate binary or text version this or other file from
-/// whole project.  You can not use whole file or fews lines from the file
-/// in your or others projects.
-///
-////////////////////////////////////////////////////////////////////////////////////////////////
-
 #include <cstring>
 #include <cmath>
 #include <sstream>
@@ -39,9 +44,11 @@
 #include <algorithm>
 #include <fstream>
 
+#include <m_dir.h>
+#include <m_args.h>
+
 #include "params.h"
-#include "dir_exists.h"
-#include "create_dir.h"
+
 
 static ultyp defRndSeed() noexcept {
     return 0;
@@ -117,22 +124,6 @@ static ityp defVerbosity() noexcept {
 }
 
 
-static char* extractArg( int argc , char *argv[] , const char *arg , std::vector<utyp> &recognized ) noexcept {
-    for( int i=1 ; i<argc ; i++ ) {
-        int off = 0;
-        if( argv[i][0] == '-' )
-            off++;
-        if( off && argv[i][1] == '-' )
-            off++;
-        if( strncasecmp( argv[i]+off , arg , strlen(arg) ) == 0 ) {
-            off += strlen(arg);
-            recognized[i] ++ ;
-            return argv[i]+off;
-        }
-    }
-    return NULL;
-}
-
 void Params::setDefaults() noexcept(false) {
     rndSeed     = defRndSeed();
     numberSpecs = defNumberSpecs();
@@ -194,10 +185,11 @@ std::string Params::getDataPath() const noexcept {
 
 
 Params::Params(int argc, char *argv[]) noexcept(false) {
-    char *arg;
-    std::vector<utyp> recognizedArg( argc , 0 );
+    const char *arg = NULL;
+    std::vector<int> recognizedArg( argc , 0 );
 
-    if( (arg = extractArg( argc, argv, "help", recognizedArg )) != NULL ) {
+    arg = extractArg( argc, argv, "help", recognizedArg );
+    if( arg != NULL ) {
         if( ! arg[0] ) {
             throw std::invalid_argument("Help");
         }
