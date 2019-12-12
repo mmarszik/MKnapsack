@@ -14,6 +14,7 @@ DEFINES += MX_USING_ARRAY_3
 DEFINES += USE_RND_MLIN_0
 DEFINES += USE_RND_BUFF0
 
+
 TEMPLATE = app
 
 SOURCES += src/main.cpp \
@@ -26,7 +27,12 @@ SOURCES += src/main.cpp \
     src/test02.cpp \
     vendor/MRndCPP/rnd_mlin.cpp \
     vendor/MiscCPP/m_dir.cpp \
-    vendor/MiscCPP/m_args.cpp
+    vendor/MiscCPP/m_args.cpp \
+    vendor/MiscCPP/m_next_line.cpp \
+    vendor/MiscCPP/m_verb_out.cpp \
+    vendor/MiscCPP/m_trim.cpp \
+    src/sandbox01.cpp \
+    src/sandbox02.cpp
 HEADERS += \
     src/specimen.h \
     src/backpacks.h \

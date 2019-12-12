@@ -61,17 +61,20 @@ private:
     ftyp      cweight;    // copy weight
 
 public:
-    void store() {
+    inline void store() {
         cgenotype   = genotype;
         ceval       = eval;
         cweight     = weight;
     }
-    void restore() {
+    inline void restore() {
         genotype   = cgenotype;
         eval       = ceval;
         weight     = cweight;
     }
-    void save( std::ostream &out ) const;
-    void read(std::istream &is  , cutyp cntItems, cutyp cntBackpacks);
-
+    void toString( std::string &str ) const;
+    void fromString(
+        const std::string &str,
+        cutyp cntItems,
+        cutyp cntBackpacks
+    );
 };

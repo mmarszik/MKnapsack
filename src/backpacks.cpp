@@ -38,24 +38,24 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <m_verb_out.h>
+#include <m_next_line.h>
 
 #include "backpacks.h"
-#include "verbout.h"
 #include "def_verb.h"
-#include "next_line.h"
 
 void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
     std::istringstream ss;
     std::string line;
-    VerbOut out(verbosity,VERB_HINT_INPUT);
+    VerbOut verbOut(verbosity,VERB_HINT_INPUT);
 
-    out << "Pleas input number of backpacks:";
+    verbOut << "Pleas input number of backpacks:";
 
     line = nextLine( is );
     ss.str( line );
     size_t size;
     ss >> size;
-    if( !is.good() || !ss.good() || line.size() < 1 || size < 1 ) {
+    if( is.fail() || !ss.fail() || line.size() < 1 || size < 1 ) {
         throw std::invalid_argument("Invalid number of backpacks");
     }
 
@@ -63,7 +63,7 @@ void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
 
     for( size_t i=0 ; i<size ; i++ ) {
 
-        out << "Please input size of [" << (i+1) << "] backpack:";
+        verbOut << "Please input size of [" << (i+1) << "] backpack:";
 
         line = nextLine( is );
         ss.str( line );

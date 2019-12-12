@@ -131,8 +131,10 @@ void Params::setDefaults() noexcept(false) {
     pCross      = defPCross();
     pReplace    = defPReplace();
     pNew        = defPNew();
-    if( fabs( 1.0 - pMutatnion + pReplace + pNew + pCross ) > EPSILON0 ) {
-        throw std::invalid_argument("Invalid sum of the probabiliteis pMutatnion + pReplace + pNew ");
+    if( fabs( 1.0 - pMutatnion - pReplace - pNew - pCross ) > EPSILON1 ) {
+        std::string msg = "Invalid default sum of the probabiliteis pMutatnion + pReplace + pNew + pCross == ";
+        msg += std::to_string( pMutatnion + pReplace + pNew + pCross );
+        throw std::invalid_argument( msg );
     }
     pBack     = defPBack();
     stopCross = defStopCross();
@@ -201,7 +203,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> rndSeed;
-        if( ! ss.good() ) {
+        if( ss.fail() ) {
             throw std::invalid_argument("Invalid command line arg: rndSeed");
         }
     }
@@ -218,7 +220,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> numberSpecs;
-        if( ! ss.good() || numberSpecs < 1 ) {
+        if( ss.fail() || numberSpecs < 1 ) {
             throw std::invalid_argument("Invalid command line arg: numberSpecs");
         }
     }
@@ -232,7 +234,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         if( arg ) {
             std::istringstream ss(arg);
             ss >> pMutatnion;
-            if( ! ss.good() || pMutatnion < 0 || pMutatnion > 1 ) {
+            if( ss.fail() || pMutatnion < 0 || pMutatnion > 1 ) {
                 throw std::invalid_argument("Invalid command line arg: pMutatnion");
             }
             fOperators |= 1; // The probability of the mutations operator was given directly in the command line.
@@ -242,7 +244,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         if( arg ) {
             std::istringstream ss(arg);
             ss >> pCross;
-            if( ! ss.good() || pCross < 0 || pCross > 1 ) {
+            if( ss.fail() || pCross < 0 || pCross > 1 ) {
                 throw std::invalid_argument("Invalid command line arg: pCross");
             }
             fOperators |= 2; // The probability of the cross operator was given directly in the command line.
@@ -252,7 +254,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         if( arg ) {
             std::istringstream ss(arg);
             ss >> pReplace;
-            if( ! ss.good() || pReplace < 0 || pReplace > 1 ) {
+            if( ss.fail() || pReplace < 0 || pReplace > 1 ) {
                 throw std::invalid_argument("Invalid command line arg: pReplace");
             }
             fOperators |= 4; // The probability of the replace operator was given directly in the command line.
@@ -262,7 +264,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         if( arg ) {
             std::istringstream ss(arg);
             ss >> pNew;
-            if( ! ss.good() || pNew < 0 || pNew > 1 ) {
+            if( ss.fail() || pNew < 0 || pNew > 1 ) {
                 throw std::invalid_argument("Invalid command line arg: pNew");
             }
             fOperators |= 8; // The probability of the new operator was given directly in the command line.
@@ -311,7 +313,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> pBack;
-        if( ! ss.good() || pBack < 0 || pBack > 1 ) {
+        if( ss.fail() || pBack < 0 || pBack > 1 ) {
             throw std::invalid_argument("Invalid command line arg: pBack");
         }
     }
@@ -321,7 +323,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> stopCross;
 #pragma GCC diagnostic ignored "-Wtype-limits"
-        if( ! ss.good() || stopCross < 0 ) {
+        if( ss.fail() || stopCross < 0 ) {
 #pragma GCC diagnostic warning "-Wtype-limits"
             throw std::invalid_argument("Invalid command line arg: stopCross");
         }
@@ -331,7 +333,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> redunPenal;
-        if( ! ss.good() ) {
+        if( ss.fail() ) {
             throw std::invalid_argument("Invalid command line arg: redunPenal");
         }
     }
@@ -340,7 +342,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> redunPenal;
-        if( ! ss.good() ) {
+        if( ss.fail() ) {
             throw std::invalid_argument("Invalid command line arg: redunPenal");
         }
     }
@@ -349,7 +351,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> rewAEmpty;
-        if( ! ss.good() ) {
+        if( ss.fail() ) {
             throw std::invalid_argument("Invalid command line arg: rewAEmpty");
         }
     }
@@ -358,7 +360,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> rewAEmpty;
-        if( ! ss.good() || rewBEmpty <= 0 ) {
+        if( ss.fail() || rewBEmpty <= 0 ) {
             throw std::invalid_argument("Invalid command line arg: rewBEmpty");
         }
     }
@@ -368,7 +370,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> minStagn;
 #pragma GCC diagnostic ignored "-Wtype-limits"
-        if( ! ss.good() || minStagn < 0 ) {
+        if( ss.fail() || minStagn < 0 ) {
 #pragma GCC diagnostic warning "-Wtype-limits"
             throw std::invalid_argument("Invalid command line arg: minStagn");
         }
@@ -379,7 +381,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> iniStagn;
 #pragma GCC diagnostic ignored "-Wtype-limits"
-        if( ! ss.good() || iniStagn < 0 ) {
+        if( ss.fail() || iniStagn < 0 ) {
 #pragma GCC diagnostic warning "-Wtype-limits"
             throw std::invalid_argument("Invalid command line arg: iniStagn");
         }
@@ -389,7 +391,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> maxTime;
-        if( ! ss.good() || maxTime < 0 ) {
+        if( ss.fail() || maxTime < 0 ) {
             throw std::invalid_argument("Invalid command line arg: maxTime");
         }
     }
@@ -399,7 +401,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> maxLoops;
 #pragma GCC diagnostic ignored "-Wtype-limits"
-        if( ! ss.good() || maxLoops < 0 ) {
+        if( ss.fail() || maxLoops < 0 ) {
 #pragma GCC diagnostic warning "-Wtype-limits"
             throw std::invalid_argument("Invalid command line arg: maxLoops");
         }
@@ -410,7 +412,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> haltFreq;
 #pragma GCC diagnostic ignored "-Wtype-limits"
-        if( ! ss.good() || haltFreq < 0 || haltFreq > 22 ) {
+        if( ss.fail() || haltFreq < 0 || haltFreq > 22 ) {
 #pragma GCC diagnostic warning "-Wtype-limits"
             throw std::invalid_argument("Invalid command line arg: haltFreq");
         }
@@ -422,7 +424,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> saveFreq;
 #pragma GCC diagnostic ignored "-Wtype-limits"
-        if( ! ss.good() || saveFreq < 0 || saveFreq > 22 ) {
+        if( ss.fail() || saveFreq < 0 || saveFreq > 22 ) {
 #pragma GCC diagnostic warning "-Wtype-limits"
             throw std::invalid_argument("Invalid command line arg: saveFreq");
         }
@@ -435,7 +437,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> buff;
         std::transform( buff.begin() , buff.end() , buff.begin() , [](unsigned char c) -> unsigned char { return std::tolower(c); } );
-        if( ! ss.good() ) {
+        if( ss.fail() ) {
             throw std::invalid_argument("Invalid command line arg: crossMeth");
         }
         if( buff == "position" ) {
@@ -456,7 +458,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> buff;
         std::transform( buff.begin() , buff.end() , buff.begin() , [](unsigned char c) -> unsigned char { return std::tolower(c); } );
-        if( ! ss.good() ) {
+        if( ss.fail() ) {
             throw std::invalid_argument("Invalid command line arg: sortItems");
         }
         if( buff == "yes" || buff == "1" ) {
@@ -477,7 +479,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> buff;
         std::transform( buff.begin() , buff.end() , buff.begin() , [](unsigned char c) -> unsigned char { return std::tolower(c); } );
-        if( ! ss.good() ) {
+        if( ss.fail() ) {
             throw std::invalid_argument("Invalid command line arg: sortItems");
         }
         if( buff == "yes" || buff == "1" ) {
@@ -496,12 +498,12 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> dataDir;
-        if( ! ss.good() || dataDir.size() < 1 ) {
+        if( ss.fail() || dataDir.size() < 1 ) {
             throw std::invalid_argument("Invalid command line arg: dataDir");
         }
     }
-    if( ! dirExists( dataDir ) ) {
-        if( ! createDir( dataDir) ) {
+    if( ! MDir::exists(dataDir ) ) {
+        if( ! MDir::create(dataDir) ) {
             std::string msg = "The data dir [";
             msg += dataDir;
             msg += "] do not exists and cannot create it";
@@ -513,7 +515,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( arg ) {
         std::istringstream ss(arg);
         ss >> taskName;
-        if( ! ss.good() || taskName.size() < 1 ) {
+        if( ss.fail() || taskName.size() < 1 ) {
             throw std::invalid_argument("Invalid command line arg: taskName");
         }
     }
@@ -524,7 +526,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> buff;
         std::transform( buff.begin() , buff.end() , buff.begin() , [](unsigned char c) -> unsigned char { return std::tolower(c); } );
-        if( ! ss.good() ) {
+        if( ss.fail() ) {
             throw std::invalid_argument("Invalid command line arg: fromStdIn");
         }
         if( buff == "yes" || buff == "1" ) {
@@ -544,7 +546,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::istringstream ss(arg);
         ss >> verbosity;
 #pragma GCC diagnostic ignored "-Wtype-limits"
-        if( ! ss.good() || verbosity < 0 ) {
+        if( ss.fail() || verbosity < 0 ) {
 #pragma GCC diagnostic warning "-Wtype-limits"
             throw std::invalid_argument("Invalid command line arg: verbosity");
         }
@@ -556,8 +558,8 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         std::ofstream ofs( getDataPath() , std::ofstream::out );
     } else {
         std::ifstream ifs( getDataPath() , std::ifstream::in );
-        if( ! ifs.good() ) {
-            std::string msg = "Cannot open data file [";
+        if( ifs.fail() ) {
+            std::string msg = "Can not open data file [";
             msg += getDataPath();
             msg += "]";
             throw std::invalid_argument( msg );

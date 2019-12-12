@@ -56,9 +56,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     Params::showHelp();
-
-    std::mt19937_64::result_type x;
-
     return 0;
 }
 

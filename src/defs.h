@@ -37,10 +37,9 @@
 
 #pragma once
 
-
 #include <rnd.h>
 
-
+#define MK_DEBUG
 
 typedef long long ltyp;
 typedef unsigned long long ultyp;
@@ -78,6 +77,7 @@ constexpr ftyp EPSILON1 = 0.0000001;
 //#define TEST02_PROGRAM
 //#define TEST03_PROGRAM
 //#define TEST04_PROGRAM
-
+//#define SANDBOX01_PROGRAM
+//#define SANDBOX02_PROGRAM
 
 //#define USING_STD_ARRAY

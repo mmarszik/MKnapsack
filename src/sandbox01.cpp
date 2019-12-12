@@ -26,68 +26,29 @@
 ///                                                                   //
 ////////////////////////////////////////////////////////////////////////
 ///                                                                   //
-/// @created on 2019-12-02 23:59:04 CET                               //
+/// @created on 2019-12-12 23:14:04 CET                               //
 /// @author MMarszik (Mariusz Marszalkowski sqnett.com)               //
 /// @email mmarszik@gmail.com                                         //
 /// @package MKnapsack                                                //
-/// @token 9112a7fa-80dc-43ba-a8d3-8fa5d683e702                       //
+/// @token 51421c50-6a40-4b8b-9df9-dc88dca2abcc                       //
 /// @brief:                                                           //
 ///                                                                   //
 ////////////////////////////////////////////////////////////////////////
 
+
+#include "defs.h"
+
+#ifdef SANDBOX01_PROGRAM
+
 #include <iostream>
-#include <iomanip>
-#include <stdexcept>
 
-#include "specimen.h"
-#include <m_next_line.h>
-
-void Specimen::toString( std::string &str ) const {
-    str.clear();
-    std::ostringstream ss( str );
-    ss << std::setprecision(14) << ceval      << " ";
-    ss << std::setprecision(14) << cweight    << " ";
-    ss << std::setprecision( 0) << stagnation << " ";
-    for( size_t i=0 ; i<cgenotype.size() ; i++ ) {
-        ss << (int)cgenotype[i] << " ";
-    }
-    ss << "\n";
-    ss.flush();
+int main() {
+    int x,y;
+    std::cin >> x >> y;
+    std::cout << x << std::endl;
+    std::cout << y << std::endl;
+    return 0;
 }
 
-void Specimen::fromString(
-        const std::string &str,
-        cutyp cntItems,
-        cutyp cntBackpacks
-) {
-    std::istringstream ss( str );
-    ss >> ceval;
-    if( !ss.good() ) {
-        throw std::invalid_argument("Can not read ceval");
-    }
-    ss >> cweight;
-    if( !ss.good() ) {
-        throw std::invalid_argument("Can not read cweight");
-    }
-    ss >> stagnation;
-    if( !ss.good() ) {
-        throw std::invalid_argument("Can not read stagnation");
-    }
-    cgenotype.resize( cntItems );
-    for( size_t i=0 ; i<cgenotype.size() ; i++ ) {
-        ss >> cgenotype[i];
-        if( !ss.good() ) {
-            throw std::invalid_argument("Can not read cgenotype");
-        }
-#pragma GCC diagnostic ignored "-Wtype-limits"
-        if( cgenotype[i] < 0 || cgenotype[i] > cntBackpacks ) {
-#pragma GCC diagnostic warning "-Wtype-limits"
-            std::string msg = "Cgenotype has invalid value: [";
-            msg += std::to_string(cgenotype[i]);
-            msg += "]";
-            throw std::invalid_argument( msg );
-        }
-    }
-    restore();
-}
+#endif
 
