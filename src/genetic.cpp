@@ -26,38 +26,14 @@
 ///                                                                   //
 ////////////////////////////////////////////////////////////////////////
 ///                                                                   //
-/// @created on 2019-11-30 09:43:30 CET                               //
+/// @created on 2019-12-13 14:32:04 CET                               //
 /// @author MMarszik (Mariusz Marszalkowski sqnett.com)               //
 /// @email mmarszik@gmail.com                                         //
 /// @package MKnapsack                                                //
-/// @token 59f10cf0-1d0e-4bcc-8f39-e349befa9c13                       //
+/// @token b9092aa6-c698-4247-baed-99e24ea93be2                       //
 /// @brief:                                                           //
 ///                                                                   //
 ////////////////////////////////////////////////////////////////////////
 
-#include "defs.h"
+#include "genetic.h"
 
-#ifdef MAIN_PROGRAM
-
-#include <iostream>
-
-#include "params.h"
-
-int main(int argc, char *argv[]) {
-    Params prm;
-    try {
-        prm = Params( argc , argv );
-        if( prm.isHelp() ) {
-            Params::showHelp();
-            return 1;
-        }
-    } catch(std::exception &e) {
-        std::cout << e.what() << std::endl;
-        Params::showHelp();
-        return 1;
-    }
-
-    return 0;
-}
-
-#endif

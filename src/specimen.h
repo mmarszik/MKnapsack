@@ -35,9 +35,6 @@
 ///                                                                   //
 ////////////////////////////////////////////////////////////////////////
 
-
-
-
 #pragma once
 
 #include <vector>
@@ -49,32 +46,50 @@ class Specimen {
 public:
     using TGENOTYPE = std::vector<TGEN>;
 
-private:
+protected:
     TGENOTYPE genotype;   // genotype
     ftyp      eval;       // eval
     ftyp      weight;     // weight of all knapsacks
     ultyp     stagnation; // stagnation
 
-private:
+protected:
     TGENOTYPE cgenotype;  // copy genotype
     ftyp      ceval;      // copy eval
     ftyp      cweight;    // copy weight
 
 public:
-    inline void store() {
-        cgenotype   = genotype;
-        ceval       = eval;
-        cweight     = weight;
+    inline void setStagnation( cltyp stagnation ) noexcept{
+        this->stagnation = stagnation;
     }
-    inline void restore() {
+    inline ltyp getStagnation() const noexcept {
+        return stagnation;
+    }
+    inline void resetStagnation() noexcept {
+        stagnation = 0;
+    }
+    inline void incStagnation() noexcept {
+        stagnation ++;
+    }
+    inline ftyp getEval() const noexcept {
+        return eval;
+    }
+    inline void store() noexcept {
+        cgenotype  = genotype;
+        ceval      = eval;
+        cweight    = weight;
+    }
+    inline void restore() noexcept {
         genotype   = cgenotype;
         eval       = ceval;
         weight     = cweight;
     }
-    void toString( std::string &str ) const;
+    void evaluate(const Params &params) noexcept;
+    void toString( std::string &str ) const noexcept;
     void fromString(
         const std::string &str,
         cutyp cntItems,
         cutyp cntBackpacks
-    );
+    ) noexcept(false);
 };
+
+

@@ -555,7 +555,6 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     if( getFromStdIn() ) {
         items.read( std::cin , getVerbosity() , getSortItems() );
         backpacks.read( std::cin , getVerbosity() );
-        std::ofstream ofs( getDataPath() , std::ofstream::out );
     } else {
         std::ifstream ifs( getDataPath() , std::ifstream::in );
         if( ifs.fail() ) {
@@ -567,6 +566,8 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         items.read( ifs , getVerbosity() , getSortItems() );
         backpacks.read( ifs , getVerbosity() );
     }
+    std::ofstream ofs( getDataPath() , std::ofstream::out );
+
 
 }
 

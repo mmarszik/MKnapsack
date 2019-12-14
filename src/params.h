@@ -82,14 +82,12 @@ private:
     Backpacks backpacks;
     BpItems   items;
 
-
 private:
     void setDefaults() noexcept(false);
 
     // The below method build path to the data file containing
     // description of knapsacks and items.
     std::string getDataPath() const noexcept;
-
 
 public:
     ultyp getRndSeed() const noexcept {
@@ -169,6 +167,7 @@ public:
     }
 
 public:
+    Params() noexcept {}
     Params(int argc, char *argv[]) noexcept(false);
     bool isHelp() const noexcept { return help; }
     static void showHelp() noexcept;

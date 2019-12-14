@@ -45,18 +45,17 @@ class BpItem {
 private:
     ftyp reward;   // The reward when item is in the one of backpacks.
     ftyp weight;   // The weight of the item.
+    utyp number;   // The number of item.
 
 public:
-
     BpItem() noexcept {
     }
-
-    BpItem(cftyp reward, cftyp weight) noexcept: reward(reward), weight(weight) {
+    BpItem(cftyp reward, cftyp weight, cutyp number) noexcept: reward(reward), weight(weight), number(number) {
     }
 
     ftyp getReward() const noexcept { return reward; }
-
     ftyp getWeight() const noexcept { return weight; }
+    utyp getNumber() const noexcept { return number; }
 
     static bool cmpItem( const BpItem &a , const BpItem &b ) noexcept {
         return a.reward / a.weight > b.reward / b.weight;
@@ -66,7 +65,9 @@ public:
 
 class BpItems {
 private:
-    std::vector<BpItem> items;
+    std::vector<BpItem> bpItems;
+    const BpItem *atBegin;
+    const BpItem *atEnd;
 
 public:
 
@@ -77,6 +78,16 @@ public:
         const bool sortItems
     ) noexcept(false);
 
+    //Write info about all items from input stream.
+    void write( std::ostream &os ) noexcept(false);
+
+    const BpItem* begin() const noexcept {
+        return atBegin;
+    }
+
+    const BpItem* end() const noexcept {
+        return atEnd;
+    }
 
 };
 

@@ -46,9 +46,9 @@
 void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
     std::istringstream ss;
     std::string line;
-    VerbOut out(verbosity,VERB_HINT_INPUT);
+    VerbOut verbOut(verbosity,VERB_HINT_INPUT);
 
-    out << "Please input number of items:";
+    verbOut << "Please input number of items:";
 
     line = nextLine( is );
     ss.str( line );
@@ -57,17 +57,19 @@ void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
     if( ss.fail() || line.size() < 1 || size < 1 ) {
         throw std::invalid_argument("Invalid number of items");
     }
-    items.resize( size );
+    bpItems.resize( size );
     for( size_t i=0 ; i<size ; i++ ) {
         ftyp weight, reward;
+        utyp number;
 
-        out << "Please input (weight reward) of [" << (i+1) << "] item:";
+        verbOut << "Please input (number weight reward) of [" << (i+1) << "] item:";
         line = nextLine( is );
         ss.seekg(0);
         ss.str( line );
 #ifdef MK_DEBUG
         std::cout << "Line: '" << line << "'" << std::endl;
 #endif
+        ss >> number;
         ss >> weight;
         ss >> reward;
         if( ss.fail() || line.size() < 1 || weight < EPSILON1 || reward < EPSILON1 ) {
@@ -80,17 +82,30 @@ void BpItems::read(std::istream &is, cityp verbosity, const bool sortItems) {
             msg += ")";
             throw std::invalid_argument( msg );
         }
-        items[i] = BpItem( reward, weight );
+        bpItems[i] = BpItem( reward, weight, number );
     }
-
     if( sortItems ) {
-        std::sort( items.begin() , items.end() , BpItem::cmpItem );
+        std::sort( bpItems.begin() , bpItems.end() , BpItem::cmpItem );
     }
-
 #ifdef MK_DEBUG
-    for( size_t i=0 ; i<items.size() ; i++ ) {
-        std::cout << items[i].getWeight() << " " << items[i].getReward() << std::endl;
+    for( size_t i=0 ; i<bpItems.size() ; i++ ) {
+        std::cout << bpItems[i].getNumber() << " " << bpItems[i].getWeight() << " " << bpItems[i].getReward() << std::endl;
     }
 #endif
-
+    atBegin = &bpItems.front();
+    atEnd   = atBegin + size;
 }
+
+void BpItems::write(std::ostream &os) noexcept(false) {
+    os << "# Number of items" << std::endl;
+    os << bpItems.size() << std::endl;
+    os << "# List of items (number weight reward)" << std::endl;
+    for( size_t i=0 ; i<bpItems.size() ; i++ ) {
+        os << bpItems[i].getNumber() << " ";
+        os << bpItems[i].getWeight() << " ";
+        os << bpItems[i].getReward() << std::endl;
+    }
+    os << "# End list of items" << std::endl;
+    os.flush();
+}
+

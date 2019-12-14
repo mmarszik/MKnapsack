@@ -55,7 +55,7 @@ typedef const int cityp;
 typedef const unsigned int cutyp;
 typedef const double cftyp;
 
-typedef unsigned char TGEN;
+typedef uint8_t TGEN;
 
 #include <limits>
 constexpr ftyp EPSILON0 = std::numeric_limits<ftyp>::epsilon();

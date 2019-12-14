@@ -38,6 +38,7 @@
 
 #include <stdexcept>
 #include <sstream>
+
 #include <m_verb_out.h>
 #include <m_next_line.h>
 
@@ -55,23 +56,46 @@ void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
     ss.str( line );
     size_t size;
     ss >> size;
-    if( is.fail() || !ss.fail() || line.size() < 1 || size < 1 ) {
+    if( is.fail() || ss.fail() || line.size() < 1 || size < 1 ) {
         throw std::invalid_argument("Invalid number of backpacks");
     }
 
-    backpack.resize( size );
+    backpacks.resize( size );
 
     for( size_t i=0 ; i<size ; i++ ) {
 
         verbOut << "Please input size of [" << (i+1) << "] backpack:";
 
         line = nextLine( is );
+        ss.seekg( 0 );
         ss.str( line );
-        ss >> backpack[i];
-        if( !is.good() || !ss.good() || line.size() < 1 || backpack[i] <= 0 ) {
-            throw std::invalid_argument("Invalid size of backpack");
+        ss >> backpacks[ i ];
+        if( is.fail() || ss.fail() || line.size() < 1 || backpacks[i] < EPSILON1 ) {
+            std::string msg = "Invalid size of [";
+            msg += std::to_string(i+1);
+            msg += "] backpack [";
+            msg += std::to_string( backpacks[i] );
+            msg += "]";
+            throw std::invalid_argument( msg );
         }
     }
-    _begin = backpack.data();
-    _end = _begin + size;
+#ifdef MK_DEBUG
+    for( size_t i=0 ; i<backpacks.size() ; i++ ) {
+        std::cout << backpacks[i] << std::endl;
+    }
+#endif
+    atBegin = &backpacks.front();
+    atEnd   = atBegin + size;
+}
+
+
+void Backpacks::write(std::ostream &os) {
+    os << "# Number of backpacks" << std::endl;
+    os << backpacks.size() << std::endl;
+    os << "# List of backpacks" << std::endl;
+    for( size_t i=0 ; i<backpacks.size() ; i++ ) {
+        os << backpacks[i] << std::endl;
+    }
+    os << "# End list of backpacks" << std::endl;
+    os.flush();
 }

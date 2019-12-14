@@ -42,7 +42,7 @@
 #include "specimen.h"
 #include <m_next_line.h>
 
-void Specimen::toString( std::string &str ) const {
+void Specimen::toString( std::string &str ) const noexcept {
     str.clear();
     std::ostringstream ss( str );
     ss << std::setprecision(14) << ceval      << " ";
@@ -59,7 +59,7 @@ void Specimen::fromString(
         const std::string &str,
         cutyp cntItems,
         cutyp cntBackpacks
-) {
+) noexcept(false) {
     std::istringstream ss( str );
     ss >> ceval;
     if( !ss.good() ) {

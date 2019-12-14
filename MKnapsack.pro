@@ -32,7 +32,8 @@ SOURCES += src/main.cpp \
     vendor/MiscCPP/m_verb_out.cpp \
     vendor/MiscCPP/m_trim.cpp \
     src/sandbox01.cpp \
-    src/sandbox02.cpp
+    src/sandbox02.cpp \
+    src/genetic.cpp
 HEADERS += \
     src/specimen.h \
     src/backpacks.h \
@@ -41,4 +42,5 @@ HEADERS += \
     src/params.h \
     src/bp_items.h \
     vendor/MiscCPP/m_dir.h \
-    vendor/MiscCPP/m_args.h
+    vendor/MiscCPP/m_args.h \
+    src/genetic.h

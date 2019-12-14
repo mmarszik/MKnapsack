@@ -44,9 +44,9 @@
 
 class Backpacks {
 private:
-    std::vector<ftyp> backpack;
-    cftyp *_begin;
-    cftyp *_end;
+    std::vector<ftyp> backpacks;
+    cftyp *atBegin;
+    cftyp *atEnd;
 
 public:
 
@@ -56,19 +56,22 @@ public:
         cityp verbosity
     ) noexcept(false);
 
+    //Write info about all backpacks from input stream.
+    void write(std::ostream &os) noexcept(false);
+
     ftyp operator[](const size_t i) const noexcept {
-        return backpack[ i ];
+        return backpacks[ i ];
     }
 
     size_t size() const noexcept {
-        return backpack.size();
+        return backpacks.size();
     }
 
     cftyp* begin() const noexcept {
-        return _begin;
+        return atBegin;
     }
 
     cftyp* end() const noexcept {
-        return _end;
+        return atEnd;
     }
 };
