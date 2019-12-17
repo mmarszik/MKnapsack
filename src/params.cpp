@@ -44,8 +44,8 @@
 #include <algorithm>
 #include <fstream>
 
-#include <m_dir.h>
-#include <m_args.h>
+#include <MiscCPP/m_dir.h>
+#include <MiscCPP/m_args.h>
 
 #include "params.h"
 

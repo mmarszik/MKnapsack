@@ -1,14 +1,12 @@
 CONFIG += c++14
-QT += core
+#QT += core
 QT -= gui
 
 TARGET = MKnapsack
 CONFIG += console
 CONFIG -= app_bundle
 
-INCLUDEPATH += vendor/MxCPP
-INCLUDEPATH += vendor/MiscCPP
-INCLUDEPATH += vendor/MRndCPP
+INCLUDEPATH += vendor
 
 DEFINES += MX_USING_ARRAY_3
 DEFINES += USE_RND_MLIN_0
@@ -33,7 +31,9 @@ SOURCES += src/main.cpp \
     vendor/MiscCPP/m_trim.cpp \
     src/sandbox01.cpp \
     src/sandbox02.cpp \
-    src/genetic.cpp
+    src/genetic.cpp \
+    vendor/MGen/m_spec.cpp \
+    vendor/MGen/m_gen.cpp
 HEADERS += \
     src/specimen.h \
     src/backpacks.h \
@@ -43,4 +43,7 @@ HEADERS += \
     src/bp_items.h \
     vendor/MiscCPP/m_dir.h \
     vendor/MiscCPP/m_args.h \
-    src/genetic.h
+    src/genetic.h \
+    vendor/MGen/m_spec.h \
+    vendor/MGen/defs.h \
+    vendor/MGen/m_gen.h

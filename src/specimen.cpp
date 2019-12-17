@@ -40,7 +40,7 @@
 #include <stdexcept>
 
 #include "specimen.h"
-#include <m_next_line.h>
+#include <MiscCPP/m_next_line.h>
 
 void Specimen::toString( std::string &str ) const noexcept {
     str.clear();
@@ -56,9 +56,9 @@ void Specimen::toString( std::string &str ) const noexcept {
 }
 
 void Specimen::fromString(
-        const std::string &str,
-        cutyp cntItems,
-        cutyp cntBackpacks
+    const std::string &str,
+    cutyp cntItems,
+    cutyp cntBackpacks
 ) noexcept(false) {
     std::istringstream ss( str );
     ss >> ceval;

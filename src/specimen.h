@@ -40,7 +40,11 @@
 #include <vector>
 
 #include "defs.h"
-#include "rnd.h"
+#include <MRndCPP/rnd.h>
+
+#include <MGen/m_spec.h>
+
+
 
 class Specimen {
 public:

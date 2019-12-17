@@ -37,7 +37,7 @@
 
 #pragma once
 
-#include <rnd.h>
+#include <MRndCPP/rnd.h>
 
 #define MK_DEBUG
 
