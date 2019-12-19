@@ -39,52 +39,25 @@
 
 #include <vector>
 
-#include "defs.h"
 #include <MRndCPP/rnd.h>
+#include <MGenCPP/m_gen_spec.h>
 
-#include <MGen/m_spec.h>
+#include "params.h"
 
+using TGEN = unsigned char;
 
-
-class Specimen {
-public:
-    using TGENOTYPE = std::vector<TGEN>;
-
-protected:
-    TGENOTYPE genotype;   // genotype
-    ftyp      eval;       // eval
+class Specimen : public MGenSpec<TGEN,TRnd> {
+private:
     ftyp      weight;     // weight of all knapsacks
-    ultyp     stagnation; // stagnation
-
-protected:
-    TGENOTYPE cgenotype;  // copy genotype
-    ftyp      ceval;      // copy eval
     ftyp      cweight;    // copy weight
 
 public:
-    inline void setStagnation( cltyp stagnation ) noexcept{
-        this->stagnation = stagnation;
-    }
-    inline ltyp getStagnation() const noexcept {
-        return stagnation;
-    }
-    inline void resetStagnation() noexcept {
-        stagnation = 0;
-    }
-    inline void incStagnation() noexcept {
-        stagnation ++;
-    }
-    inline ftyp getEval() const noexcept {
-        return eval;
-    }
     inline void store() noexcept {
-        cgenotype  = genotype;
-        ceval      = eval;
+        MGenSpec::store();
         cweight    = weight;
     }
     inline void restore() noexcept {
-        genotype   = cgenotype;
-        eval       = ceval;
+        MGenSpec::restore();
         weight     = cweight;
     }
     void evaluate(const Params &params) noexcept;

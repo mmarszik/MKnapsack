@@ -42,6 +42,10 @@
 #include "specimen.h"
 #include <MiscCPP/m_next_line.h>
 
+void Specimen::evaluate(const Params &params) noexcept {
+
+}
+
 void Specimen::toString( std::string &str ) const noexcept {
     str.clear();
     std::ostringstream ss( str );
