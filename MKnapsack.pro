@@ -31,7 +31,6 @@ SOURCES += src/main.cpp \
     vendor/MiscCPP/m_trim.cpp \
     src/sandbox01.cpp \
     src/sandbox02.cpp \
-    src/genetic.cpp \
     vendor/MGenCPP/m_gen.cpp \
     vendor/MGenCPP/m_gen_spec.cpp
 HEADERS += \

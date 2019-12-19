@@ -89,6 +89,11 @@ private:
     // description of knapsacks and items.
     std::string getDataPath() const noexcept;
 
+    // The below method build path to the data file containing
+    // any number of specimens.
+    std::string getSpecsPath() const noexcept;
+
+
 public:
     ultyp getRndSeed() const noexcept {
         return rndSeed;

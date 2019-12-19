@@ -39,8 +39,8 @@
 #include <stdexcept>
 #include <sstream>
 
-#include <m_verb_out.h>
-#include <m_next_line.h>
+#include <MiscCPP/m_verb_out.h>
+#include <MiscCPP/m_next_line.h>
 
 #include "backpacks.h"
 #include "def_verb.h"
@@ -56,7 +56,7 @@ void Backpacks::read(std::istream &is, cityp verbosity) noexcept(false) {
     ss.str( line );
     size_t size;
     ss >> size;
-    if( is.fail() || ss.fail() || line.size() < 1 || size < 1 ) {
+    if( is.fail() || ss.fail() || line.size() < 1 || size < 1 || size >= MLimits<TGEN>::max() ) {
         throw std::invalid_argument("Invalid number of backpacks");
     }
 

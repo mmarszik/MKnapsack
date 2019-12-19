@@ -37,8 +37,8 @@
 
 #include <algorithm>
 #include <sstream>
-#include <m_verb_out.h>
-#include <m_next_line.h>
+#include <MiscCPP/m_verb_out.h>
+#include <MiscCPP/m_next_line.h>
 
 #include "bp_items.h"
 #include "def_verb.h"

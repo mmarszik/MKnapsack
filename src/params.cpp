@@ -39,13 +39,14 @@
 #include <cstring>
 #include <cmath>
 #include <sstream>
-#include <typeinfo>
 #include <random>
 #include <algorithm>
 #include <fstream>
 
 #include <MiscCPP/m_dir.h>
 #include <MiscCPP/m_args.h>
+#include <MiscCPP/m_limits.h>
+
 
 #include "params.h"
 
@@ -185,6 +186,15 @@ std::string Params::getDataPath() const noexcept {
     return dir;
 }
 
+std::string Params::getSpecsPath() const noexcept {
+    std::string dir = getDataDir();
+    if( dir[dir.size()-1] != PATHSEP ) {
+        dir += PATHSEP;
+    }
+    dir += "specs_";
+    dir += getTaskName();
+    return dir;
+}
 
 Params::Params(int argc, char *argv[]) noexcept(false) {
     const char *arg = NULL;
@@ -566,8 +576,13 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         items.read( ifs , getVerbosity() , getSortItems() );
         backpacks.read( ifs , getVerbosity() );
     }
-    std::ofstream ofs( getDataPath() , std::ofstream::out );
 
+    {
+        std::ofstream ofs( getDataPath() , std::ofstream::out );
+        items.write( ofs );
+        backpacks.write( ofs );
+        ofs.close();
+    }
 
 }
 
