@@ -57,7 +57,7 @@ static ultyp defRndSeed() noexcept {
 static utyp defNumberSpecs() noexcept {
     return 256;
 }
-static ftyp defPMutatnion() noexcept {
+static ftyp defPMutation() noexcept {
     return 0.9990;
 }
 static ftyp defPCross() noexcept {
@@ -125,16 +125,16 @@ static ityp defVerbosity() noexcept {
 }
 
 
-void Params::setDefaults() noexcept(false) {
+void MGenParams::setDefaults() noexcept(false) {
     rndSeed     = defRndSeed();
     numberSpecs = defNumberSpecs();
-    pMutatnion  = defPMutatnion();
+    pMutation  = defPMutation();
     pCross      = defPCross();
     pReplace    = defPReplace();
     pNew        = defPNew();
-    if( fabs( 1.0 - pMutatnion - pReplace - pNew - pCross ) > EPSILON1 ) {
+    if( fabs( 1.0 - pMutation - pReplace - pNew - pCross ) > EPSILON1 ) {
         std::string msg = "Invalid default sum of the probabiliteis pMutatnion + pReplace + pNew + pCross == ";
-        msg += std::to_string( pMutatnion + pReplace + pNew + pCross );
+        msg += std::to_string( pMutation + pReplace + pNew + pCross );
         throw std::invalid_argument( msg );
     }
     pBack     = defPBack();
@@ -176,7 +176,7 @@ void Params::setDefaults() noexcept(false) {
     help      = false;
 }
 
-std::string Params::getDataPath() const noexcept {
+std::string MGenParams::getDataPath() const noexcept {
     std::string dir = getDataDir();
     if( dir[dir.size()-1] != PATHSEP ) {
         dir += PATHSEP;
@@ -186,7 +186,7 @@ std::string Params::getDataPath() const noexcept {
     return dir;
 }
 
-std::string Params::getSpecsPath() const noexcept {
+std::string MGenParams::getSpecsPath() const noexcept {
     std::string dir = getDataDir();
     if( dir[dir.size()-1] != PATHSEP ) {
         dir += PATHSEP;
@@ -196,7 +196,7 @@ std::string Params::getSpecsPath() const noexcept {
     return dir;
 }
 
-Params::Params(int argc, char *argv[]) noexcept(false) {
+MGenParams::MGenParams(int argc, char *argv[]) noexcept(false) {
     const char *arg = NULL;
     std::vector<int> recognizedArg( argc , 0 );
 
@@ -243,8 +243,8 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         arg = extractArg( argc, argv, "pMutatnion" , recognizedArg);
         if( arg ) {
             std::istringstream ss(arg);
-            ss >> pMutatnion;
-            if( ss.fail() || pMutatnion < 0 || pMutatnion > 1 ) {
+            ss >> pMutation;
+            if( ss.fail() || pMutation < 0 || pMutation > 1 ) {
                 throw std::invalid_argument("Invalid command line arg: pMutatnion");
             }
             fOperators |= 1; // The probability of the mutations operator was given directly in the command line.
@@ -286,23 +286,23 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
                 std::string msg = "Invalid command line arg: pCross + pReplace + pNew = " + std::to_string(sum) + " > 1.0 ";
                 throw std::invalid_argument( msg );
             }
-            pMutatnion = 1.0 - sum;
+            pMutation = 1.0 - sum;
         } else if( fOperators == (15 & ~2) ) {
-            cftyp sum = pMutatnion + pReplace + pNew;
+            cftyp sum = pMutation + pReplace + pNew;
             if( sum > 1.0 ) {
                 std::string msg = "Invalid command line arg: pMutatnion + pReplace + pNew = " + std::to_string(sum) + " > 1.0 ";
                 throw std::invalid_argument( msg );
             }
             pCross = 1.0 - sum;
         } else if( fOperators == (15 & ~4) ) {
-            cftyp sum = pMutatnion + pCross + pNew;
+            cftyp sum = pMutation + pCross + pNew;
             if( sum > 1.0 ) {
                 std::string msg = "Invalid command line arg: pMutatnion + pCross + pNew = " + std::to_string(sum) + " > 1.0 ";
                 throw std::invalid_argument( msg );
             }
             pReplace = 1.0 - sum;
         } else if( fOperators == (15 & ~8) ) {
-            cftyp sum = pMutatnion + pCross + pReplace;
+            cftyp sum = pMutation + pCross + pReplace;
             if( sum > 1.0 ) {
                 std::string msg = "Invalid command line arg: pMutatnion + pCross + pReplace = " + std::to_string(sum) + " > 1.0 ";
                 throw std::invalid_argument( msg );
@@ -311,7 +311,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
         }
 
         {
-            cftyp sum = pMutatnion + pCross + pReplace + pNew;
+            cftyp sum = pMutation + pCross + pReplace + pNew;
             if( fabs( 1.0 - sum ) > EPSILON1 ) {
                 std::string msg = "Invalid command line arg: pMutatnion + pCross + pReplace + pNew = " + std::to_string(sum) + " <> 1.0 ";
                 throw std::invalid_argument( msg );
@@ -563,7 +563,7 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
     }
 
     if( getFromStdIn() ) {
-        items.read( std::cin , getVerbosity() , getSortItems() );
+        bpItems.read( std::cin , getVerbosity() , getSortItems() );
         backpacks.read( std::cin , getVerbosity() );
     } else {
         std::ifstream ifs( getDataPath() , std::ifstream::in );
@@ -573,21 +573,27 @@ Params::Params(int argc, char *argv[]) noexcept(false) {
             msg += "]";
             throw std::invalid_argument( msg );
         }
-        items.read( ifs , getVerbosity() , getSortItems() );
+        bpItems.read( ifs , getVerbosity() , getSortItems() );
         backpacks.read( ifs , getVerbosity() );
     }
 
     {
         std::ofstream ofs( getDataPath() , std::ofstream::out );
-        items.write( ofs );
+        bpItems.write( ofs );
         backpacks.write( ofs );
         ofs.close();
+    }
+
+    {
+        std::ifstream ifs( getSpecsPath() , std::ofstream::out );
+        initSpecs = Specimen::read( ifs , bpItems.size() , backpacks.size() );
+        ifs.close();
     }
 
 }
 
 
-void Params::showHelp() noexcept {
+void MGenParams::showHelp() noexcept {
 
     std::cout << " --rndSeed=[uint] <1, 2^64-1> default: " << defRndSeed() << std::endl;
     std::cout << "    The seed of pseudo random number generator." << std::endl;
@@ -598,7 +604,7 @@ void Params::showHelp() noexcept {
     std::cout << "    Default number of specimens." << std::endl;
     std::cout << std::endl;
 
-    std::cout << " --pMutatnion=[float] <0, 1> default: " << defPMutatnion() << std::endl;
+    std::cout << " --pMutatnion=[float] <0, 1> default: " << defPMutation() << std::endl;
     std::cout << "    Probability of mutation." << std::endl;
     std::cout << std::endl;
 

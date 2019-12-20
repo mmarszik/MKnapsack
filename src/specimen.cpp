@@ -38,14 +38,47 @@
 #include <iostream>
 #include <iomanip>
 #include <stdexcept>
-
-#include "specimen.h"
+#include <algorithm>
 #include <MiscCPP/m_next_line.h>
 
-void Specimen::evaluate(
-    const Params &params
-) noexcept {
+#include "specimen.h"
+#include "params.h"
 
+
+void Specimen::evaluate(
+    const MGenParams &params
+) noexcept {
+    std::vector<TMGEN_FLOAT> weights(0, genotype.size() );
+    cftyp *const backpacks    = params.getBackpacks().begin();
+    const BpItem *const items = params.getBpItems().begin();
+    eval   = 0;
+    weight = 0;
+    std::fill( weights.begin() , weights.end() , 0 );
+    for( size_t i=0 ; i<genotype.size() ; i++ ) {
+        if( genotype[i] == 0 ) {
+            continue;
+        }
+        const TGEN nr = genotype[i] - 1;
+        if( weights[nr] + items[i].getWeight() > backpacks[nr] ) {
+            eval -= params.getRedunPenal();
+            continue;
+        }
+        weights[nr] += items[i].getWeight();
+        weight      += items[i].getWeight();
+        eval        += items[i].getReward();
+    }
+}
+
+void Specimen::random(
+    const MGenParams &params
+) noexcept {
+    stagnation = 0;
+    genotype.resize( params.getBpItems().size() );
+    for( size_t i=0 ; i<genotype.size() ; i++ ) {
+        genotype[i] = rnd();
+    }
+    evaluate( params );
+    store();
 }
 
 void Specimen::toString( std::string &str ) const noexcept {
@@ -55,7 +88,7 @@ void Specimen::toString( std::string &str ) const noexcept {
     ss << std::setprecision(14) << cweight    << " ";
     ss << std::setprecision( 0) << stagnation << " ";
     for( size_t i=0 ; i<cgenotype.size() ; i++ ) {
-        ss << (int)cgenotype[i] << " ";
+        ss << static_cast<unsigned int>(cgenotype[i]) << " ";
     }
     ss << "\n";
     ss.flush();
@@ -114,15 +147,14 @@ void Specimen::write(
 std::vector<Specimen> Specimen::read(
     std::istream  &is,
     cutyp         cntItems,
-    cutyp         cntBackpacks,
-    cityp         verbosity
+    cutyp         cntBackpacks
 ) {
     std::vector<Specimen> specs;
-    std::string str = nextLine(is);
-    while( str.size() > 0 ) {
+    std::string str;
+    while( ( str = nextLine(is) ).size() > 0 ) {
         Specimen spec;
         spec.fromString( str , cntItems , cntBackpacks );
-        specs += spec;
+        specs.push_back( spec );
     }
     std::sort( specs.begin() , specs.end() , Specimen::cmp );
     return specs;

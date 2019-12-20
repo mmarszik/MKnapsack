@@ -89,6 +89,14 @@ public:
         return atEnd;
     }
 
+    size_t size() const {
+        return bpItems.size();
+    }
+
+    const BpItem& operator[] (cutyp nr) const {
+        return bpItems[nr];
+    }
+
 };
 
 

@@ -40,6 +40,8 @@
 #include <ctime>
 #include <string>
 
+#include <MRndCPP/rnd_float.h>
+
 #include "defs.h"
 #include "backpacks.h"
 #include "bp_items.h"
@@ -51,11 +53,11 @@ enum ECrossMethod {
     ECM_GENS,
 };
 
-class Params {
+class MGenParams {
 private:
     ultyp  rndSeed;         // The seed of pseudo random number generator. The value zero indicates will be used std::random_device.
     utyp   numberSpecs;     // Default number of specimens.
-    ftyp   pMutatnion;      // Probability of mutation.
+    ftyp   pMutation;      // Probability of mutation.
     ftyp   pCross;          // Probability of crossing specimen.
     ftyp   pReplace;        // Probability of replace.
     ftyp   pNew;            // Probability of create new, random specimen.
@@ -79,9 +81,19 @@ private:
     utyp   verbosity;       // The verbosity.
     bool   help;            // Show help?
 
-    Backpacks backpacks;
-    BpItems   items;
-    Specimen  specs;
+    Backpacks backpacks;                 // Definitions of backpacks.
+    BpItems   bpItems;                   // Definitions of items.
+    std::vector<Specimen>  initSpecs;    // Init specimes (e.g. from the previous stage of learning)
+
+    TRnd      rnd;                       // The main pseudo random number generator.
+    TRndBuff  rndGen;                    // Random gen.
+    TRndBuff  rndPos;                    // Random position.
+    TRndBuff  rndSpec;                   // Random specimen.
+    TRndFloat rndMut;                    // Random mutation.
+    TRndFloat rndCross;                  // Random crossing.
+    TRndFloat rndReplace;                // Random replace.
+    TRndFloat rndNew;                    // Random new.
+    TRndFloat rndBack;                   // Random mutation.
 
 private:
     void setDefaults() noexcept(false);
@@ -94,7 +106,6 @@ private:
     // any number of specimens.
     std::string getSpecsPath() const noexcept;
 
-
 public:
     ultyp getRndSeed() const noexcept {
         return rndSeed;
@@ -102,8 +113,8 @@ public:
     utyp getNumberSpecs() const noexcept {
         return numberSpecs;
     }
-    ftyp getPMutatnion() const noexcept {
-        return pMutatnion;
+    ftyp getPMutation() const noexcept {
+        return pMutation;
     }
     ftyp getPCross() const noexcept {
         return pCross;
@@ -173,10 +184,25 @@ public:
     }
 
 public:
-    Params() noexcept {}
-    Params(int argc, char *argv[]) noexcept(false);
+    MGenParams() noexcept {}
+    MGenParams(int argc, char *argv[]) noexcept(false);
     bool isHelp() const noexcept { return help; }
     static void showHelp() noexcept;
+    const std::vector<Specimen>& getInitSpecs() const {
+        return initSpecs;
+    }
+    const Backpacks& getBackpacks() const {
+        return backpacks;
+    }
+    const BpItems& getBpItems() const {
+        return bpItems;
+    }
+    ftyp getBackpack(cutyp nr) const {
+        return backpacks[nr];
+    }
+    const BpItem& getBpItem(cutyp nr) const {
+        return bpItems[nr];
+    }
 
 };
 

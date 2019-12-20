@@ -42,11 +42,13 @@
 #include <MRndCPP/rnd.h>
 #include <MGenCPP/m_gen_spec.h>
 
-#include "params.h"
+#include "defs.h"
+
+class MGenParams;
 
 using TGEN = unsigned char;
 
-class Specimen : public MGenSpec<TGEN,TRnd> {
+class Specimen : public MGenSpec<TGEN> {
 private:
     ftyp      weight;     // weight of all knapsacks
     ftyp      cweight;    // copy weight
@@ -56,14 +58,23 @@ public:
         MGenSpec::store();
         cweight    = weight;
     }
+
     inline void restore() noexcept {
         MGenSpec::restore();
         weight     = cweight;
     }
 
-    void evaluate( const Params &params ) noexcept;
+    void evaluate(
+        const MGenParams &params
+    ) noexcept;
 
-    void toString( std::string &str ) const noexcept;
+    void random(
+        const MGenParams &params
+    ) noexcept;
+
+    void toString(
+        std::string &str
+    ) const noexcept;
 
     void fromString(
         const std::string &str,

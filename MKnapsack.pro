@@ -31,8 +31,9 @@ SOURCES += src/main.cpp \
     vendor/MiscCPP/m_trim.cpp \
     src/sandbox01.cpp \
     src/sandbox02.cpp \
-    vendor/MGenCPP/m_gen.cpp \
-    vendor/MGenCPP/m_gen_spec.cpp
+    vendor/MGenCPP/m_gen_spec.cpp \
+    vendor/MGenCPP/m_genetic.cpp \
+    vendor/MRndCPP/rnd_float.cpp
 HEADERS += \
     src/specimen.h \
     src/backpacks.h \
@@ -42,6 +43,7 @@ HEADERS += \
     src/bp_items.h \
     vendor/MiscCPP/m_dir.h \
     vendor/MiscCPP/m_args.h \
-    vendor/MGenCPP/m_gen.h \
     vendor/MGenCPP/m_gen_spec.h \
-    vendor/MGenCPP/m_gen_defs.h
+    vendor/MGenCPP/m_gen_defs.h \
+    vendor/MGenCPP/m_genetic.h \
+    vendor/MRndCPP/rnd_float.h
