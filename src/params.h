@@ -43,7 +43,7 @@
 #include "defs.h"
 #include "backpacks.h"
 #include "bp_items.h"
-
+#include "specimen.h"
 
 //MM: The available crosses methods.
 enum ECrossMethod {
@@ -81,6 +81,7 @@ private:
 
     Backpacks backpacks;
     BpItems   items;
+    Specimen  specs;
 
 private:
     void setDefaults() noexcept(false);

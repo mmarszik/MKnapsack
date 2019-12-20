@@ -42,7 +42,9 @@
 #include "specimen.h"
 #include <MiscCPP/m_next_line.h>
 
-void Specimen::evaluate(const Params &params) noexcept {
+void Specimen::evaluate(
+    const Params &params
+) noexcept {
 
 }
 
@@ -94,4 +96,36 @@ void Specimen::fromString(
     }
     restore();
 }
+
+
+void Specimen::write(
+    std::ostream                &os,
+    const std::vector<Specimen> &specs
+) {
+    for( size_t i=0 ; i<specs.size() ; i++ ) {
+        std::string str;
+        specs[i].toString( str );
+        os << str << std::endl;
+    }
+    os.flush();
+}
+
+
+std::vector<Specimen> Specimen::read(
+    std::istream  &is,
+    cutyp         cntItems,
+    cutyp         cntBackpacks,
+    cityp         verbosity
+) {
+    std::vector<Specimen> specs;
+    std::string str = nextLine(is);
+    while( str.size() > 0 ) {
+        Specimen spec;
+        spec.fromString( str , cntItems , cntBackpacks );
+        specs += spec;
+    }
+    std::sort( specs.begin() , specs.end() , Specimen::cmp );
+    return specs;
+}
+
 

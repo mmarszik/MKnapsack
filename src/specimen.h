@@ -60,13 +60,31 @@ public:
         MGenSpec::restore();
         weight     = cweight;
     }
-    void evaluate(const Params &params) noexcept;
+
+    void evaluate( const Params &params ) noexcept;
+
     void toString( std::string &str ) const noexcept;
+
     void fromString(
         const std::string &str,
         cutyp cntItems,
         cutyp cntBackpacks
     ) noexcept(false);
+
+    static void write(
+        std::ostream &os,
+        const std::vector<Specimen> &specs
+    );
+
+    static std::vector<Specimen> read(
+        std::istream &is,
+        cutyp cntItems,
+        cutyp cntBackpacks
+    );
+
+    static bool cmp( const Specimen &a ,const Specimen &b) {
+        return a.getEval() > b.getEval();
+    }
 };
 
 
