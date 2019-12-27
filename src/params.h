@@ -40,7 +40,7 @@
 #include <ctime>
 #include <string>
 
-#include <MRndCPP/rnd_float.h>
+#include <MRndCPP/rnd_prob.h>
 
 #include "defs.h"
 #include "backpacks.h"
@@ -53,26 +53,29 @@ enum ECrossMethod {
     ECM_GENS,
 };
 
-class MGenParams {
+class Params {
 private:
     ultyp  rndSeed;         // The seed of pseudo random number generator. The value zero indicates will be used std::random_device.
     utyp   numberSpecs;     // Default number of specimens.
-    ftyp   pMutation;      // Probability of mutation.
+    ftyp   pMutation;       // Probability of mutation.
     ftyp   pCross;          // Probability of crossing specimen.
     ftyp   pReplace;        // Probability of replace.
     ftyp   pNew;            // Probability of create new, random specimen.
     ftyp   pBack;           // Probability back to the diploidy.
     ultyp  stopCross;       // When loops reached value x the crossing operation  will be stop. Value zero indicate the crossing operation  continues whole time execute program.
-    ftyp   redunPenal;      // The penalty for redundant items.
-    ftyp   rewAEmpty;       // The reward [A] for the empty place in the knapsack by formula A*empty^B.
-    ftyp   rewBEmpty;       // The reward [B] for the empty place in the knapsack by formula A*empty^B.
     ultyp  minStagn;        // The minimal stagnation.
     ultyp  iniStagn;        // The initial stagnation.
     time_t maxTime;         // The max time for computatnion.
+    ECrossMethod crossMeth; // The method of the crossing specimens.
+
+    ftyp   redunPenal;      // The penalty for redundant items.
+    ftyp   rewAEmpty;       // The reward [A] for the empty place in the knapsack by formula A*empty^B.
+    ftyp   rewBEmpty;       // The reward [B] for the empty place in the knapsack by formula A*empty^B.
+
+
     ultyp  maxLoops;        // The max loop for computatnion.
     utyp   haltFreq;        // The frequency of the probiting of the stop condition.
     utyp   saveFreq;        // The frequency of save file.
-    ECrossMethod crossMeth; // The method of the crossing specimens.
     bool   sortItems;       // Sort the items?
     ftyp   accEvaluate;     // The acceptable evaluate.
     std::string dataDir;    // The directory with files data.
@@ -89,11 +92,20 @@ private:
     TRndBuff  rndGen;                    // Random gen.
     TRndBuff  rndPos;                    // Random position.
     TRndBuff  rndSpec;                   // Random specimen.
-    TRndFloat rndMut;                    // Random mutation.
-    TRndFloat rndCross;                  // Random crossing.
-    TRndFloat rndReplace;                // Random replace.
-    TRndFloat rndNew;                    // Random new.
-    TRndFloat rndBack;                   // Random mutation.
+    TRndProb  rndMut;                    // Random mutation.
+    TRndProb  rndCross;                  // Random crossing.
+    TRndProb  rndReplace;                // Random replace.
+    TRndProb  rndBack;                   // Random mutation.
+
+public:
+    RndBase::TYPE_RESULT getRnd() {
+        return rnd();
+    }
+    RndBase::TYPE_RESULT getRnd(const RndBase::TYPE_RESULT min, const RndBase::TYPE_RESULT max) {
+        return rnd() % (max-min+1) + min;
+    }
+
+
 
 private:
     void setDefaults() noexcept(false);
@@ -184,8 +196,9 @@ public:
     }
 
 public:
-    MGenParams() noexcept {}
-    MGenParams(int argc, char *argv[]) noexcept(false);
+    Params() noexcept : rnd(0),rndGen(rnd),rndPos(rnd),rndSpec(rnd),rndMut(rnd),rndCross(rnd),rndReplace(rnd),rndBack(rnd)  {
+    }
+    Params(int argc, char *argv[]) noexcept(false);
     bool isHelp() const noexcept { return help; }
     static void showHelp() noexcept;
     const std::vector<Specimen>& getInitSpecs() const {

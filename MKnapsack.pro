@@ -10,8 +10,9 @@ INCLUDEPATH += vendor
 
 DEFINES += MX_USING_ARRAY_3
 DEFINES += USE_RND_MLIN_0
-DEFINES += USE_RND_BUFF0
-
+DEFINES += USE_RND_BUFF_0
+DEFINES += USE_RND_F_BUFF_0
+DEFINES += USE_RND_PROB_0
 
 TEMPLATE = app
 
@@ -31,9 +32,11 @@ SOURCES += src/main.cpp \
     vendor/MiscCPP/m_trim.cpp \
     src/sandbox01.cpp \
     src/sandbox02.cpp \
-    vendor/MGenCPP/m_gen_spec.cpp \
-    vendor/MGenCPP/m_genetic.cpp \
-    vendor/MRndCPP/rnd_float.cpp
+    vendor/MGenCPP/params.cpp \
+    vendor/MGenCPP/specimen.cpp \
+    vendor/MGenCPP/genetic.cpp \
+    vendor/MGenCPP/rnd.cpp \
+    vendor/MGenCPP/genotype.cpp
 HEADERS += \
     src/specimen.h \
     src/backpacks.h \
@@ -43,7 +46,12 @@ HEADERS += \
     src/bp_items.h \
     vendor/MiscCPP/m_dir.h \
     vendor/MiscCPP/m_args.h \
-    vendor/MGenCPP/m_gen_spec.h \
-    vendor/MGenCPP/m_gen_defs.h \
-    vendor/MGenCPP/m_genetic.h \
-    vendor/MRndCPP/rnd_float.h
+    vendor/MGenCPP/defs.h \
+    vendor/MGenCPP/params.h \
+    vendor/MGenCPP/specimen.h \
+    vendor/MGenCPP/genetic.h \
+    vendor/MGenCPP/rnd.h \
+    vendor/MGenCPP/genotype.h \
+    vendor/MRndCPP/rnd.h \
+    vendor/MRndCPP/buff.h \
+    vendor/MRndCPP/prob.h

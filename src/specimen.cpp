@@ -46,7 +46,7 @@
 
 
 void Specimen::evaluate(
-    const MGenParams &params
+    const Params &params
 ) noexcept {
     std::vector<TMGEN_FLOAT> weights(0, genotype.size() );
     cftyp *const backpacks    = params.getBackpacks().begin();
@@ -70,7 +70,7 @@ void Specimen::evaluate(
 }
 
 void Specimen::random(
-    const MGenParams &params
+    const Params &params
 ) noexcept {
     stagnation = 0;
     genotype.resize( params.getBpItems().size() );

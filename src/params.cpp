@@ -125,10 +125,10 @@ static ityp defVerbosity() noexcept {
 }
 
 
-void MGenParams::setDefaults() noexcept(false) {
+void Params::setDefaults() noexcept(false) {
     rndSeed     = defRndSeed();
     numberSpecs = defNumberSpecs();
-    pMutation  = defPMutation();
+    pMutation   = defPMutation();
     pCross      = defPCross();
     pReplace    = defPReplace();
     pNew        = defPNew();
@@ -176,7 +176,7 @@ void MGenParams::setDefaults() noexcept(false) {
     help      = false;
 }
 
-std::string MGenParams::getDataPath() const noexcept {
+std::string Params::getDataPath() const noexcept {
     std::string dir = getDataDir();
     if( dir[dir.size()-1] != PATHSEP ) {
         dir += PATHSEP;
@@ -186,7 +186,7 @@ std::string MGenParams::getDataPath() const noexcept {
     return dir;
 }
 
-std::string MGenParams::getSpecsPath() const noexcept {
+std::string Params::getSpecsPath() const noexcept {
     std::string dir = getDataDir();
     if( dir[dir.size()-1] != PATHSEP ) {
         dir += PATHSEP;
@@ -196,7 +196,11 @@ std::string MGenParams::getSpecsPath() const noexcept {
     return dir;
 }
 
-MGenParams::MGenParams(int argc, char *argv[]) noexcept(false) {
+Params::Params(
+    int argc,
+    char *argv[]
+) noexcept(false) :
+rnd(0),rndGen(rnd),rndPos(rnd),rndSpec(rnd),rndMut(rnd),rndCross(rnd),rndReplace(rnd),rndBack(rnd) {
     const char *arg = NULL;
     std::vector<int> recognizedArg( argc , 0 );
 
@@ -593,7 +597,7 @@ MGenParams::MGenParams(int argc, char *argv[]) noexcept(false) {
 }
 
 
-void MGenParams::showHelp() noexcept {
+void Params::showHelp() noexcept {
 
     std::cout << " --rndSeed=[uint] <1, 2^64-1> default: " << defRndSeed() << std::endl;
     std::cout << "    The seed of pseudo random number generator." << std::endl;

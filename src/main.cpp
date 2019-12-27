@@ -44,16 +44,16 @@
 #include "params.h"
 
 int main(int argc, char *argv[]) {
-    MGenParams prm;
+    Params prm;
     try {
-        prm = MGenParams( argc , argv );
+        prm = Params( argc , argv );
         if( prm.isHelp() ) {
-            MGenParams::showHelp();
+            Params::showHelp();
             return 1;
         }
     } catch(std::exception &e) {
         std::cout << e.what() << std::endl;
-        MGenParams::showHelp();
+        Params::showHelp();
         return 1;
     }
 

@@ -40,11 +40,11 @@
 #include <vector>
 
 #include <MRndCPP/rnd.h>
-#include <MGenCPP/m_gen_spec.h>
+#include <MGenCPP/specimen.h>
 
 #include "defs.h"
 
-class MGenParams;
+class Params;
 
 using TGEN = unsigned char;
 
@@ -65,11 +65,11 @@ public:
     }
 
     void evaluate(
-        const MGenParams &params
+        const Params &params
     ) noexcept;
 
     void random(
-        const MGenParams &params
+        const Params &params
     ) noexcept;
 
     void toString(
