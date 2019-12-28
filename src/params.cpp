@@ -199,8 +199,7 @@ std::string Params::getSpecsPath() const noexcept {
 Params::Params(
     int argc,
     char *argv[]
-) noexcept(false) :
-rnd(0),rndGen(rnd),rndPos(rnd),rndSpec(rnd),rndMut(rnd),rndCross(rnd),rndReplace(rnd),rndBack(rnd) {
+) noexcept(false)  {
     const char *arg = NULL;
     std::vector<int> recognizedArg( argc , 0 );
 
@@ -590,7 +589,7 @@ rnd(0),rndGen(rnd),rndPos(rnd),rndSpec(rnd),rndMut(rnd),rndCross(rnd),rndReplace
 
     {
         std::ifstream ifs( getSpecsPath() , std::ofstream::out );
-        initSpecs = Specimen::read( ifs , bpItems.size() , backpacks.size() );
+//        initSpecs = Specimen::read( ifs , bpItems.size() , backpacks.size() );
         ifs.close();
     }
 

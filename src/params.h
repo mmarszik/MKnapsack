@@ -40,7 +40,10 @@
 #include <ctime>
 #include <string>
 
-#include <MRndCPP/rnd_prob.h>
+#include <MRndCPP/rnd.h>
+#include <MRndCPP/prob.h>
+#include <MRndCPP/buffs.h>
+
 
 #include "defs.h"
 #include "backpacks.h"
@@ -72,7 +75,6 @@ private:
     ftyp   rewAEmpty;       // The reward [A] for the empty place in the knapsack by formula A*empty^B.
     ftyp   rewBEmpty;       // The reward [B] for the empty place in the knapsack by formula A*empty^B.
 
-
     ultyp  maxLoops;        // The max loop for computatnion.
     utyp   haltFreq;        // The frequency of the probiting of the stop condition.
     utyp   saveFreq;        // The frequency of save file.
@@ -86,24 +88,10 @@ private:
 
     Backpacks backpacks;                 // Definitions of backpacks.
     BpItems   bpItems;                   // Definitions of items.
-    std::vector<Specimen>  initSpecs;    // Init specimes (e.g. from the previous stage of learning)
+//    std::vector<Specimen>  initSpecs;    // Init specimes (e.g. from the previous stage of learning)
 
-    TRnd      rnd;                       // The main pseudo random number generator.
-    TRndBuff  rndGen;                    // Random gen.
-    TRndBuff  rndPos;                    // Random position.
-    TRndBuff  rndSpec;                   // Random specimen.
-    TRndProb  rndMut;                    // Random mutation.
-    TRndProb  rndCross;                  // Random crossing.
-    TRndProb  rndReplace;                // Random replace.
-    TRndProb  rndBack;                   // Random mutation.
 
 public:
-    RndBase::TYPE_RESULT getRnd() {
-        return rnd();
-    }
-    RndBase::TYPE_RESULT getRnd(const RndBase::TYPE_RESULT min, const RndBase::TYPE_RESULT max) {
-        return rnd() % (max-min+1) + min;
-    }
 
 
 
@@ -196,14 +184,14 @@ public:
     }
 
 public:
-    Params() noexcept : rnd(0),rndGen(rnd),rndPos(rnd),rndSpec(rnd),rndMut(rnd),rndCross(rnd),rndReplace(rnd),rndBack(rnd)  {
+    Params() noexcept {
     }
     Params(int argc, char *argv[]) noexcept(false);
     bool isHelp() const noexcept { return help; }
     static void showHelp() noexcept;
-    const std::vector<Specimen>& getInitSpecs() const {
-        return initSpecs;
-    }
+//    const std::vector<Specimen>& getInitSpecs() const {
+//        return initSpecs;
+//    }
     const Backpacks& getBackpacks() const {
         return backpacks;
     }

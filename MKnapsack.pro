@@ -6,6 +6,9 @@ TARGET = MKnapsack
 CONFIG += console
 CONFIG -= app_bundle
 
+CONFIG += object_with_source
+CONFIG += object_parallel_to_source
+
 INCLUDEPATH += vendor
 
 DEFINES += MX_USING_ARRAY_3
@@ -37,6 +40,7 @@ SOURCES += src/main.cpp \
     vendor/MGenCPP/genetic.cpp \
     vendor/MGenCPP/rnd.cpp \
     vendor/MGenCPP/genotype.cpp
+
 HEADERS += \
     src/specimen.h \
     src/backpacks.h \
@@ -53,5 +57,6 @@ HEADERS += \
     vendor/MGenCPP/rnd.h \
     vendor/MGenCPP/genotype.h \
     vendor/MRndCPP/rnd.h \
-    vendor/MRndCPP/buff.h \
-    vendor/MRndCPP/prob.h
+    vendor/MRndCPP/buffs.h \
+    vendor/MRndCPP/prob.h \
+    vendor/MxCPP/mx_array.h

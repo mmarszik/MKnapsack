@@ -43,12 +43,12 @@
 #include <MGenCPP/specimen.h>
 
 #include "defs.h"
-
+/*
 class Params;
 
 using TGEN = unsigned char;
 
-class Specimen : public MGenSpec<TGEN> {
+class Specimen : public MGen::MGenSpec<TGEN> {
 private:
     ftyp      weight;     // weight of all knapsacks
     ftyp      cweight;    // copy weight
@@ -98,4 +98,4 @@ public:
     }
 };
 
-
+*/

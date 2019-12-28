@@ -44,11 +44,11 @@
 #include "specimen.h"
 #include "params.h"
 
-
+/*
 void Specimen::evaluate(
     const Params &params
 ) noexcept {
-    std::vector<TMGEN_FLOAT> weights(0, genotype.size() );
+    std::vector<ftyp> weights(0, genotype.size() );
     cftyp *const backpacks    = params.getBackpacks().begin();
     const BpItem *const items = params.getBpItems().begin();
     eval   = 0;
@@ -159,5 +159,5 @@ std::vector<Specimen> Specimen::read(
     std::sort( specs.begin() , specs.end() , Specimen::cmp );
     return specs;
 }
-
+*/
 
