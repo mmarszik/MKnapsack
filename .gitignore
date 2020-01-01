@@ -2,4 +2,5 @@ vendor/*
 release/*
 debug/*
 *.autosave
+MKnapsack
 
