@@ -12,6 +12,7 @@
 #include <MRndCPP/prob.h>
 #include <MRndCPP/buffs.h>
 
+namespace MGen {
 
 #define RNDBUFSIZE ((1<<14)-1)
 
@@ -315,6 +316,10 @@ static ftyp mkStDev( const std::vector<Spec> &specs ) {
     return sum / specs[0].cgenotype.size();
 }
 
+}
+
+using namespace MGen;
+
 int main(int argc, char *argv[]) {
     (void)argc;
     (void)argv;
@@ -412,3 +417,5 @@ int main(int argc, char *argv[]) {
     }
     return 0;
 }
+
+
