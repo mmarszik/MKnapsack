@@ -330,7 +330,7 @@ int main(int argc, char *argv[]) {
         const std::vector<ftyp> backpacks = getBackpacks();
         const std::vector<BpItem> items = getItems();
 
-        //TIntDist pDist(0 , size-1 );
+
         TRndBuff rndParent(rnd,0,size-1);
         TRndBuff rndGen(rnd,0,items.size()-1);
         TRndBuff rndAllel(rnd,0,backpacks.size());
