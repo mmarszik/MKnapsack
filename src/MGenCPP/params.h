@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "defs.h"
+#include "grnd.h"
 #include <string>
 
 namespace MGen {
@@ -31,6 +31,16 @@ namespace MGen {
 class Params {
 private:
     TULONG  rndSeed;         // The seed of pseudo random number generator. The value zero indicates will be used std::random_device.
+    TUINT   numberSpecs;     // Default number of specimens.
+
+    TFLOAT  pMutation;       // Probability of mutation.
+    TFLOAT  pCross;          // Probability of crossing specimen.
+    TFLOAT  pNew;            // Probability of create new, random specimen.
+    TFLOAT  pReplace;        // Probability of replace.
+
+    TFLOAT  pBack;           // Probability back to the diploidy.
+
+    TULONG  maxLoops;        // The max loop for computation.
 
 protected:
     bool        help;        // Show help?
@@ -44,9 +54,17 @@ protected:
 
 public:
     void init(int argc, char *argv[]);
-    bool isHelp() const;
+    void showHelp() const;
 
-    TULONG getSeed() const;
+public:
+    bool isHelp() const { return help; }
+    TULONG getSeed() const { return rndSeed; }
+    TUINT getNumberSpecs() const { return numberSpecs; }
+    TULONG getMaxLoops() const { return maxLoops; }
+    TFLOAT getPMutation() const { return pMutation; }
+    TFLOAT getPBack() const { return pBack; }
+    TFLOAT getPReplace() const { return pReplace; }
+
 };
 
 

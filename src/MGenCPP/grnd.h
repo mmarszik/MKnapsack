@@ -33,55 +33,63 @@ namespace MGen {
 // The set of default tools for random number generator.
 class GRnd {
 private:
-    TRnd      rnd;       // The main pseudo random number generator from library MRndCPP.
+    TRnd&     rnd;       // The main pseudo random number generator from library MRndCPP.
 
     TRndProb  pMut;      // The probability of mutation.
-    TRndProb  pCross;    // The probability of crossing.
-    TRndProb  pReplace;  // The probability of replace.
-//  TRndProb  pNew;      // The probability of new random specimen with stagnation equal
-                         // zero. It was commented, because is always true if not mutation and
-                         // not cross and not replace.
     TRndProb  pBack;     // The probability of back to the best copy of genotype (from diploid).
+    TRndProb  pReplace;  // The probability of replace.
+//    TRndProb  pCross;    // The probability of crossing.
+////  TRndProb  pNew;      // The probability of new random specimen with stagnation equal
+//                         // zero. It was commented, because is always true if not mutation and
+//                         // not cross and not replace.
 
-    TRndBuff  rndSpec;   // The random specimen (e.g. for select parent).
-    TRndBuff  rndCros;   // The random cross point.
-    TRndBuff  rndBin;    // The binary random (0 or 1).
-    TRndBuff  rndLoc;    // The random position of gen (locus)
-    TRndBuff  rndAll;    // The random value of gen (allel)
-    TRndFBuff rndFAll;   // The random float value of gen (allel)
+//    TRndBuff  rndSpec;   // The random specimen (e.g. for select parent).
+//    TRndBuff  rndCros;   // The random cross point.
+//    TRndBuff  rndBin;    // The binary random (0 or 1).
+//    TRndBuff  rndLoc;    // The random position of gen (locus)
+//    TRndBuff  rndAll;    // The random value of gen (allel)
+//    TRndFBuff rndFAll;   // The random float value of gen (allel)
 
 public:
 
     GRnd(
+        TRnd& rnd
     );
 
     void init(
-        CULONG __sd        ,  // Random seed
         CFLOAT pMut        ,  // The probability of mutation.
-        CFLOAT pCross      ,  // The probability of crossing.
-        CFLOAT pReplace    ,  // The probability of replace.
         CFLOAT pBack       ,  // The probability of back to the best copy of genotype (from diploid).
-        CUINT  sizePop     ,  // The size of population.
-        CUINT  sizeSpec    ,  // The size of specimen (size of whole genotype)
-        CINT   minInt      ,  // The min value (allele) of each integer gen
-        CFLOAT maxInt      ,  // The max value (allele) of each integer gen
-        CFLOAT minFlt      ,  // The min value (allele) of each float gen
-        CFLOAT maxFlt         // The max value (allele) of each float gen
+        CFLOAT pReplace       // The probability of replace.
+//        CULONG __sd        ,  // Random seed.
+//        CFLOAT pCross      ,  // The probability of crossing.
+//        CUINT  sizePop     ,  // The size of population.
+//        CUINT  sizeSpec    ,  // The size of specimen (size of whole genotype).
+//        CINT   minInt      ,  // The min value (allele) of each integer gen.
+//        CFLOAT maxInt      ,  // The max value (allele) of each integer gen.
+//        CFLOAT minFlt      ,  // The min value (allele) of each float gen.
+//        CFLOAT maxFlt         // The max value (allele) of each float gen.
     ) noexcept;
 
-    TINT getAllel() {
-        return rndAll();
+    bool isMutation() {
+        return pMut();
+    }
+    bool isBack() {
+        return pBack();
+    }
+    bool isReplace() {
+        return pReplace();
     }
 
-    TFLOAT getFAllel() {
-        return rndFAll();
-    }
+//    TINT getAllel() {
+//        return rndAll();
+//    }
+
+//    TFLOAT getFAllel() {
+//        return rndFAll();
+//    }
+
 
 
 };
-
-
-//TRndBuff  rndGen;    // The random gen.
-//TRndBuff  rndPos;    // The random position.
 
 }

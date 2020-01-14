@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 #include <random>
 #include <algorithm>
@@ -12,7 +12,8 @@
 #include <MRndCPP/prob.h>
 #include <MRndCPP/buffs.h>
 
-namespace MGen {
+#include "MGenCPP/params.h"
+
 
 #define RNDBUFSIZE ((1<<14)-1)
 
@@ -20,11 +21,14 @@ typedef double ftyp;
 constexpr ftyp EPSILON = std::numeric_limits<ftyp>::epsilon();
 
 typedef const ftyp cftyp;
-typedef std::uniform_int_distribution<int> TIntDist;
+//typedef std::uniform_int_distribution<int> TIntDist;
 typedef long long ltyp;
 typedef unsigned long long ultyp;
 typedef const ltyp cltyp;
 typedef const ultyp cultyp;
+typedef unsigned int utyp;
+typedef const utyp cutyp;
+
 
 class MyException : public std::exception {
 private:
@@ -46,6 +50,7 @@ struct Spec {
     ftyp ceval;                 // copy eval
     ftyp weight;
     ftyp cweight;               // copy weight
+//    utyp stagnation;
 
     void store() {
         cgenotype = genotype;
@@ -87,38 +92,6 @@ static bool cmpItem( const BpItem &a , const BpItem &b ) {
     return a.value / a.weight > b.value / b.weight;
 }
 
-static int getSeed() {
-    std::cout << "Please input random seed (zero to random): ";
-    int n;
-    std::cin >> n;
-    if( std::cin.fail() ) {
-        throw MyException("invalid random seed");
-    }
-    if( n < 1 ) {
-        n = (int)time(NULL);
-    }
-    return n;
-}
-
-static int getLoops() {
-    std::cout << "Please input max loops (zero to inifinite): ";
-    int n;
-    std::cin >> n;
-    if( std::cin.fail() || n < 0 ) {
-        throw MyException("invalid max loops");
-    }
-    return n;
-}
-
-static int getSize() {
-    std::cout << "Please input population's size: ";
-    int n;
-    std::cin >> n;
-    if( std::cin.fail() || n < 1) {
-        throw MyException("invalid populations size");
-    }
-    return n;
-}
 
 static std::vector<ftyp> getBackpacks() {
     std::vector<ftyp> backpacks;
@@ -138,26 +111,6 @@ static std::vector<ftyp> getBackpacks() {
         backpacks.push_back( c );
     }
     return backpacks;
-}
-
-static float getMutation() {
-    std::cout << "Please input probability of mutations <0.000,1.000>: ";
-    ftyp n;
-    std::cin >> n;
-    if( std::cin.fail() || n > 1 || n < 0 ) {
-        throw MyException("invalid probability of mutation");
-    }
-    return n;
-}
-
-static ftyp getBack() {
-    std::cout << "Please input probability of back <0.000,1.000>: ";
-    ftyp n;
-    std::cin >> n;
-    if( std::cin.fail() || n < 0 || n > 1 ) {
-        throw MyException("invalid probability of back");
-    }
-    return n;
 }
 
 static ftyp getPenal() {
@@ -316,35 +269,37 @@ static ftyp mkStDev( const std::vector<Spec> &specs ) {
     return sum / specs[0].cgenotype.size();
 }
 
-}
 
 using namespace MGen;
 
+
 int main(int argc, char *argv[]) {
-    (void)argc;
-    (void)argv;
+    Params params;
+    params.init( argc , argv );
+    if( params.isHelp() ) {
+        params.showHelp();
+        return -1;
+    }
     try {
-        const int seed     = getSeed();
-        std::cout << "seed = " << seed << std::endl;
-        TRnd rnd( seed );
-        const int loops    = getLoops();
-        const int size     = getSize();
-        TRndProb pMutation( rnd , getMutation() );
-        TRndProb pBack( rnd , getBack() );
-        cftyp penal        = getPenal();
+        std::cout << "seed = " << params.getSeed() << std::endl;
+        TRnd random( params.getSeed() );
+        GRnd rnd( random );
+        const int loops           = params.getMaxLoops();
+        const int numberSpecs     = params.getNumberSpecs();
+        rnd.init( params.getPMutation(), params.getPBack(), params.getPReplace() );
+        cftyp penal               = getPenal();
         const std::vector<ftyp> backpacks = getBackpacks();
         const std::vector<BpItem> items = getItems();
 
-
-        TRndBuff rndParent(rnd,0,size-1);
-        TRndBuff rndGen(rnd,0,items.size()-1);
-        TRndBuff rndAllel(rnd,0,backpacks.size());
-        TRndBuff rndCross(rnd,1,items.size()-2);
+        TRndBuff rndParent(random,0,numberSpecs-1);
+        TRndBuff rndGen(random,0,items.size()-1);
+        TRndBuff rndAllel(random,0,backpacks.size());
+        TRndBuff rndCross(random,1,items.size()-2);
 
         const time_t start = time(NULL);
         time_t showTime    = start;
 
-        std::vector<Spec> specs( size );
+        std::vector<Spec> specs( numberSpecs );
         std::vector<ftyp> tmpWeights( backpacks.size() , 0 );
 
         int best = 0;
@@ -352,7 +307,7 @@ int main(int argc, char *argv[]) {
         ltyp sumStat[2]     = {0,0};
 
         for( size_t i=0 ; i<specs.size() ; i++ ) {
-            randSpec( specs[i] , rnd , items , backpacks );
+            randSpec( specs[i] , random , items , backpacks );
             evalSpec( specs[i] , backpacks , items , penal , tmpWeights );
             specs[i].store();
             if( specs[best].eval < specs[i].eval ) {
@@ -365,9 +320,11 @@ int main(int argc, char *argv[]) {
 
         for( int loop=1 ; loops == 0 || loop <= loops ; loop++ ) {
 
-            for( int child=0 ; child<size ; child++ ) {
+            const int maxChild = (loop&1) ? params.getNumberSpecs() : params.getNumberSpecs()/2;
+
+            for( int child=0 ; child<maxChild; child++ ) {
                 int improveIdx;
-                if( pMutation() ) {
+                if( rnd.isMutation() ) {
                     improveIdx = 0;
                     mutationSpec( specs[child] , rndGen , rndAllel );
                 } else {
@@ -382,7 +339,14 @@ int main(int argc, char *argv[]) {
                 evalSpec( specs[child] , backpacks , items , penal , tmpWeights );
                 sumStat[improveIdx] ++ ;
                 if( specs[child].eval < specs[child].ceval ) {
-                    if( pBack() ) {
+                    if( rnd.isReplace() && child != best ) {
+                        cutyp parent = rndParent();
+                        if( specs[child].ceval < specs[parent].ceval ) {
+                            specs[child].cgenotype = specs[parent].cgenotype;
+                            specs[child].ceval     = specs[parent].ceval;
+                        }
+                    }
+                    if( rnd.isBack() ) {
                         specs[child].restore();
                     }
                 } else {
@@ -396,6 +360,31 @@ int main(int argc, char *argv[]) {
                     specs[child].store();
                 }
             }
+
+            {
+                const int i1 = rndParent();
+                const int i2 = rndParent();
+                if( i1 < i2 ) {
+                    if( specs[i1].ceval < specs[i2].ceval ) {
+                        std::swap(specs[i1],specs[i2]);
+                        if( best == i1 ) {
+                            best = i2;
+                        } else if( best == i2 ) {
+                            best = i1;
+                        }
+                    }
+                } else {
+                    if( specs[i2].ceval < specs[i1].ceval ) {
+                        std::swap(specs[i1],specs[i2]);
+                        if( best == i1 ) {
+                            best = i2;
+                        } else if( best == i2 ) {
+                            best = i1;
+                        }
+                    }
+                }
+            }
+
             if(
                 showTime == 0
                     ||
@@ -408,6 +397,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "stdev: " << mkStDev(specs) << std::endl;
                 std::cout << "mutation inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[0] / (sumStat[0]+EPSILON)) << "% all: " << std::setw(11) << sumStat[0] << std::endl;
                 std::cout << "cross:   inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[1] / (sumStat[1]+EPSILON)) << "% all: " << std::setw(11) << sumStat[1] << std::endl;
+//                std::cout << "replace: inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[2] / (sumStat[2]+EPSILON)) << "% all: " << std::setw(11) << sumStat[2] << std::endl;
                 showTime = time(NULL);
             }
         }
@@ -417,5 +407,3 @@ int main(int argc, char *argv[]) {
     }
     return 0;
 }
-
-
