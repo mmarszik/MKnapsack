@@ -6724,3 +6724,12 @@ sys	0m6.014s
 real	1m2.709s
 user	1m2.893s
 sys	0m0.551s
+ ---------------------------------------------
+
+--numberSpecs=512 --numberBests=64 --numberParents=256 --swapParents=1 --maxLoops=20000 --pMutation=0.8800 --pBests=0.9900 --pBack=0.50
+
+4886.55
+
+real	1m1.392s
+user	1m1.498s
+sys	0m0.635s

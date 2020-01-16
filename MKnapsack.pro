@@ -24,11 +24,11 @@ TEMPLATE = app
 SOURCES += src/main.cpp \
     vendor/MRndCPP/rnd_mlin.cpp \
     vendor/MxCPP/mx_array.cpp \
-    src/MGenCPP/genotype.cpp \
-    src/MGenCPP/params.cpp \
+    vendor/MGenCPP/genotype.cpp \
+    vendor/MGenCPP/params.cpp \
     vendor/MiscCPP/m_args.cpp \
-    src/MGenCPP/grnd.cpp \
-    src/MGenCPP/def_params.cpp
+    vendor/MGenCPP/grnd.cpp \
+    vendor/MGenCPP/def_params.cpp
 
 HEADERS += \
     vendor/MRndCPP/use_rnd_mlin_0.h \
@@ -37,9 +37,9 @@ HEADERS += \
     vendor/MRndCPP/buffs.h \
     vendor/MRndCPP/rnd.h \
     vendor/MxCPP/mx_array.h \
-    src/MGenCPP/genotype.h \
-    src/MGenCPP/defs.h \
-    src/MGenCPP/params.h \
+    vendor/MGenCPP/genotype.h \
+    vendor/MGenCPP/defs.h \
+    vendor/MGenCPP/params.h \
     vendor/MiscCPP/m_args.h \
-    src/MGenCPP/grnd.h \
-    src/MGenCPP/def_params.h
+    vendor/MGenCPP/grnd.h \
+    vendor/MGenCPP/def_params.h

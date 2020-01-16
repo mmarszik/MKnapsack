@@ -13,7 +13,7 @@
 #include <MRndCPP/buffs.h>
 
 #include "MGenCPP/params.h"
-
+#include "MGenCPP/genotype.h"
 
 #define RNDBUFSIZE ((1<<14)-1)
 
@@ -28,6 +28,9 @@ typedef const ltyp cltyp;
 typedef const ultyp cultyp;
 typedef unsigned int utyp;
 typedef const utyp cutyp;
+
+
+using namespace MGen;
 
 
 class MyException : public std::exception {
@@ -272,9 +275,6 @@ static ftyp mkStDev( const std::vector<Spec> &specs ) {
     }
     return sum / specs[0].cgenotype.size();
 }
-
-
-using namespace MGen;
 
 
 int main(int argc, char *argv[]) {
