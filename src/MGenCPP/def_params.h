@@ -38,17 +38,23 @@ public:
     static TUINT numberSpecs() noexcept {
         return 256;
     }
+    static TUINT numberBests() noexcept {
+        return numberSpecs()/10+1;
+    }
+    static TUINT numberParents() noexcept {
+        return numberSpecs()/4;
+    }
+    static TUINT swapParents() noexcept {
+        return 1;
+    }
     static TFLOAT pMutation() noexcept {
         return 0.9990;
     }
     static TFLOAT pCross() noexcept {
-        return 0.0005;
+        return 0.001;
     }
-    static TFLOAT pReplace() noexcept {
-        return 0.0004;
-    }
-    static TFLOAT pNew() noexcept {
-        return 0.0001;
+    static TFLOAT pBests() noexcept {
+        return 0.9900;
     }
     static TFLOAT pBack() noexcept {
         return 0.40;

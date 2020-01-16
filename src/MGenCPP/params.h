@@ -31,14 +31,15 @@ namespace MGen {
 class Params {
 private:
     TULONG  rndSeed;         // The seed of pseudo random number generator. The value zero indicates will be used std::random_device.
-    TUINT   numberSpecs;     // Default number of specimens.
-
+    TUINT   numberSpecs;     // The number of specimens.
+    TUINT   numberParents;   // The number of parents.
+    TUINT   swapParents;     // The number of swap parents (weak sorting)
     TFLOAT  pMutation;       // Probability of mutation.
     TFLOAT  pCross;          // Probability of crossing specimen.
-    TFLOAT  pNew;            // Probability of create new, random specimen.
-    TFLOAT  pReplace;        // Probability of replace.
-
     TFLOAT  pBack;           // Probability back to the diploidy.
+    TFLOAT  pBests;          // Probability work only best fraction.
+
+    TUINT   numberBests;     // The size of the sortable fraction of the bests specimens from whole population.
 
     TULONG  maxLoops;        // The max loop for computation.
 
@@ -60,10 +61,14 @@ public:
     bool isHelp() const { return help; }
     TULONG getSeed() const { return rndSeed; }
     TUINT getNumberSpecs() const { return numberSpecs; }
+    TUINT getNumberBests() const { return numberBests; }
+    TUINT getNumberParents() const { return numberParents; }
+    TUINT getSwapParents() const { return swapParents; }
     TULONG getMaxLoops() const { return maxLoops; }
     TFLOAT getPMutation() const { return pMutation; }
+    TFLOAT getPCross() const { return pCross; }
     TFLOAT getPBack() const { return pBack; }
-    TFLOAT getPReplace() const { return pReplace; }
+    TFLOAT getPBests() const { return pBests; }
 
 };
 

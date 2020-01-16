@@ -25,7 +25,7 @@
 
 namespace MGen {
 
-GRnd::GRnd(TRnd &rnd) : rnd(rnd), pMut(rnd), pBack(rnd), pReplace(rnd)
+GRnd::GRnd(TRnd &rnd) : rnd(rnd), pMut(rnd), pBack(rnd), pBests(rnd)
 //    : rnd(0), pMut(rnd), pCross(rnd), pReplace(rnd), pBack(rnd), rndSpec(rnd), rndCros(rnd), rndBin(rnd), rndLoc(rnd), rndAll(rnd), rndFAll(rnd)
 {
 }
@@ -33,7 +33,7 @@ GRnd::GRnd(TRnd &rnd) : rnd(rnd), pMut(rnd), pBack(rnd), pReplace(rnd)
 void GRnd::init(
     CFLOAT pMut        ,  // The probability of mutation.
     CFLOAT pBack       ,  // The probability of back to the best copy of genotype (from diploid).
-    CFLOAT pReplace       // The probability of replace.
+    CFLOAT pBests         // The probability work of the best fraction.
 
 //    CULONG __sd        ,  // Random seed
 //    CFLOAT pCross      ,  // The probability of crossing.
@@ -49,7 +49,7 @@ void GRnd::init(
 
     this->pMut.setP( pMut );
     this->pBack.setP( pBack );
-    this->pReplace.setP( pReplace );
+    this->pBests.setP( pBests );
 
 //    this->pCross.setP( pCross );
 //    this->pReplace.setP( pReplace );

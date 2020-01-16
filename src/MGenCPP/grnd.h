@@ -37,7 +37,7 @@ private:
 
     TRndProb  pMut;      // The probability of mutation.
     TRndProb  pBack;     // The probability of back to the best copy of genotype (from diploid).
-    TRndProb  pReplace;  // The probability of replace.
+    TRndProb  pBests;    // The probability work on the only best fraction.
 //    TRndProb  pCross;    // The probability of crossing.
 ////  TRndProb  pNew;      // The probability of new random specimen with stagnation equal
 //                         // zero. It was commented, because is always true if not mutation and
@@ -59,7 +59,7 @@ public:
     void init(
         CFLOAT pMut        ,  // The probability of mutation.
         CFLOAT pBack       ,  // The probability of back to the best copy of genotype (from diploid).
-        CFLOAT pReplace       // The probability of replace.
+        CFLOAT pBests         // The probability work of the best fraction.
 //        CULONG __sd        ,  // Random seed.
 //        CFLOAT pCross      ,  // The probability of crossing.
 //        CUINT  sizePop     ,  // The size of population.
@@ -76,8 +76,8 @@ public:
     bool isBack() {
         return pBack();
     }
-    bool isReplace() {
-        return pReplace();
+    bool isBests() {
+        return pBests();
     }
 
 //    TINT getAllel() {

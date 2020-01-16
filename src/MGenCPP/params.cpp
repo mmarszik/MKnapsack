@@ -46,13 +46,16 @@ void Params::setError(const std::string &error) {
 }
 
 void Params::setDefaults() noexcept(false) {
-    help        = DefParams::help();
-    rndSeed     = DefParams::rndSeed();
-    numberSpecs = DefParams::numberSpecs();
-    pMutation   = DefParams::pMutation();
-    pCross      = DefParams::pCross();
-    pReplace    = DefParams::pReplace();
-    pNew        = DefParams::pNew();
+    help          = DefParams::help();
+    rndSeed       = DefParams::rndSeed();
+    numberSpecs   = DefParams::numberSpecs();
+    numberBests   = DefParams::numberBests();
+    numberParents = DefParams::numberParents();
+    swapParents   = DefParams::swapParents();
+    pMutation     = DefParams::pMutation();
+    pCross        = DefParams::pCross();
+    pBests        = DefParams::pBests();
+    pBack         = DefParams::pBack();
 }
 
 void Params::init(
@@ -97,10 +100,53 @@ void Params::init(
         if( arg ) {
             std::istringstream ss(arg);
             ss >> numberSpecs;
-            if( ss.fail() || numberSpecs < 1 ) {
+            if( ss.fail() ) {
                 setError("Invalid command line arg: numberSpecs");
                 return;
             }
+        }
+        if( numberSpecs < 3 ) {
+            setError("Invalid command line arg: numberSpecs");
+            return;
+        }
+    }
+
+    //numberParents
+    {
+        const char *arg = extractArg( argc, argv, "numberParents" , recognizedArg);
+        if( arg ) {
+            std::istringstream ss(arg);
+            ss >> numberParents;
+            if( ss.fail() ) {
+                setError("Invalid command line arg: numberParents");
+                return;
+            }
+        }
+        if( numberParents == 0 ) {
+            numberParents = numberSpecs;
+        }
+        if( numberParents > numberSpecs || numberParents<3 ) {
+            setError("Invalid command line arg: numberParents");
+            return;
+        }
+    }
+
+    //swapParents
+    {
+        const char *arg = extractArg( argc, argv, "swapParents" , recognizedArg);
+        if( arg ) {
+            std::istringstream ss(arg);
+            ss >> swapParents;
+            if( ss.fail() ) {
+                setError("Invalid command line arg: swapParents");
+                return;
+            }
+        }
+#pragma GCC diagnostic ignored "-Wtype-limits"
+        if( swapParents < 0 ) {
+#pragma GCC diagnostic warning "-Wtype-limits"
+            setError("Invalid command line arg: swapParents");
+            return;
         }
     }
 
@@ -119,27 +165,32 @@ void Params::init(
         }
     }
 
-    //Probability of replace
+    //Size of the best fraction
     {
-        const char* arg = extractArg( argc, argv, "pReplace" , recognizedArg);
+        const char* arg = extractArg( argc, argv, "numberBests" , recognizedArg);
         if( arg ) {
             std::istringstream ss(arg);
-            ss >> pReplace;
-            if( ss.fail() || pReplace < 0 || pReplace > 1 ) {
-                setError("Invalid command line arg: pReplace");
+            ss >> numberBests;
+            if( ss.fail() ) {
+                setError("Invalid command line arg: numberBests");
                 return;
             }
         }
     }
 
-    //Probability of new
+    if( numberBests < 1 || numberBests > numberSpecs ) {
+        setError("Invalid command line arg: numberBests");
+        return;
+    }
+
+    //Probability of use only best fraction.
     {
-        const char* arg = extractArg( argc, argv, "pNew" , recognizedArg);
+        const char* arg = extractArg( argc, argv, "pBests" , recognizedArg);
         if( arg ) {
             std::istringstream ss(arg);
-            ss >> pNew;
-            if( ss.fail() || pNew < 0 || pNew > 1 ) {
-                setError("Invalid command line arg: pNew");
+            ss >> pBests;
+            if( ss.fail() || pBests < 0 || pBests > 1 ) {
+                setError("Invalid command line arg: pBests");
                 return;
             }
         }
@@ -219,9 +270,32 @@ void Params::showHelp() const {
     std::cout << " The value zero indicates will be used std::random_device." << std::endl;
     std::cout << std::endl;
 
-    std::cout << " --numberSpecs=[uint] <1, MAX_MEMORY> default: " << DefParams::numberSpecs() << std::endl;
+    std::cout << " --numberSpecs=[uint] <3, MAX_MEMORY> default: " << DefParams::numberSpecs() << std::endl;
     std::cout << "    Default number of specimens." << std::endl;
     std::cout << std::endl;
+
+    std::cout << " --numberBests=[uint] <1, numberSpecs> default: " << DefParams::numberBests() << std::endl;
+    std::cout << "    The size of the best fraction of the whole population." << std::endl;
+    std::cout << " The best fraction is storing with sorting, so big value can slow down computation." << std::endl;
+    std::cout << std::endl;
+
+    std::cout << " --numberParents=[uint] 0 or <3, numberSpecs> default: " << DefParams::numberParents() << std::endl;
+    std::cout << "    The size of the set of parents. The value zero is equal numberSpecs. Small number" << std::endl;
+    std::cout << "  indicate use only bests specimens to procreation and genetic algorithm will be work" << std::endl;
+    std::cout << "  faster. But big number cause in long time genetic algorithm can found best (even" << std::endl;
+    std::cout << "  global) solve." << std::endl;
+    std::cout << std::endl;
+
+    std::cout << " --swapParents=[uint] <0, INF> default: " << DefParams::swapParents() << std::endl;
+    std::cout << "    The roulette algorithm has quadratic complexity, the best sorting algorithm has" << std::endl;
+    std::cout << " NLogN complexity. Because the complexity of both algorithms is very cost, we use" << std::endl;
+    std::cout << " weak approximation of sorting, namenly swap N specimen per one iteration, where N is parentSwap." << std::endl;
+    std::cout << " If you use large number of iterations and relative small number specimens, the default small" << std::endl;
+    std::cout << " value (" << DefParams::swapParents() << ") can be sufficient. The big value parentSwap can slow down this genetic algorithm." << std::endl;
+    std::cout << " The big value very slow down the genetic algorithm." << std::endl;
+
+    std::cout << std::endl;
+
 
     std::cout << " --pMutatnion=[float] <0, 1> default: " << DefParams::pMutation() << std::endl;
     std::cout << "    Probability of mutation." << std::endl;
@@ -232,17 +306,11 @@ void Params::showHelp() const {
     std::cout << " created by crossing is equal average stagnation his of two parents." << std::endl;
     std::cout << std::endl;
 
-    std::cout << " --pReplace=[float] <0, 1> default: " << DefParams::pReplace() << std::endl;
-    std::cout << "    Probability of replace. The stagnation of the new specimen" << std::endl;
-    std::cout << " created by replace is equal stagnation of the source specimen." << std::endl;
+    std::cout << " --pBests=[float] <0, 1> default: " << DefParams::pBests() << std::endl;
+    std::cout << "    The probability work only the best fraction of whole population." << std::endl;
     std::cout << std::endl;
 
-    std::cout << " --pNew=[float] <0, 1> default: " << DefParams::pNew() << std::endl;
-    std::cout << "    Probability of create new, random specimen. The stagnation of " << std::endl;
-    std::cout << " the new specimen created by new operator always is equal zero." << std::endl;
-    std::cout << std::endl;
-
-    std::cout << " --pBack=[float] <0, 1> default: " << DefParams::pNew() << std::endl;
+    std::cout << " --pBack=[float] <0, 1> default: " << DefParams::pBack() << std::endl;
     std::cout << "    Probability back the specimen to the last best solve from his copy." << std::endl;
     std::cout << std::endl;
 

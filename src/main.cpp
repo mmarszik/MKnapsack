@@ -64,6 +64,10 @@ struct Spec {
         weight     = cweight;
     }
 
+    bool operator < (const Spec& other) const {
+        return ceval > other.ceval;
+    }
+
 };
 
 static std::ostream& operator<<( std::ostream& dest, const Spec &spec ) {
@@ -286,12 +290,13 @@ int main(int argc, char *argv[]) {
         GRnd rnd( random );
         const int loops           = params.getMaxLoops();
         const int numberSpecs     = params.getNumberSpecs();
-        rnd.init( params.getPMutation(), params.getPBack(), params.getPReplace() );
+        rnd.init( params.getPMutation(), params.getPBack(), params.getPBests() );
         cftyp penal               = getPenal();
         const std::vector<ftyp> backpacks = getBackpacks();
         const std::vector<BpItem> items = getItems();
 
-        TRndBuff rndParent(random,0,numberSpecs-1);
+        TRndBuff rndParent(random, 0, params.getNumberParents()-1 );
+        TRndBuff rndSpec(random, 0, params.getNumberSpecs()-1 );
         TRndBuff rndGen(random,0,items.size()-1);
         TRndBuff rndAllel(random,0,backpacks.size());
         TRndBuff rndCross(random,1,items.size()-2);
@@ -302,25 +307,44 @@ int main(int argc, char *argv[]) {
         std::vector<Spec> specs( numberSpecs );
         std::vector<ftyp> tmpWeights( backpacks.size() , 0 );
 
-        int best = 0;
         ltyp improveStat[2] = {0,0};
         ltyp sumStat[2]     = {0,0};
 
-        for( size_t i=0 ; i<specs.size() ; i++ ) {
+        CUINT swapParents =
+            params.getNumberParents() < params.getNumberSpecs()
+        ?
+            params.getSwapParents()
+        :
+            0;
+
+
+        for( TUINT i=0 ; i<specs.size() ; i++ ) {
             randSpec( specs[i] , random , items , backpacks );
             evalSpec( specs[i] , backpacks , items , penal , tmpWeights );
             specs[i].store();
-            if( specs[best].eval < specs[i].eval ) {
-                best = i;
-            }
         }
 
-        std::cout << (time(NULL)-start) << "s; best[0]: " << specs[ best ] << std::endl;
+        {
+            TUINT best = 0;
+            for( TUINT i=1 ; i<specs.size() ; i++ ) {
+                if( specs[i].ceval > specs[best].ceval ) {
+                    best = i;
+                }
+            }
+            std::swap( specs[0] , specs[best] );
+        }
+
+//        std::sort( specs.begin() ,specs.end() );
+//        if( specs[0].ceval < specs[1].ceval ) {
+//            abort();
+//        }
+
+        std::cout << (time(NULL)-start) << "s; best[0]: " << specs[ 0 ] << std::endl;
         std::cout << "avg: " << std::setprecision(14) << mkAvg(specs) << std::endl;
 
         for( int loop=1 ; loops == 0 || loop <= loops ; loop++ ) {
 
-            const int maxChild = (loop&1) ? params.getNumberSpecs() : params.getNumberSpecs()/2;
+            const int maxChild = rnd.isBests() ? params.getNumberBests() : params.getNumberSpecs();
 
             for( int child=0 ; child<maxChild; child++ ) {
                 int improveIdx;
@@ -339,49 +363,33 @@ int main(int argc, char *argv[]) {
                 evalSpec( specs[child] , backpacks , items , penal , tmpWeights );
                 sumStat[improveIdx] ++ ;
                 if( specs[child].eval < specs[child].ceval ) {
-                    if( rnd.isReplace() && child != best ) {
-                        cutyp parent = rndParent();
-                        if( specs[child].ceval < specs[parent].ceval ) {
-                            specs[child].cgenotype = specs[parent].cgenotype;
-                            specs[child].ceval     = specs[parent].ceval;
-                        }
-                    }
                     if( rnd.isBack() ) {
                         specs[child].restore();
                     }
                 } else {
                     if( specs[child].eval > specs[child].ceval ) {
                         improveStat[improveIdx] ++ ;
-                        if( specs[child].eval > specs[best].ceval ) {
-                            best = child;
+                        specs[child].store();
+                        if( specs[child].ceval > specs[0].ceval ) {
+                            std::swap( specs[child] , specs[0] );
+                            showTime = 0;
+                        } else if( child == 0 ) {
                             showTime = 0;
                         }
+                    } else {
+                        specs[child].store();
                     }
-                    specs[child].store();
                 }
             }
 
-            {
-                const int i1 = rndParent();
-                const int i2 = rndParent();
-                if( i1 < i2 ) {
-                    if( specs[i1].ceval < specs[i2].ceval ) {
-                        std::swap(specs[i1],specs[i2]);
-                        if( best == i1 ) {
-                            best = i2;
-                        } else if( best == i2 ) {
-                            best = i1;
-                        }
-                    }
-                } else {
-                    if( specs[i2].ceval < specs[i1].ceval ) {
-                        std::swap(specs[i1],specs[i2]);
-                        if( best == i1 ) {
-                            best = i2;
-                        } else if( best == i2 ) {
-                            best = i1;
-                        }
-                    }
+            for( TUINT i=0 ; i<swapParents ; i++ ) {
+                TUINT i1 = rndSpec();
+                TUINT i2 = rndSpec();
+                if( i1 > i2 ) {
+                    std::swap(i1,i2);
+                }
+                if( specs[i1].ceval < specs[i2].ceval ) {
+                    std::swap( specs[i1] , specs[i2] );
                 }
             }
 
@@ -392,7 +400,7 @@ int main(int argc, char *argv[]) {
                     ||
                 loop == loops
             ) {
-                std::cout << (time(NULL)-start) << "s; best[" << loop << "]; " << specs[best] << std::endl;
+                std::cout << (time(NULL)-start) << "s; best[" << loop << "]; " << specs[0] << std::endl;
                 std::cout << "avg:   " << mkAvg(specs) << std::endl;
                 std::cout << "stdev: " << mkStDev(specs) << std::endl;
                 std::cout << "mutation inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[0] / (sumStat[0]+EPSILON)) << "% all: " << std::setw(11) << sumStat[0] << std::endl;
@@ -407,3 +415,144 @@ int main(int argc, char *argv[]) {
     }
     return 0;
 }
+
+/*
+int main(int argc, char *argv[]) {
+    Params params;
+    params.init( argc , argv );
+    if( params.isHelp() ) {
+        params.showHelp();
+        return -1;
+    }
+    try {
+        std::cout << "seed = " << params.getSeed() << std::endl;
+        TRnd random( params.getSeed() );
+        GRnd rnd( random );
+        const int loops           = params.getMaxLoops();
+        const int numberSpecs     = params.getNumberSpecs();
+        rnd.init( params.getPMutation(), params.getPBack(), params.getPBests() );
+        cftyp penal               = getPenal();
+        const std::vector<ftyp> backpacks = getBackpacks();
+        const std::vector<BpItem> items = getItems();
+
+        TRndBuff rndParent(random, 0, params.getNumberParents()-1 );
+        TRndBuff rndGen(random,0,items.size()-1);
+        TRndBuff rndAllel(random,0,backpacks.size());
+        TRndBuff rndCross(random,1,items.size()-2);
+
+        const time_t start = time(NULL);
+        time_t showTime    = start;
+
+        std::vector<Spec> specs( numberSpecs );
+        std::vector<ftyp> tmpWeights( backpacks.size() , 0 );
+
+        ltyp improveStat[2] = {0,0};
+        ltyp sumStat[2]     = {0,0};
+
+        CUINT swapParents =
+            params.getNumberParents() > params.getNumberBests() // The best specimens are always sorted, swap is not necessary.
+        &&
+            params.getNumberParents() < params.getNumberSpecs()
+        ?
+            params.getSwapParents()
+        :
+            0;
+
+
+        CUINT lastBest = params.getNumberBests() - 1;
+        for( TUINT i=0 ; i<specs.size() ; i++ ) {
+            randSpec( specs[i] , random , items , backpacks );
+            evalSpec( specs[i] , backpacks , items , penal , tmpWeights );
+            specs[i].store();
+            if( i > lastBest ) {
+                if( specs[i].eval < specs[lastBest].eval ) {
+                    continue;
+                }
+                std::swap( specs[i] , specs[lastBest] );
+            }
+            size_t sortStart = i > lastBest ? lastBest : i;
+            while( sortStart > 0 && specs[sortStart-1].eval < specs[sortStart].eval ) {
+                std::swap( specs[sortStart-1], specs[sortStart] );
+                sortStart--;
+            }
+        }
+
+        std::cout << (time(NULL)-start) << "s; best[0]: " << specs[ 0 ] << std::endl;
+        std::cout << "avg: " << std::setprecision(14) << mkAvg(specs) << std::endl;
+
+        for( int loop=1 ; loops == 0 || loop <= loops ; loop++ ) {
+
+            const int maxChild = rnd.isBests() ? params.getNumberBests() : params.getNumberSpecs();
+
+            for( int child=0 ; child<maxChild; child++ ) {
+                int improveIdx;
+                if( rnd.isMutation() ) {
+                    improveIdx = 0;
+                    mutationSpec( specs[child] , rndGen , rndAllel );
+                } else {
+                    improveIdx = 1;
+                    int parent1, parent2;
+                    do {
+                        parent1 = rndParent();
+                        parent2 = rndParent();
+                    } while(parent1 == parent2 || parent1 == child || parent2 == child);
+                    cross1( specs[parent1], specs[parent2], specs[child], rndCross );
+                }
+                evalSpec( specs[child] , backpacks , items , penal , tmpWeights );
+                sumStat[improveIdx] ++ ;
+                if( specs[child].eval < specs[child].ceval ) {
+                    if( rnd.isBack() ) {
+                        specs[child].restore();
+                    }
+                } else {
+                    if( specs[child].eval > specs[child].ceval ) {
+                        improveStat[improveIdx] ++ ;
+                        specs[child].store();
+                        if( child > lastBest && specs[child].ceval > specs[lastBest].ceval ) {
+                            std::swap( specs[child] , specs[lastBest] );
+                        }
+                        size_t sortStart = child > lastBest ? lastBest : child;
+                        while( sortStart > 0 && specs[sortStart-1].ceval < specs[sortStart].ceval ) {
+                            std::swap( specs[sortStart-1], specs[sortStart] );
+                            sortStart--;
+                        }
+                        if( sortStart == 0 ) {
+                            showTime = 0;
+                        }
+                    } else {
+                        specs[child].store();
+                    }
+                }
+            }
+
+            for( TUINT i=0 ; i<swapParents ; i++ ) {
+                TUINT i1 = random.range( params.getNumberBests()   , params.getNumberParents() - 1 );
+                TUINT i2 = random.range( params.getNumberParents() , params.getNumberSpecs() - 1   );
+                if( specs[i1].ceval < specs[i2].ceval ) {
+                    std::swap( specs[i1] , specs[i2] );
+                }
+            }
+
+            if(
+                showTime == 0
+                    ||
+                ( !(loop & 63) && time(NULL) - showTime >= 10 )
+                    ||
+                loop == loops
+            ) {
+                std::cout << (time(NULL)-start) << "s; best[" << loop << "]; " << specs[0] << std::endl;
+                std::cout << "avg:   " << mkAvg(specs) << std::endl;
+                std::cout << "stdev: " << mkStDev(specs) << std::endl;
+                std::cout << "mutation inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[0] / (sumStat[0]+EPSILON)) << "% all: " << std::setw(11) << sumStat[0] << std::endl;
+                std::cout << "cross:   inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[1] / (sumStat[1]+EPSILON)) << "% all: " << std::setw(11) << sumStat[1] << std::endl;
+//                std::cout << "replace: inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[2] / (sumStat[2]+EPSILON)) << "% all: " << std::setw(11) << sumStat[2] << std::endl;
+                showTime = time(NULL);
+            }
+        }
+    }
+    catch( std::exception &e ) {
+        std::cout << "We have a problem: " << e.what() << std::endl;
+    }
+    return 0;
+}
+*/
