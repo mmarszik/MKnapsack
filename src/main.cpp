@@ -334,10 +334,6 @@ int main(int argc, char *argv[]) {
             std::swap( specs[0] , specs[best] );
         }
 
-//        std::sort( specs.begin() ,specs.end() );
-//        if( specs[0].ceval < specs[1].ceval ) {
-//            abort();
-//        }
 
         std::cout << (time(NULL)-start) << "s; best[0]: " << specs[ 0 ] << std::endl;
         std::cout << "avg: " << std::setprecision(14) << mkAvg(specs) << std::endl;
