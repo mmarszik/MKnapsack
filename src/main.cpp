@@ -307,8 +307,8 @@ int main(int argc, char *argv[]) {
         std::vector<Spec> specs( numberSpecs );
         std::vector<ftyp> tmpWeights( backpacks.size() , 0 );
 
-        ltyp improveStat[2] = {0,0};
-        ltyp sumStat[2]     = {0,0};
+        ltyp improveStat[2] = {0, 0};
+        ltyp sumStat[2]     = {0, 0};
 
         CUINT swapParents =
             params.getNumberParents() < params.getNumberSpecs()
@@ -316,7 +316,6 @@ int main(int argc, char *argv[]) {
             params.getSwapParents()
         :
             0;
-
 
         for( TUINT i=0 ; i<specs.size() ; i++ ) {
             randSpec( specs[i] , random , items , backpacks );
@@ -333,7 +332,6 @@ int main(int argc, char *argv[]) {
             }
             std::swap( specs[0] , specs[best] );
         }
-
 
         std::cout << (time(NULL)-start) << "s; best[0]: " << specs[ 0 ] << std::endl;
         std::cout << "avg: " << std::setprecision(14) << mkAvg(specs) << std::endl;
