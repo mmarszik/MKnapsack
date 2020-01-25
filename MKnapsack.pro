@@ -29,7 +29,8 @@ SOURCES += src/main.cpp \
     vendor/MiscCPP/m_args.cpp \
     vendor/MGenCPP/grnd.cpp \
     vendor/MGenCPP/def_params.cpp \
-    src/params.cpp
+    src/params.cpp \
+    src/def_params.cpp
 
 HEADERS += \
     vendor/MRndCPP/use_rnd_mlin_0.h \
@@ -44,4 +45,5 @@ HEADERS += \
     vendor/MiscCPP/m_args.h \
     vendor/MGenCPP/grnd.h \
     vendor/MGenCPP/def_params.h \
-    src/params.h
+    src/params.h \
+    src/def_params.h

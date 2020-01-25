@@ -7,6 +7,8 @@
 #include <climits>
 #include <cstring>
 #include <assert.h>
+#include <stdexcept>
+#include <chrono>
 
 #include <MRndCPP/rnd.h>
 #include <MRndCPP/prob.h>
@@ -14,6 +16,7 @@
 
 #include "MGenCPP/params.h"
 #include "MGenCPP/genotype.h"
+#include "def_params.h"
 
 #define RNDBUFSIZE ((1<<14)-1)
 
@@ -30,21 +33,6 @@ typedef unsigned int utyp;
 typedef const utyp cutyp;
 
 
-using namespace MGen;
-
-
-class MyException : public std::exception {
-private:
-    const std::string swhat;
-
-public:
-    MyException( const char *const swhat ) : swhat(swhat) {
-    }
-
-    virtual const char* what() const throw(){
-        return swhat.c_str();
-    }
-};
 
 struct Spec {
     std::vector<uint8_t> genotype;
@@ -53,7 +41,6 @@ struct Spec {
     ftyp ceval;                 // copy eval
     ftyp weight;
     ftyp cweight;               // copy weight
-//    utyp stagnation;
 
     void store() {
         cgenotype = genotype;
@@ -106,14 +93,14 @@ static std::vector<ftyp> getBackpacks() {
     int n;
     std::cin >> n;
     if( std::cin.fail() || n < 1 ) {
-        throw MyException("invalid number of backpacks");
+        throw std::invalid_argument("invalid number of backpacks");
     }
     for( int i=0 ; i<n ; i++ ) {
         std::cout << (i+1) << " please input capacity of backpack: ";
         ftyp c;
         std::cin >> c;
         if( std::cin.fail() || c <= 0 ) {
-            throw MyException("invalid capacity of backpack");
+            throw std::invalid_argument("invalid capacity of backpack");
         }
         backpacks.push_back( c );
     }
@@ -125,7 +112,7 @@ static ftyp getPenal() {
     ftyp n;
     std::cin >> n;
     if( std::cin.fail() || n < 0 ) {
-        throw MyException("invalid penal");
+        throw std::invalid_argument("invalid penal");
     }
     return n;
 }
@@ -136,7 +123,7 @@ static std::vector<BpItem> getItems() {
     int n;
     std::cin >> n;
     if( std::cin.fail() || n < 1 ) {
-        throw MyException("invalid number of items");
+        throw std::invalid_argument("invalid number of items");
     }
     items.resize( n );
 
@@ -145,12 +132,12 @@ static std::vector<BpItem> getItems() {
         std::cout << "insert " << (i+1) << " weight: ";
         std::cin >> bpItem.weight;
         if( std::cin.fail() || bpItem.weight <= 0 ) {
-            throw MyException("invalid weight");
+            throw std::invalid_argument("invalid weight");
         }
         std::cout << "insert " << (i+1) << " value: ";
         std::cin >> bpItem.value;
         if( std::cin.fail() || bpItem.value <= 0 ) {
-            throw MyException("invalid value");
+            throw std::invalid_argument("invalid value");
         }
         items[i] =  bpItem ;
     }
@@ -278,134 +265,141 @@ static ftyp mkStDev( const std::vector<Spec> &specs ) {
 
 
 int main(int argc, char *argv[]) {
-    Params params;
-    params.init( argc , argv );
+    MGen::Params params;
+    DefParams defP;
+    params.init( defP, argc , argv );
     if( params.isHelp() ) {
-        params.showHelp();
+        std::cout << params.getError() << std::endl;
+        params.showHelp( defP );
         return -1;
     }
-    try {
-        std::cout << "seed = " << params.getSeed() << std::endl;
-        TRnd random( params.getSeed() );
-        GRnd rnd( random );
-        const int loops           = params.getMaxLoops();
-        const int numberSpecs     = params.getNumberSpecs();
-        rnd.init( params.getPMutation(), params.getPBack(), params.getPBests() );
-        cftyp penal               = getPenal();
-        const std::vector<ftyp> backpacks = getBackpacks();
-        const std::vector<BpItem> items = getItems();
 
-        TRndBuff rndParent(random, 0, params.getNumberParents()-1 );
-        TRndBuff rndSpec(random, 0, params.getNumberSpecs()-1 );
-        TRndBuff rndGen(random,0,items.size()-1);
-        TRndBuff rndAllel(random,0,backpacks.size());
-        TRndBuff rndCross(random,1,items.size()-2);
+    std::cout << "seed = " << params.getSeed() << std::endl;
+    TRnd random( params.getSeed() );
+    MGen::GRnd rnd( random );
+    const int numberSpecs     = params.getNumberSpecs();
+    rnd.init( params.getPMutation(), params.getPBack(), params.getPHead() );
+    cftyp penal               = getPenal();
+    const std::vector<ftyp> backpacks = getBackpacks();
+    const std::vector<BpItem> items = getItems();
 
-        const time_t start = time(NULL);
-        time_t showTime    = start;
+    TRndBuff rndParent(random, 0, params.getNumberParents()-1 );
+    TRndBuff rndSpec(random, 0, params.getNumberSpecs()-1 );
+    TRndBuff rndGen(random,0,items.size()-1);
+    TRndBuff rndAllel(random,0,backpacks.size());
+    TRndBuff rndCross(random,1,items.size()-2);
 
-        std::vector<Spec> specs( numberSpecs );
-        std::vector<ftyp> tmpWeights( backpacks.size() , 0 );
+    const auto start = std::chrono::steady_clock::now();
+    auto showTime    = start;
+    auto now         = start;
 
-        ltyp improveStat[2] = {0, 0};
-        ltyp sumStat[2]     = {0, 0};
+    std::vector<Spec> specs( numberSpecs );
+    std::vector<ftyp> tmpWeights( backpacks.size() , 0 );
 
-        CUINT swapParents =
-            params.getNumberParents() < params.getNumberSpecs()
-        ?
-            params.getSwapParents()
-        :
-            0;
+    ltyp improveStat[2] = {0, 0};
+    ltyp sumStat[2]     = {0, 0};
 
-        for( TUINT i=0 ; i<specs.size() ; i++ ) {
-            randSpec( specs[i] , random , items , backpacks );
-            evalSpec( specs[i] , backpacks , items , penal , tmpWeights );
-            specs[i].store();
-        }
+    MGen::CUINT swapParents =
+        params.getNumberParents() < params.getNumberSpecs()
+    ?
+        params.getSwapParents()
+    :
+        0;
 
-        {
-            TUINT best = 0;
-            for( TUINT i=1 ; i<specs.size() ; i++ ) {
-                if( specs[i].ceval > specs[best].ceval ) {
-                    best = i;
-                }
-            }
-            std::swap( specs[0] , specs[best] );
-        }
-
-        std::cout << (time(NULL)-start) << "s; best[0]: " << specs[ 0 ] << std::endl;
-        std::cout << "avg: " << std::setprecision(14) << mkAvg(specs) << std::endl;
-
-        for( int loop=1 ; loops == 0 || loop <= loops ; loop++ ) {
-
-            const int maxChild = rnd.isBests() ? params.getNumberBests() : params.getNumberSpecs();
-
-            for( int child=0 ; child<maxChild; child++ ) {
-                int improveIdx;
-                if( rnd.isMutation() ) {
-                    improveIdx = 0;
-                    mutationSpec( specs[child] , rndGen , rndAllel );
-                } else {
-                    improveIdx = 1;
-                    int parent1, parent2;
-                    do {
-                        parent1 = rndParent();
-                        parent2 = rndParent();
-                    } while(parent1 == parent2 || parent1 == child || parent2 == child);
-                    cross1( specs[parent1], specs[parent2], specs[child], rndCross );
-                }
-                evalSpec( specs[child] , backpacks , items , penal , tmpWeights );
-                sumStat[improveIdx] ++ ;
-                if( specs[child].eval < specs[child].ceval ) {
-                    if( rnd.isBack() ) {
-                        specs[child].restore();
-                    }
-                } else {
-                    if( specs[child].eval > specs[child].ceval ) {
-                        improveStat[improveIdx] ++ ;
-                        specs[child].store();
-                        if( specs[child].ceval > specs[0].ceval ) {
-                            std::swap( specs[child] , specs[0] );
-                            showTime = 0;
-                        } else if( child == 0 ) {
-                            showTime = 0;
-                        }
-                    } else {
-                        specs[child].store();
-                    }
-                }
-            }
-
-            for( TUINT i=0 ; i<swapParents ; i++ ) {
-                TUINT i1 = rndSpec();
-                TUINT i2 = rndSpec();
-                if( i1 > i2 ) {
-                    std::swap(i1,i2);
-                }
-                if( specs[i1].ceval < specs[i2].ceval ) {
-                    std::swap( specs[i1] , specs[i2] );
-                }
-            }
-
-            if(
-                showTime == 0
-                    ||
-                ( !(loop & 63) && time(NULL) - showTime >= 10 )
-                    ||
-                loop == loops
-            ) {
-                std::cout << (time(NULL)-start) << "s; best[" << loop << "]; " << specs[0] << std::endl;
-                std::cout << "avg:   " << mkAvg(specs) << std::endl;
-                std::cout << "stdev: " << mkStDev(specs) << std::endl;
-                std::cout << "mutation inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[0] / (sumStat[0]+EPSILON)) << "% all: " << std::setw(11) << sumStat[0] << std::endl;
-                std::cout << "cross:   inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[1] / (sumStat[1]+EPSILON)) << "% all: " << std::setw(11) << sumStat[1] << std::endl;
-//                std::cout << "replace: inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[2] / (sumStat[2]+EPSILON)) << "% all: " << std::setw(11) << sumStat[2] << std::endl;
-                showTime = time(NULL);
-            }
-        }
+    for( MGen::TUINT i=0 ; i<specs.size() ; i++ ) {
+        randSpec( specs[i] , random , items , backpacks );
+        evalSpec( specs[i] , backpacks , items , penal , tmpWeights );
+        specs[i].store();
     }
-    catch( std::exception &e ) {
-        std::cout << "We have a problem: " << e.what() << std::endl;
+
+    {
+        MGen::TUINT best = 0;
+        for( MGen::TUINT i=1 ; i<specs.size() ; i++ ) {
+            if( specs[i].ceval > specs[best].ceval ) {
+                best = i;
+            }
+        }
+        std::swap( specs[0] , specs[best] );
+    }
+
+    std::cout << (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count()) << "ms; best[0]: " << specs[ 0 ] << std::endl;
+    std::cout << "avg: " << std::setprecision(14) << mkAvg(specs) << std::endl;
+    bool lastLoop = false;
+
+    for( MGen::TULONG loop=1 ; ! lastLoop ; loop++ ) {
+
+        const int maxChild = rnd.isBests() ? params.getSizeHead() : params.getNumberSpecs();
+
+        for( int child=0 ; child<maxChild; child++ ) {
+            int improveIdx;
+            if( rnd.isMutation() ) {
+                improveIdx = 0;
+                mutationSpec( specs[child] , rndGen , rndAllel );
+            } else {
+                improveIdx = 1;
+                int parent1, parent2;
+                do {
+                    parent1 = rndParent();
+                    parent2 = rndParent();
+                } while(parent1 == parent2 || parent1 == child || parent2 == child);
+                cross1( specs[parent1], specs[parent2], specs[child], rndCross );
+            }
+            evalSpec( specs[child] , backpacks , items , penal , tmpWeights );
+            sumStat[improveIdx] ++ ;
+            if( specs[child].eval < specs[child].ceval ) {
+                if( rnd.isBack() ) {
+                    specs[child].restore();
+                }
+            } else {
+                if( specs[child].eval > specs[child].ceval ) {
+                    improveStat[improveIdx] ++ ;
+                    specs[child].store();
+                    if( specs[child].ceval > specs[0].ceval ) {
+                        std::swap( specs[child] , specs[0] );
+                        showTime += std::chrono::seconds(30);
+                    } else if( child == 0 ) {
+                        showTime += std::chrono::seconds(30);
+                    }
+                } else {
+                    specs[child].store();
+                }
+            }
+        }
+
+        for( MGen::TUINT i=0 ; i<swapParents ; i++ ) {
+            MGen::TUINT i1 = rndSpec();
+            MGen::TUINT i2 = rndSpec();
+            if( i1 > i2 ) {
+                std::swap(i1,i2);
+            }
+            if( specs[i1].ceval < specs[i2].ceval ) {
+                std::swap( specs[i1] , specs[i2] );
+            }
+        }
+
+        if( ! (loop & params.getHaltFreq() ) ) {
+            now = std::chrono::steady_clock::now();
+            if( params.getMaxLoops() > 0 && loop >= params.getMaxLoops() ) {
+                lastLoop = true;
+            } else if( params.getMaxTime() > 0 && std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count() >= params.getMaxTime() ) {
+                lastLoop = true;
+            }
+        }
+
+        if( lastLoop ||
+            (
+                ! ( loop & params.getHaltFreq() )
+                    &&
+                std::chrono::duration_cast<std::chrono::seconds>(now - showTime).count() >= 30
+            )
+        ) {
+            std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count() << "ms; best[" << loop << "]; " << specs[0] << std::endl;
+            std::cout << "avg:   " << mkAvg(specs) << std::endl;
+            std::cout << "stdev: " << mkStDev(specs) << std::endl;
+            std::cout << "mutation inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[0] / (sumStat[0]+EPSILON)) << "% all: " << std::setw(11) << sumStat[0] << std::endl;
+            std::cout << "cross:   inc:" << std::setw(13) << std::setprecision(7) << (100.0 * improveStat[1] / (sumStat[1]+EPSILON)) << "% all: " << std::setw(11) << sumStat[1] << std::endl;
+            showTime = now;
+        }
     }
     return 0;
 }

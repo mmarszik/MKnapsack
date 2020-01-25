@@ -26,23 +26,18 @@
 ///                                                                   //
 ////////////////////////////////////////////////////////////////////////
 ///                                                                   //
-/// @created on 2020-01-16 23:06:32 CET                               //
+/// @created on 2020-01-19 12:49:18 CET                               //
 /// @author MMarszik (Mariusz Marszalkowski sqnett.com)               //
 /// @email mmarszik@gmail.com                                         //
 /// @package MKnapsack                                                //
-/// @token a9d2e38d-7734-4ebc-9650-4cac3941a782                       //
+/// @token 93f23238-0d83-414f-8df1-e3948d9d3637                       //
 /// @brief:                                                           //
 ///                                                                   //
 ////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-#include <MGenCPP/params.h>
 #include "def_params.h"
 
-class Params : public MGen::Params {
-public:
-    void init( const DefParams &defP, int argc, char *argv[]);
-    void showHelp(const DefParams &defP) const;
-};
+DefParams::DefParams() {
+
+}
 
