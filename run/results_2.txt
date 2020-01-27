@@ -1,0 +1,278 @@
+2 ---------------------------------------------
+
+--numberSpecs=2357 --sizeHead=669 --numberParents=2092 --swapParents=6 --maxTime=1000 --pMutation=0.5234 --pBests=0.5935 --pBack=0.308
+
+6 ---------------------------------------------
+
+--numberSpecs=3453 --sizeHead=2408 --numberParents=257 --swapParents=89 --maxTime=1000 --pMutation=0.0308 --pBests=0.7625 --pBack=0.2837
+
+4870.56
+
+real	36m12.040s
+user	35m50.552s
+sys	0m17.986s
+10 ---------------------------------------------
+
+--numberSpecs=4214 --sizeHead=2292 --numberParents=2041 --swapParents=70 --maxTime=1000 --pMutation=0.5976 --pBests=0.7482 --pBack=0.5292
+
+4882.14
+
+real	35m31.402s
+user	35m11.943s
+sys	0m17.900s
+14 ---------------------------------------------
+
+--numberSpecs=2703 --sizeHead=1977 --numberParents=2673 --swapParents=89 --maxTime=1000 --pMutation=0.17 --pBests=0.7319 --pBack=0.4656
+
+4877.67
+
+real	36m13.529s
+user	35m55.431s
+sys	0m17.295s
+18 ---------------------------------------------
+
+--numberSpecs=384 --sizeHead=103 --numberParents=31 --swapParents=83 --maxTime=1000 --pMutation=0.6464 --pBests=0.3136 --pBack=0.1985
+
+4879.81
+
+real	33m45.951s
+user	33m29.484s
+sys	0m14.464s
+22 ---------------------------------------------
+
+--numberSpecs=1947 --sizeHead=1060 --numberParents=1626 --swapParents=8 --maxTime=1000 --pMutation=0.5463 --pBests=0.0789 --pBack=0.9357
+
+4884.51
+
+real	34m20.107s
+user	34m2.141s
+sys	0m16.634s
+26 ---------------------------------------------
+
+--numberSpecs=3058 --sizeHead=662 --numberParents=2725 --swapParents=35 --maxTime=1000 --pMutation=0.9118 --pBests=0.621 --pBack=0.0897
+
+4846.89
+
+real	34m14.412s
+user	33m55.734s
+sys	0m17.436s
+30 ---------------------------------------------
+
+--numberSpecs=76 --sizeHead=18 --numberParents=31 --swapParents=30 --maxTime=1000 --pMutation=0.4803 --pBests=0.1362 --pBack=0.8913
+
+4871.67
+
+real	33m42.961s
+user	33m28.336s
+sys	0m13.623s
+34 ---------------------------------------------
+
+--numberSpecs=3445 --sizeHead=3271 --numberParents=549 --swapParents=15 --maxTime=1000 --pMutation=0.4149 --pBests=0.2758 --pBack=0.0527
+
+4833.78
+
+real	40m9.430s
+user	39m49.109s
+sys	0m18.659s
+38 ---------------------------------------------
+
+--numberSpecs=1048 --sizeHead=305 --numberParents=528 --swapParents=17 --maxTime=1000 --pMutation=0.7093 --pBests=0.3693 --pBack=0.7706
+
+4885.4
+
+real	33m51.512s
+user	33m35.782s
+sys	0m14.223s
+42 ---------------------------------------------
+
+--numberSpecs=3671 --sizeHead=2997 --numberParents=3070 --swapParents=52 --maxTime=1000 --pMutation=0.3224 --pBests=0.5295 --pBack=0.2188
+
+4870.92
+
+real	39m40.282s
+user	39m19.960s
+sys	0m18.294s
+46 ---------------------------------------------
+
+--numberSpecs=2427 --sizeHead=2101 --numberParents=1247 --swapParents=60 --maxTime=1000 --pMutation=0.2166 --pBests=0.9589 --pBack=0.7701
+
+4877.12
+
+real	34m15.852s
+user	33m57.597s
+sys	0m17.520s
+50 ---------------------------------------------
+
+--numberSpecs=433 --sizeHead=430 --numberParents=140 --swapParents=24 --maxTime=1000 --pMutation=0.4359 --pBests=0.9201 --pBack=0.7341
+
+4877.1
+
+real	33m56.338s
+user	33m40.726s
+sys	0m14.313s
+54 ---------------------------------------------
+
+--numberSpecs=90 --sizeHead=23 --numberParents=66 --swapParents=26 --maxTime=1000 --pMutation=0.3845 --pBests=0.1638 --pBack=0.5634
+
+4875.9
+
+real	33m44.016s
+user	33m28.879s
+sys	0m13.160s
+58 ---------------------------------------------
+
+--numberSpecs=1915 --sizeHead=276 --numberParents=534 --swapParents=70 --maxTime=1000 --pMutation=0.6875 --pBests=0.0937 --pBack=0.7591
+
+4885.31
+
+real	33m53.431s
+user	33m35.589s
+sys	0m16.446s
+62 ---------------------------------------------
+
+--numberSpecs=805 --sizeHead=470 --numberParents=521 --swapParents=38 --maxTime=1000 --pMutation=0.7976 --pBests=0.2556 --pBack=0.1558
+
+4881.82
+
+real	34m2.705s
+user	33m46.435s
+sys	0m14.792s
+66 ---------------------------------------------
+
+--numberSpecs=4962 --sizeHead=4796 --numberParents=548 --swapParents=60 --maxTime=1000 --pMutation=0.1399 --pBests=0.6807 --pBack=0.8014
+
+4874.44
+
+real	33m56.073s
+user	33m34.969s
+sys	0m19.380s
+70 ---------------------------------------------
+
+--numberSpecs=1420 --sizeHead=1121 --numberParents=803 --swapParents=29 --maxTime=1000 --pMutation=0.2827 --pBests=0.0014 --pBack=0.9413
+
+4876.73
+
+real	34m22.850s
+user	34m6.414s
+sys	0m14.901s
+74 ---------------------------------------------
+
+--numberSpecs=1827 --sizeHead=1101 --numberParents=1446 --swapParents=43 --maxTime=1000 --pMutation=0.2316 --pBests=0.3863 --pBack=0.0967
+
+4853.79
+
+real	34m55.208s
+user	34m37.761s
+sys	0m16.249s
+78 ---------------------------------------------
+
+--numberSpecs=809 --sizeHead=803 --numberParents=462 --swapParents=57 --maxTime=1000 --pMutation=0.1722 --pBests=0.7835 --pBack=0.5604
+
+4875.26
+
+real	34m10.816s
+user	33m53.806s
+sys	0m15.333s
+82 ---------------------------------------------
+
+--numberSpecs=1134 --sizeHead=633 --numberParents=82 --swapParents=14 --maxTime=1000 --pMutation=0.6636 --pBests=0.342 --pBack=0.1275
+
+4881.8
+
+real	34m5.660s
+user	33m49.642s
+sys	0m14.921s
+86 ---------------------------------------------
+
+--numberSpecs=2142 --sizeHead=2066 --numberParents=315 --swapParents=78 --maxTime=1000 --pMutation=0.6366 --pBests=0.9473 --pBack=0.0831
+
+4862.29
+
+real	36m20.726s
+user	36m3.025s
+sys	0m16.345s
+90 ---------------------------------------------
+
+--numberSpecs=4339 --sizeHead=4096 --numberParents=629 --swapParents=55 --maxTime=1000 --pMutation=0.9565 --pBests=0.5633 --pBack=0.0782
+
+4782.58
+
+real	35m27.811s
+user	35m8.163s
+sys	0m18.118s
+94 ---------------------------------------------
+
+--numberSpecs=370 --sizeHead=181 --numberParents=137 --swapParents=25 --maxTime=1000 --pMutation=0.8796 --pBests=0.3259 --pBack=0.7353
+
+4884.45
+
+real	33m49.070s
+user	33m32.716s
+sys	0m14.998s
+98 ---------------------------------------------
+
+--numberSpecs=3615 --sizeHead=1382 --numberParents=319 --swapParents=25 --maxTime=1000 --pMutation=0.7699 --pBests=0.477 --pBack=0.8541
+
+4884.03
+
+real	34m43.934s
+user	34m22.351s
+sys	0m19.986s
+102 ---------------------------------------------
+
+--numberSpecs=4361 --sizeHead=1075 --numberParents=1518 --swapParents=33 --maxTime=1000 --pMutation=0.1667 --pBests=0.1752 --pBack=0.4349
+
+4878.77
+
+real	34m40.627s
+user	34m19.533s
+sys	0m19.838s
+106 ---------------------------------------------
+
+--numberSpecs=3153 --sizeHead=2741 --numberParents=956 --swapParents=16 --maxTime=1000 --pMutation=0.6765 --pBests=0.3665 --pBack=0.2584
+
+4862.82
+
+real	35m56.984s
+user	35m36.036s
+sys	0m19.613s
+110 ---------------------------------------------
+
+--numberSpecs=2716 --sizeHead=1577 --numberParents=1668 --swapParents=31 --maxTime=1000 --pMutation=0.5704 --pBests=0.464 --pBack=0.4275
+
+4883.15
+
+real	35m1.124s
+user	34m40.993s
+sys	0m18.975s
+114 ---------------------------------------------
+
+--numberSpecs=4785 --sizeHead=1412 --numberParents=3629 --swapParents=95 --maxTime=1000 --pMutation=0.5096 --pBests=0.3331 --pBack=0.0191
+
+4635.48
+
+real	34m14.301s
+user	33m52.778s
+sys	0m20.331s
+118 ---------------------------------------------
+
+--numberSpecs=2265 --sizeHead=1837 --numberParents=1350 --swapParents=0 --maxTime=1000 --pMutation=0.9474 --pBests=0.7819 --pBack=0.5295
+
+4865.67
+
+real	34m12.595s
+user	33m52.045s
+sys	0m17.651s
+122 ---------------------------------------------
+
+--numberSpecs=4984 --sizeHead=986 --numberParents=3107 --swapParents=89 --maxTime=1000 --pMutation=0.2087 --pBests=0.3824 --pBack=0.6451
+
+4872.6
+
+real	34m20.973s
+user	33m58.234s
+sys	0m20.980s
+126 ---------------------------------------------
+
+--numberSpecs=2556 --sizeHead=1091 --numberParents=1226 --swapParents=4 --maxTime=1000 --pMutation=0.7192 --pBests=0.9938 --pBack=0.5417
+

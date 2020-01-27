@@ -1,3 +1,287 @@
-4889.33
-4889.33
-4889.33
+1 ---------------------------------------------
+
+--numberSpecs=1742 --sizeHead=175 --numberParents=754 --swapParents=84 --maxTime=1000 --pMutation=0.8446 --pBests=0.9765 --pBack=0.6
+
+5 ---------------------------------------------
+
+--numberSpecs=1809 --sizeHead=135 --numberParents=723 --swapParents=83 --maxTime=1000 --pMutation=0.7341 --pBests=0.9999 --pBack=0.6613
+
+4887.22
+
+real	33m50.793s
+user	33m29.442s
+sys	0m17.197s
+9 ---------------------------------------------
+
+--numberSpecs=1596 --sizeHead=242 --numberParents=794 --swapParents=90 --maxTime=1000 --pMutation=0.879 --pBests=0.9381 --pBack=0.6064
+
+4887.72
+
+real	33m53.600s
+user	33m36.616s
+sys	0m14.662s
+13 ---------------------------------------------
+
+--numberSpecs=1841 --sizeHead=133 --numberParents=681 --swapParents=82 --maxTime=1000 --pMutation=0.7425 --pBests=0.9685 --pBack=0.5786
+
+4887.25
+
+real	33m47.810s
+user	33m30.939s
+sys	0m15.261s
+17 ---------------------------------------------
+
+--numberSpecs=1653 --sizeHead=101 --numberParents=836 --swapParents=80 --maxTime=1000 --pMutation=0.7572 --pBests=0.9695 --pBack=0.5922
+
+4887.35
+
+real	33m47.581s
+user	33m30.775s
+sys	0m15.459s
+21 ---------------------------------------------
+
+--numberSpecs=1764 --sizeHead=184 --numberParents=718 --swapParents=79 --maxTime=1000 --pMutation=0.8488 --pBests=0.9999 --pBack=0.6308
+
+4887.97
+
+real	33m50.253s
+user	33m33.139s
+sys	0m15.355s
+25 ---------------------------------------------
+
+--numberSpecs=1792 --sizeHead=215 --numberParents=841 --swapParents=84 --maxTime=1000 --pMutation=0.8555 --pBests=0.8953 --pBack=0.6882
+
+4887.88
+
+real	33m52.097s
+user	33m34.369s
+sys	0m16.129s
+29 ---------------------------------------------
+
+--numberSpecs=1756 --sizeHead=261 --numberParents=903 --swapParents=72 --maxTime=1000 --pMutation=0.7363 --pBests=0.8334 --pBack=0.6621
+
+4887.55
+
+real	33m53.098s
+user	33m35.920s
+sys	0m15.574s
+33 ---------------------------------------------
+
+--numberSpecs=1726 --sizeHead=60 --numberParents=670 --swapParents=83 --maxTime=1000 --pMutation=0.9563 --pBests=0.9999 --pBack=0.7344
+
+4886.66
+
+real	33m47.905s
+user	33m29.952s
+sys	0m15.927s
+37 ---------------------------------------------
+
+--numberSpecs=1685 --sizeHead=214 --numberParents=720 --swapParents=84 --maxTime=1000 --pMutation=0.8804 --pBests=0.9642 --pBack=0.5805
+
+4887.8
+
+real	33m51.991s
+user	33m35.270s
+sys	0m15.765s
+41 ---------------------------------------------
+
+--numberSpecs=1632 --sizeHead=185 --numberParents=757 --swapParents=82 --maxTime=1000 --pMutation=0.8387 --pBests=0.9999 --pBack=0.6334
+
+4887.92
+
+real	33m51.504s
+user	33m32.910s
+sys	0m16.134s
+45 ---------------------------------------------
+
+--numberSpecs=1721 --sizeHead=230 --numberParents=753 --swapParents=85 --maxTime=1000 --pMutation=0.9182 --pBests=0.8709 --pBack=0.5788
+
+4887.16
+
+real	33m53.899s
+user	33m35.669s
+sys	0m16.513s
+49 ---------------------------------------------
+
+--numberSpecs=1732 --sizeHead=143 --numberParents=786 --swapParents=84 --maxTime=1000 --pMutation=0.9187 --pBests=0.9823 --pBack=0.4538
+
+4886.57
+
+real	33m51.836s
+user	33m33.953s
+sys	0m16.052s
+53 ---------------------------------------------
+
+--numberSpecs=1778 --sizeHead=148 --numberParents=756 --swapParents=99 --maxTime=1000 --pMutation=0.8231 --pBests=0.9999 --pBack=0.5956
+
+4887.73
+
+real	33m49.105s
+user	33m32.136s
+sys	0m16.066s
+57 ---------------------------------------------
+
+--numberSpecs=1758 --sizeHead=94 --numberParents=788 --swapParents=82 --maxTime=1000 --pMutation=0.8997 --pBests=0.9999 --pBack=0.5448
+
+4887.42
+
+real	33m48.633s
+user	33m30.688s
+sys	0m16.405s
+61 ---------------------------------------------
+
+--numberSpecs=1798 --sizeHead=326 --numberParents=809 --swapParents=87 --maxTime=1000 --pMutation=0.8239 --pBests=0.9999 --pBack=0.4631
+
+4887.04
+
+real	33m58.125s
+user	33m40.447s
+sys	0m16.153s
+65 ---------------------------------------------
+
+--numberSpecs=1677 --sizeHead=183 --numberParents=572 --swapParents=71 --maxTime=1000 --pMutation=0.8848 --pBests=0.9999 --pBack=0.6494
+
+4888
+
+real	33m49.938s
+user	33m31.557s
+sys	0m15.713s
+69 ---------------------------------------------
+
+--numberSpecs=1605 --sizeHead=181 --numberParents=676 --swapParents=80 --maxTime=1000 --pMutation=0.9289 --pBests=0.9999 --pBack=0.556
+
+4887.29
+
+real	33m50.915s
+user	33m33.985s
+sys	0m15.426s
+73 ---------------------------------------------
+
+--numberSpecs=1799 --sizeHead=120 --numberParents=590 --swapParents=96 --maxTime=1000 --pMutation=0.7995 --pBests=0.9999 --pBack=0.5052
+
+4887.51
+
+real	33m49.333s
+user	33m31.814s
+sys	0m15.971s
+77 ---------------------------------------------
+
+--numberSpecs=1777 --sizeHead=122 --numberParents=689 --swapParents=92 --maxTime=1000 --pMutation=0.7918 --pBests=0.9021 --pBack=0.6105
+
+4887.54
+
+real	33m48.410s
+user	33m30.652s
+sys	0m15.192s
+81 ---------------------------------------------
+
+--numberSpecs=1745 --sizeHead=335 --numberParents=785 --swapParents=84 --maxTime=1000 --pMutation=0.9401 --pBests=0.8239 --pBack=0.5984
+
+4885.73
+
+real	33m58.029s
+user	33m41.433s
+sys	0m15.538s
+85 ---------------------------------------------
+
+--numberSpecs=1775 --sizeHead=261 --numberParents=817 --swapParents=69 --maxTime=1000 --pMutation=0.8017 --pBests=0.9999 --pBack=0.6603
+
+4887.85
+
+real	33m51.608s
+user	33m34.554s
+sys	0m15.418s
+89 ---------------------------------------------
+
+--numberSpecs=1665 --sizeHead=248 --numberParents=854 --swapParents=82 --maxTime=1000 --pMutation=0.8924 --pBests=0.975 --pBack=0.5997
+
+4887.44
+
+real	33m51.950s
+user	33m35.814s
+sys	0m15.090s
+93 ---------------------------------------------
+
+--numberSpecs=1773 --sizeHead=182 --numberParents=897 --swapParents=76 --maxTime=1000 --pMutation=0.826 --pBests=0.9078 --pBack=0.4673
+
+4887.13
+
+real	33m51.737s
+user	33m34.382s
+sys	0m15.095s
+97 ---------------------------------------------
+
+--numberSpecs=1776 --sizeHead=175 --numberParents=844 --swapParents=90 --maxTime=1000 --pMutation=0.7068 --pBests=0.9754 --pBack=0.6249
+
+4887.27
+
+real	33m51.624s
+user	33m33.148s
+sys	0m17.153s
+101 ---------------------------------------------
+
+--numberSpecs=1767 --sizeHead=117 --numberParents=772 --swapParents=75 --maxTime=1000 --pMutation=0.8102 --pBests=0.9999 --pBack=0.5331
+
+4887.48
+
+real	33m51.566s
+user	33m32.388s
+sys	0m17.657s
+105 ---------------------------------------------
+
+--numberSpecs=1592 --sizeHead=187 --numberParents=617 --swapParents=87 --maxTime=1000 --pMutation=0.852 --pBests=0.8932 --pBack=0.5067
+
+4887.8
+
+real	33m53.974s
+user	33m35.715s
+sys	0m16.491s
+109 ---------------------------------------------
+
+--numberSpecs=1801 --sizeHead=191 --numberParents=709 --swapParents=95 --maxTime=1000 --pMutation=0.8289 --pBests=0.9753 --pBack=0.5724
+
+4887.66
+
+real	33m53.988s
+user	33m34.963s
+sys	0m17.396s
+113 ---------------------------------------------
+
+--numberSpecs=1714 --sizeHead=66 --numberParents=908 --swapParents=75 --maxTime=1000 --pMutation=0.7609 --pBests=0.9999 --pBack=0.5628
+
+4887.08
+
+real	33m49.124s
+user	33m29.895s
+sys	0m17.315s
+117 ---------------------------------------------
+
+--numberSpecs=1667 --sizeHead=224 --numberParents=635 --swapParents=85 --maxTime=1000 --pMutation=0.7838 --pBests=0.9999 --pBack=0.4744
+
+4887.38
+
+real	33m54.255s
+user	33m35.070s
+sys	0m17.298s
+121 ---------------------------------------------
+
+--numberSpecs=1795 --sizeHead=248 --numberParents=910 --swapParents=81 --maxTime=1000 --pMutation=0.7414 --pBests=0.9999 --pBack=0.6128
+
+4887.45
+
+real	33m55.110s
+user	33m35.875s
+sys	0m16.887s
+125 ---------------------------------------------
+
+--numberSpecs=1820 --sizeHead=1 --numberParents=734 --swapParents=82 --maxTime=1000 --pMutation=0.7844 --pBests=0.9477 --pBack=0.7341
+
+4879.56
+
+real	33m49.113s
+user	33m28.902s
+sys	0m17.880s
+129 ---------------------------------------------
+
+--numberSpecs=1746 --sizeHead=273 --numberParents=862 --swapParents=92 --maxTime=1000 --pMutation=0.7398 --pBests=0.9999 --pBack=0.6325
+
