@@ -269,7 +269,9 @@ int main(int argc, char *argv[]) {
     DefParams defP;
     params.init( defP, argc , argv );
     if( params.isHelp() ) {
-        std::cout << params.getError() << std::endl;
+        if( params.getError().empty() ) {
+            std::cout << params.getError() << std::endl;
+        }
         params.showHelp( defP );
         return -1;
     }
@@ -356,9 +358,9 @@ int main(int argc, char *argv[]) {
                     specs[child].store();
                     if( specs[child].ceval > specs[0].ceval ) {
                         std::swap( specs[child] , specs[0] );
-                        showTime += std::chrono::seconds(30);
+                        showTime -= std::chrono::milliseconds( params.getShowFreq() );
                     } else if( child == 0 ) {
-                        showTime += std::chrono::seconds(30);
+                        showTime -= std::chrono::milliseconds( params.getShowFreq() );
                     }
                 } else {
                     specs[child].store();
@@ -377,7 +379,7 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        if( ! (loop & params.getHaltFreq() ) ) {
+        if( ! (loop & params.getOptFreq() ) ) {
             now = std::chrono::steady_clock::now();
             if( params.getMaxLoops() > 0 && loop >= params.getMaxLoops() ) {
                 lastLoop = true;
@@ -388,9 +390,11 @@ int main(int argc, char *argv[]) {
 
         if( lastLoop ||
             (
-                ! ( loop & params.getHaltFreq() )
+                ! ( loop & params.getOptFreq() )
                     &&
-                std::chrono::duration_cast<std::chrono::seconds>(now - showTime).count() >= 30
+                params.getShowFreq() > 0
+                    &&
+                std::chrono::duration_cast<std::chrono::milliseconds>(now - showTime).count() >= params.getShowFreq()
             )
         ) {
             std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count() << "ms; best[" << loop << "]; " << specs[0] << std::endl;

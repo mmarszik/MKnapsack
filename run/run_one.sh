@@ -11,12 +11,12 @@ echo           >> results.txt
 r=713493784
 {
 time (
-for i in {1..300}
+for i in {1..30}
 do
     r=$(( (r*103867+824723)%2000000000 ))
     cat data.txt | ./MKnapsack --rndSeed=$r $args  | tail -n5 | head -n1
 done
-) | awk -F';' '{ sum+=sprintf("%f",$3); } END {print sum/300}' >> results.txt; } 2>> results.txt
+) | awk -F';' '{ sum+=sprintf("%f",$3); } END {print sum/30}' >> results.txt; } 2>> results.txt
 
 cat results.txt | less +G
 
